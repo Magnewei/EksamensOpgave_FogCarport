@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+left to right direction
+
+[*] --> Login
+
+Login --> Create_user: On click: Create user
+Create_user --> Login: On click: Create user
+Login --> Create_admin: On click: Create admin
+Create_admin --> Login: On click: Create admin
+Login --> Shop: On successful login
+
+Shop --> Shop: On click: Add to basket
+Shop --> Cart: On click: View cart
+Shop --> Admin: On click: Admin
+Shop --> Login: On click: Logout
+
+Cart --> Shop: On click: Pay now
+Cart --> Cart: On click: Pay later
+Cart --> Shop: On click: Delete order
+
+
+Admin --> Admin: On click: Delete Order
+Admin --> Admin: On click: Add skejs
+Admin --> Admin: On click: Delete user
+
+
+
+
+
+@enduml

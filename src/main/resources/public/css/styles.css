@@ -1,0 +1,239 @@
+
+body {
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    color: #ffa31a;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-image: url('../images/BckB2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid #ffa31a;
+    background-color: rgb(41, 41, 41);
+    padding: 20px;
+    border-radius: 10px;
+}
+h1, p, div, table {
+    border: 1px solid #ffa31a;
+    background-color: rgb(41, 41, 41);
+    padding: 5px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+
+
+button {
+    width: 120px;
+    height: 50px;
+    font-size: 1.1rem;
+    background-color: #ffa31a;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #734d15;
+}
+h1 {
+    font-size: 25px;
+    font-family: RomanC;
+    font-weight: bold;
+    color: #ffa31a;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.topmenu {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.topmenu a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.content {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dropdowns {
+    width: auto;
+    display: flex;
+    gap: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    flex-direction: row;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 200px;
+    height: 30px;
+}
+
+.dropdowns select {
+    flex-grow: 2;
+    font-size: 25px;
+    padding: 10px;
+}
+
+#order-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#order-button button {
+    width: 120px;
+    height: 50px;
+    font-size: 1.1rem;
+    background-color: #ffa31a;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+#order-button button:hover {
+    background-color: #734d15;
+}
+
+.horizontal-buttons {
+    list-style-type: none;
+    padding: 0;
+}
+
+.horizontal-buttons li {
+    display: inline-block;
+    margin-right: 10px;
+
+}
+
+.horizontal-buttons li:last-child {
+    margin-right: 0;
+}
+
+.horizontal-buttons button {
+    width: 120px;
+    height: 50px;
+    font-size: 1.1rem;
+    background-color: #ffa31a;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+.horizontal-buttons button:hover {
+    background-color: #734d15;
+}
+
+.header-background {
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+
+    min-width: 100%;
+    max-height: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    border: 2px solid #ffa31a; /* Adding border */
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1); /* Adding shadow */
+    border-radius: 5px; /* Adding rounded corners */
+}
+
+.dropdowns {
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    flex-direction: row;
+    background-color: #ffa31a;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.left-ad,
+.right-ad {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+}
+
+.left-ad {
+    left: 1px;
+}
+
+.right-ad {
+    right: 1px;
+}
+
+.left-ad img,
+.right-ad img {
+    width: 160px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+footer {
+    background-color: #1b1b1b;
+    padding: 20px 0;
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ffa31a; /* Adding border */
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1); /* Adding shadow */
+    border-radius: 5px; /* Adding rounded corners */
+}
+
+.footer-content {
+    text-align: center;
+}
+
+
+@media only screen and (max-width: 800px) {
+    .dropdowns {
+        flex-direction: column;
+    }
+}
