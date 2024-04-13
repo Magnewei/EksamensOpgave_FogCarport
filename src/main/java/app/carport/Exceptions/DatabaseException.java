@@ -1,4 +1,4 @@
-package app.cupcake.Exceptions;
+package app.carport.Exceptions;
 
 public class DatabaseException extends Exception {
     public DatabaseException(String userMessage) {

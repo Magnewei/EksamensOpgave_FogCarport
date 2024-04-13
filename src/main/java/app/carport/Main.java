@@ -1,10 +1,10 @@
-package app.cupcake;
+package app.carport;
 
-import app.cupcake.Controllers.AdminController;
+import app.carport.Controllers.AdminController;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
-import app.cupcake.Persistence.ConnectionPool;
-import app.cupcake.Thymeleaf.ThymeleafConfig;
+import app.carport.Persistence.ConnectionPool;
+import app.carport.Thymeleaf.ThymeleafConfig;
 
 public class Main {
     private static final String USER = "postgres";

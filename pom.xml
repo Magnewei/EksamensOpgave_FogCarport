@@ -99,7 +99,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>app.cupcake.Main</mainClass>
+                            <mainClass>app.carport.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

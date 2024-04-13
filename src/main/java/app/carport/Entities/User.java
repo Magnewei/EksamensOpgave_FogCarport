@@ -1,4 +1,4 @@
-package app.cupcake.Entities;
+package app.carport.Entities;
 
 public class User {
     private final int userID;
