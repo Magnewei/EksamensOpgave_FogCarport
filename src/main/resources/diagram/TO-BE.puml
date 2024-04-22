@@ -1,0 +1,51 @@
+@startuml
+!pragma visma layout smetana
+title TO-BE Diagram
+|#dee4e8|Kunde|
+|#c8c3cd|Fog Webshop|
+|#c4a7cd|Fog Lager|
+
+|Kunde|
+start
+|Kunde|
+:Bestil carport;
+:Valg af model;
+split
+:Materiale valg;
+split again
+:Længde valgt;
+
+split again
+:Type af materiale;
+split end
+:Carport design færdigt;
+|Fog Webshop|
+:Sælger modtager tilbud;
+
+|Fog Lager|
+:Lager modtager liste over materialer;
+if (Er alle materialer på lager) then (yes)
+
+|Fog Lager|
+:Pak ordrer;
+
+|Fog Webshop|
+:Giv kunde besked om accept af ordrer;
+
+|Kunde|
+:Kunde får besked om accept fra sælger;
+
+detach
+else (no)
+|Fog Webshop|
+
+
+
+:Giv kunde besked om afslag af ordrer;
+|Kunde|
+:Kunde får besked om afslag fra sælger;
+detach
+|Kunde|
+
+
+@enduml

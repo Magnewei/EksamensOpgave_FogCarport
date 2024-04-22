@@ -1,0 +1,32 @@
+@startuml
+!pragma visma layout smetana
+title AS-IS Diagram
+|#dee4e8|Kunde|
+|#c8c3cd|Fog Webshop|
+
+start
+|Kunde|
+:Bestil carport;
+:Valg af model;
+split
+:Materiale valg;
+split again
+:Længde valgt;
+
+split again
+:Type af materiale;
+split end
+:Carport design færdigt;
+|Fog Webshop|
+:Sælger modtager tilbud;
+|Fog Webshop|
+if(Sælger accepterer tilbud) then (no)
+|Kunde|
+:Kunde får afslag fra sælger;
+detach
+else (yes)
+|Kunde|
+:Kunde får accept fra sælger;
+detach
+
+@enduml
