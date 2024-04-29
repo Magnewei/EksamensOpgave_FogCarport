@@ -7,11 +7,13 @@ import app.carport.Persistence.ConnectionPool;
 import app.carport.Thymeleaf.ThymeleafConfig;
 
 public class Main {
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "postgres";
-    private static final String URL = "jdbc:postgresql://localhost:5432/%s?currentSchema=public";
-    private static final String DB = "cupcake";
+    private static final String USER =  System.getenv("JDBC_USER");
+    private static final String PASSWORD =  System.getenv("JDBC_PASSWORD");
+    private static final String URL = System.getenv("JDBC_CONNECTION_STRING");
+    private static final String DB = System.getenv("JDBC_DB");
     private static final ConnectionPool connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
+
+
     public static void main(String[] args) {
         // Initializing Javalin and Jetty webserver
         Javalin app = Javalin.create(config -> {
@@ -22,5 +24,6 @@ public class Main {
         // Routing
         app.get("/", ctx -> ctx.render("index.html"));
         AdminController.addRoutes(app, connectionPool);
+
     }
 }
