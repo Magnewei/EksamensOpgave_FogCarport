@@ -1,24 +1,37 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-left to right direction
-
-class User
-class Cupcake
-class Order
-
-class Topping
-class Bottom
 
 
-User <-- Order
+object Carport
+object Rem
+object Spær
+object Materiale
+object Skur
+object Længde
+object Bredde
 
-Order *-- Orderline
+object Sten
+object Træ
+object Aluminium
 
-Orderline *-- Cupcake
+Materiale <|-- Sten: is-a
+Materiale <|-- Træ: is-a
+Materiale <|-- Aluminium: is-a
 
-Cupcake *-- Bottom
-Cupcake *-- Topping
+Carport *-- Rem: has-a
+Carport *-- Spær: has-a
+Carport *-- Skur: has-a
+
+Carport <|-- Længde: is-a
+Carport <|-- Bredde: is-a
+
+Skur <|-- Materiale: is-a
+Spær <|-- Materiale: is-a
+Rem <|-- Materiale: is-a
+
+
+
 
 
 
