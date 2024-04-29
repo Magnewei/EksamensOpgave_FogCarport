@@ -13,7 +13,6 @@ public class Main {
     private static final String DB = System.getenv("JDBC_DB");
     private static final ConnectionPool connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
 
-
     public static void main(String[] args) {
         // Initializing Javalin and Jetty webserver
         Javalin app = Javalin.create(config -> {
