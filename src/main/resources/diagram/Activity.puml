@@ -1,0 +1,33 @@
+@startuml
+
+start
+:Start page;
+if (Browse existing Carport designs?) then (yes)
+  :Browse carports;
+  :Buy carport;
+  :Login to confirm payment;
+elseif (Create Own Carport?) then (yes)
+  :Find carport style;
+  :Find materials and measurement;
+  :Send Carport Design to Fog for review;
+  :Wait for Response;
+  if (Response) then (yes)
+    :Buy Carport;
+  else (no)
+    :Continue Browsing;
+  endif
+elseif (Log in as Admin?) then (yes)
+  :Enter Admin password and Username;
+  if (Admin Logged In?) then (yes)
+    :View All Orders;
+    :View Fog Inventory;
+  else (no)
+    :Continue as Guest;
+  endif
+else (no)
+  :Continue as Guest;
+endif
+
+stop
+
+@enduml
