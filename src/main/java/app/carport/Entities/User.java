@@ -4,15 +4,17 @@ public class User {
     private final int userID;
     private final String email;
     private final String password;
-    private final String role;
-    private int balance;
+    private final boolean role;
+    private final Address adress;
+    private final Order order;
 
-    public User(int userId, String email, String password, String role, int balance) {
-        this.userID = userId;
+    public User(int userID, String email, String password, boolean role, Address adress, Order order) {
+        this.userID = userID;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.balance = balance;
+        this.adress = adress;
+        this.order = order;
     }
 
     public int getUserID() {
@@ -27,28 +29,15 @@ public class User {
         return password;
     }
 
-    public String getRole() {
+    public boolean isRole() {
         return role;
     }
 
-    public int getBalance() {
-        return balance;
+    public Address getAdress() {
+        return adress;
     }
 
-    public void removeBalance(int amount) {
-        int balanceChange = balance - amount;
-        balance = balanceChange;
+    public Order getOrder() {
+        return order;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userID +
-                ", userName='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                '}';
-    }
-
-
 }
