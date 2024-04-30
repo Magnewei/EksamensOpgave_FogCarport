@@ -2,9 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Website - Home</title>
+    <link rel="stylesheet" href="../public/css/styles.css">
 </head>
 <body>
+
+<div class="navbar">
+    <ul>
+        <li><a href="login.html">Login</a></li>
+    </ul>
+</div>
+<div class="main-content">
+    <div class="Bestilling-box">
+    <div class="infoform">
+        <input type="text" id="navn" name="navn" placeholder="Navn" required>
+        <input type="text" id="efternavn" name="efternavn" placeholder="Efternavn" required>
+    </div>
+    <div class="infoform">
+        <input type="text" id="vejnavn" name="vejnavn" placeholder="Vejnavn" required>
+        <input type="text" id="number" name="number" placeholder="Nummer" required>
+    </div>
+    <div class="infoform">
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <input type="tel" id="phone" name="phone" placeholder="Telefonnummer" required>
+    </div>
+    <div class="infoform">
+        <textarea id="additional-comments" name="additional-comments" placeholder="TOS" readonly></textarea>
+        <label for="agree">Jeg accepterer betingelserne</label>
+        <input type="checkbox" id="agree" name="agree" required>
+    </div>
+        <a href="bestilling3.html" class="btn">Bestil</a>
+    </div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
+</div>
 
 </body>
 </html>
