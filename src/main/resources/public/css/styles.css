@@ -1,10 +1,10 @@
 /* Color scheme */
 :root {
-    --primary-color: #2e588a;
+    --primary-color: #003d76;
     --secondary-color: #fff;
-    --accent-color: #124375;
-    --accent-dark: rgba(11, 47, 86, 0.61);
-    --accent-light: #5a90d0;
+    --accent-color: #1362ab;
+    --accent-dark: rgb(0, 41, 80);
+    --accent-light: #0161b9;
 }
 
 
@@ -20,6 +20,12 @@ body {
     font-family: Arial, sans-serif;
 
     color: var(--primary-color);
+}
+label {
+    display: block; /* Ensures each label appears on its own line */
+    font-weight: bold; /* Makes the label text bold */
+    color: var(--secondary-color); /* Sets the color of the label text */
+    margin: 5px;
 }
 
 /* Header styles */
@@ -38,20 +44,36 @@ body {
 .navbar {
     background-color: var(--primary-color);
     color: var(--secondary-color);
-    padding: 10px 0;
+    padding: 10px 20px;
     text-align: center;
+    position: relative; /* Set position to relative for absolute positioning */
+}
+.navbar::before {
+    content: ""; /* Add an empty content */
+    position: absolute;
+    top: 50%;
+    left: 10px; /* Adjust left position as needed */
+    transform: translateY(-50%);
+    width: 40px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
+    background-image: url('Media/FogLogo.png'); /* Specify the path to your image */
+    background-size: cover; /* Adjusts the size of the background image */
+
 }
 
 .navbar ul {
     list-style-type: none;
+    text-align: right; /* Align list items to the right */
+
 }
 
 .navbar ul li {
     display: inline;
-    margin-right: 20px;
+    margin-left: 20px; /* Add margin between list items */
 }
 
 .navbar ul li a {
+    margin-left: 0; /* Remove margin from the first list item */
     text-decoration: none;
     color: var(--secondary-color);
     font-size: 18px;
@@ -59,27 +81,63 @@ body {
 
 /* Main content styles */
 .main-content {
+    background-image: url('Media/Bck1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 
-    padding: 20px;
-    text-align: center;
+}
+
+
+textarea {
+    padding: 10px;
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 5px;
+    resize: none;
 }
 
 /* Button styles */
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: var(--accent-color);
-    color: var(--secondary-color);
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
     transition: background-color 0.3s;
     font-size: 16px;
+    margin: 10px;
+}
+/* Button styles */
+.btn1 {
+    display: inline-block;
+    padding: 10px 20px;
+    width: 200px;
+    height: 80px;
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    font-size: 30px;
+    line-height: 60px;
 }
 
 .btn:hover {
-    background-color: var(--accent-dark); /* Darken button color on hover */
+    background-color: #a1a39f
+}
+.btn1:hover {
+    background-color: var(--accent-dark);
 }
 
 /* Image gallery styles */
@@ -131,21 +189,81 @@ form textarea {
     text-align: center;
 }
 
-.social-media {
-    margin-top: 10px;
-}
-
-.social-media a {
-    color: var(--secondary-color);
-    text-decoration: none;
-    margin: 0 5px;
-}
-
-.social-media a:hover {
-    text-decoration: underline;
-}
 .index-page {
-    background-image: url('../resources/Media/Bck1.png'); /* Specify the path to your image */
-    background-size: cover; /* Adjusts the size of the background image to cover the entire page */
-    background-position: center; /* Centers the background image within the page */
+    background-image: url('Media/Bck1.png');
+    background-size: 720px 480px;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex; /* Use flexbox layout */
+    flex-direction: column; /* Stack children vertically */
+    min-height: 100vh; /* Ensure the background covers the entire viewport */
+}
+.login-box {
+    background-color: var( --primary-color);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid var(--accent-color); /* Add a border */
+}
+.Bestilling-box {
+    background-color: var( --primary-color);
+    display: flex; /* Use flexbox layout */
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid var(--accent-color); /* Add a border */
+
+}
+.dropdowns {
+    display: flex; /* Use flexbox layout */
+    flex-direction: column;
+    align-items: center;
+    margin: 10px; /* Adjust spacing between dropdowns and textarea */
+}
+.dropdowns select {
+    width: 300px; /* Adjust the width of the dropdowns as needed */
+    padding: 10px;
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 5px;
+    background-color: white; /* Set background color */
+    font-size: 16px; /* Set font size */
+    color: var(--primary-color); /* Set text color */
+    appearance: none; /* Remove default dropdown arrow */
+    outline: none; /* Remove outline */
+    cursor: pointer; /* Show pointer cursor */
+}
+
+/* Style the options within the dropdown */
+.dropdowns select option {
+    background-color: white; /* Set background color */
+    color: var(--primary-color); /* Set text color */
+}
+.infoform {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.infoform input,
+.infoform textarea {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 16px;
+    color: var(--primary-color);
+}
+
+.infoform input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+}
+
+.infoform textarea {
+    width: 300px;
+    height: 100px;
+    resize: none;
 }
