@@ -1,7 +1,14 @@
 package app.carport.Persistence;
 
-import app.carport.Entities.Carport;
 import app.carport.Entities.User;
+import app.carport.Exceptions.DatabaseException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserMapper {
 
@@ -76,6 +83,7 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DatabaseException("An error occurred while deleting user.", e.getMessage());
         }
+    }
 
     public static List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         List<User> users = new ArrayList<>();
@@ -99,6 +107,6 @@ public class UserMapper {
             throw new DatabaseException("Kan ikke hente alle brugerne fra databasen.", e.getMessage());
 
         }
-        return false;
+        return null;
     }
 }
