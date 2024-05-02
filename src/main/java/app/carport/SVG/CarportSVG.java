@@ -1,19 +1,20 @@
 package app.carport.SVG;
 
 public class CarportSVG {
-    private int width;
-    private int length;
-    private SVGDrawer carportSvg;
+    private final int width;
+    private final int length;
+    private final SVGDrawer carportSvg;
 
-    public CarportSVG(int width, int height) {
+    public CarportSVG(int width, int length) {
         this.width = width;
         this.length = length;
-        carportSvg = new Svg(0, 0, "0 0 855 690", "75%" );
+        carportSvg = new SVGDrawer(0, 0, "0 0 855 690", "75%" );
         carportSvg.addRectangle(0,0,600, 780, "stroke-width:1px; stroke:#000000; fill: #ffffff");
         addBeams();
         addRafters();
     }
 
+    // TODO: Fix konstanter i metoderne til at være baseret på width og height.
     private void addBeams() {
         carportSvg.addRectangle(0,35,4.5, 780, "stroke-width:1px; stroke:#000000; fill: #ffffff");
         carportSvg.addRectangle(0,565,4.5, 780, "stroke-width:1px; stroke:#000000; fill: #ffffff");

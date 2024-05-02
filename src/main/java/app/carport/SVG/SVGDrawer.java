@@ -39,7 +39,7 @@ public class SVGDrawer {
         public void addText(int x, int y, int rotation, String text) {
         }
 
-        public void addSvg(Svg innerSvg) {
+        public void addSvg(SVGDrawer innerSvg) {
             svg.append(innerSvg.toString());
         }
 

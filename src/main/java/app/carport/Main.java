@@ -1,9 +1,6 @@
 package app.carport;
 
-import app.carport.Controllers.AdminPanelController;
-import app.carport.Controllers.HeaderController;
-import app.carport.Controllers.LoginController;
-import app.carport.Controllers.ShopController;
+import app.carport.Controllers.*;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;
