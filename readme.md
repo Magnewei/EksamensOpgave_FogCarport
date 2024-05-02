@@ -1,6 +1,6 @@
-## Cupcake projekt
+## Fog carport eksamensprojekt
 
-### Gruppe A-1 - Christian, Anton, Gustav og Magnus
+### Gruppe A-8 - Christian, Anton, Gustav og Magnus
 
 ### [Projekt rapport](link)
 
