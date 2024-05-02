@@ -28,7 +28,7 @@ class Main {
 
 package Entities {
 class Carport {
--int carportID
+-int carportId
 -String material
 -int width
 -int length
@@ -36,7 +36,7 @@ class Carport {
 }
 
 class User {
--int userID
+-int userId
 -String email
 -String password
 -boolean role
@@ -45,16 +45,17 @@ class User {
 }
 
 class Address {
--int addressID
+-int addressId
 -int postalCode
 -String cityName
 -String streetName
 }
 
 class Order {
--int orderID
+-int orderId
 -String status
--Carport carport
+-int userId
+-int carportId
 }
 }
 
