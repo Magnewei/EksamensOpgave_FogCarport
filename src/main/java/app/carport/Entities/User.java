@@ -6,8 +6,8 @@ public class User {
     private final String password;
     private final String role;
 
-    public User(int userId, String email, String password, String role) {
-        this.userID = userId;
+    public User(int userID, String email, String password, boolean role) {
+        this.userID = userID;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -25,9 +25,10 @@ public class User {
         return password;
     }
 
-    public String getRole() {
+    public String role() {
         return role;
     }
+
 
     @Override
     public String toString() {
@@ -38,6 +39,4 @@ public class User {
                 ", role='" + role + '\'' +
                 '}';
     }
-
-
 }

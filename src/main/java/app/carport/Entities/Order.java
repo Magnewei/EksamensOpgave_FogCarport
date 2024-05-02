@@ -1,5 +1,6 @@
 package app.carport.Entities;
 
+
 /**
  * Purpose:
  *
@@ -20,11 +21,12 @@ public class Order {
 
     public int getOrderId() {
         return orderId;
-    }
+
 
     public String getStatus() {
         return status;
     }
+
 
     public int getUserId() {
         return userId;
@@ -42,5 +44,9 @@ public class Order {
                 ", userId=" + userId +
                 ", carportId=" + carportId +
                 '}';
+
+    public Carport getCarport() {
+        return carport;
+
     }
 }

@@ -1,239 +1,269 @@
+/* Color scheme */
+:root {
+    --primary-color: #003d76;
+    --secondary-color: #fff;
+    --accent-color: #1362ab;
+    --accent-dark: rgb(0, 41, 80);
+    --accent-light: #0161b9;
+}
 
-body {
-    font-family: 'Press Start 2P', Arial, sans-serif;
-    color: #ffa31a;
+
+/* Resetting default browser styles */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-image: url('../images/BckB2.jpg');
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
+
+    color: var(--primary-color);
+}
+label {
+    display: block; /* Ensures each label appears on its own line */
+    font-weight: bold; /* Makes the label text bold */
+    color: var(--secondary-color); /* Sets the color of the label text */
+    margin: 5px;
+}
+
+/* Header styles */
+.header {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 20px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 36px;
+}
+
+/* Navigation styles */
+.navbar {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 10px 20px;
+    text-align: center;
+    position: relative; /* Set position to relative for absolute positioning */
+}
+.navbar::before {
+    content: ""; /* Add an empty content */
+    position: absolute;
+    top: 50%;
+    left: 10px; /* Adjust left position as needed */
+    transform: translateY(-50%);
+    width: 40px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
+    background-image: url('Media/FogLogo.png'); /* Specify the path to your image */
+    background-size: cover; /* Adjusts the size of the background image */
+
+}
+
+.navbar ul {
+    list-style-type: none;
+    text-align: right; /* Align list items to the right */
+
+}
+
+.navbar ul li {
+    display: inline;
+    margin-left: 20px; /* Add margin between list items */
+}
+
+.navbar ul li a {
+    margin-left: 0; /* Remove margin from the first list item */
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-size: 18px;
+}
+
+/* Main content styles */
+.main-content {
+    background-image: url('Media/Bck1.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border: 1px solid #ffa31a;
-    background-color: rgb(41, 41, 41);
-    padding: 20px;
-    border-radius: 10px;
-}
-h1, p, div, table {
-    border: 1px solid #ffa31a;
-    background-color: rgb(41, 41, 41);
-    padding: 5px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-}
-
-
-
-button {
-    width: 120px;
-    height: 50px;
-    font-size: 1.1rem;
-    background-color: #ffa31a;
-    color: white;
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    margin: 0 10px;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #734d15;
-}
-h1 {
-    font-size: 25px;
-    font-family: RomanC;
-    font-weight: bold;
-    color: #ffa31a;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    height: 100vh;
+
 }
 
-.topmenu {
+
+textarea {
+    padding: 10px;
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 5px;
+    resize: none;
+}
+
+/* Button styles */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    margin: 10px;
+}
+/* Button styles */
+.btn1 {
+    display: inline-block;
+    padding: 10px 20px;
+    width: 200px;
+    height: 80px;
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    font-size: 30px;
+    line-height: 60px;
+}
+
+.btn:hover {
+    background-color: #a1a39f
+}
+.btn1:hover {
+    background-color: var(--accent-dark);
+}
+
+/* Image gallery styles */
+.image-gallery {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 1200px; /* Limit the width of the image gallery */
+    margin: 0 auto; /* Center the image gallery */
+}
+
+.image-gallery img {
+    max-width: 200px; /* Limit the width of each image */
+    margin: 10px;
+}
+
+/* Contact form styles */
+form {
     margin-top: 20px;
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px; /* Limit the width of the contact form */
+    margin: 0 auto; /* Center the contact form */
 }
 
-.topmenu a {
-    color: #fff;
-    text-decoration: none;
+form label {
+    margin-bottom: 5px;
 }
 
-.content {
+form input,
+form textarea {
+    width: 100%;
+    max-width: 400px; /* Limit the width of text fields */
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* Testimonials styles */
+.testimonials {
+    margin-top: 20px;
+}
+
+/* Footer styles */
+.footer {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
     padding: 20px;
     text-align: center;
-    display: flex;
+}
+
+.index-page {
+    background-image: url('Media/Bck1.png');
+    background-size: 720px 480px;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex; /* Use flexbox layout */
+    flex-direction: column; /* Stack children vertically */
+    min-height: 100vh; /* Ensure the background covers the entire viewport */
+}
+.login-box {
+    background-color: var( --primary-color);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid var(--accent-color); /* Add a border */
+}
+.Bestilling-box {
+    background-color: var( --primary-color);
+    display: flex; /* Use flexbox layout */
     flex-direction: column;
     align-items: center;
-}
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid var(--accent-color); /* Add a border */
 
+}
 .dropdowns {
-    width: auto;
-    display: flex;
-    gap: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    flex-direction: row;
-}
-
-input[type="text"],
-input[type="password"] {
-    width: 200px;
-    height: 30px;
-}
-
-.dropdowns select {
-    flex-grow: 2;
-    font-size: 25px;
-    padding: 10px;
-}
-
-#order-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-#order-button button {
-    width: 120px;
-    height: 50px;
-    font-size: 1.1rem;
-    background-color: #ffa31a;
-    color: white;
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    margin: 0 10px;
-    transition: background-color 0.3s;
-}
-
-#order-button button:hover {
-    background-color: #734d15;
-}
-
-.horizontal-buttons {
-    list-style-type: none;
-    padding: 0;
-}
-
-.horizontal-buttons li {
-    display: inline-block;
-    margin-right: 10px;
-
-}
-
-.horizontal-buttons li:last-child {
-    margin-right: 0;
-}
-
-.horizontal-buttons button {
-    width: 120px;
-    height: 50px;
-    font-size: 1.1rem;
-    background-color: #ffa31a;
-    color: white;
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    margin: 0 10px;
-    transition: background-color 0.3s;
-}
-
-.horizontal-buttons button:hover {
-    background-color: #734d15;
-}
-
-.header-background {
-    background-size: cover;
-    background-position: center;
-    padding: 20px;
-
-    min-width: 100%;
-    max-height: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    border: 2px solid #ffa31a; /* Adding border */
-    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1); /* Adding shadow */
-    border-radius: 5px; /* Adding rounded corners */
-}
-
-.dropdowns {
-    width: 100%;
-    display: flex;
-    gap: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    flex-direction: row;
-    background-color: #ffa31a;
-    border-radius: 10px;
-    justify-content: center;
+    display: flex; /* Use flexbox layout */
+    flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin: 10px; /* Adjust spacing between dropdowns and textarea */
+}
+.dropdowns select {
+    width: 300px; /* Adjust the width of the dropdowns as needed */
+    padding: 10px;
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 5px;
+    background-color: white; /* Set background color */
+    font-size: 16px; /* Set font size */
+    color: var(--primary-color); /* Set text color */
+    appearance: none; /* Remove default dropdown arrow */
+    outline: none; /* Remove outline */
+    cursor: pointer; /* Show pointer cursor */
 }
 
-.left-ad,
-.right-ad {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1000;
+/* Style the options within the dropdown */
+.dropdowns select option {
+    background-color: white; /* Set background color */
+    color: var(--primary-color); /* Set text color */
+}
+.infoform {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
 }
 
-.left-ad {
-    left: 1px;
-}
-
-.right-ad {
-    right: 1px;
-}
-
-.left-ad img,
-.right-ad img {
-    width: 160px;
-    height: auto;
+.infoform input,
+.infoform textarea {
+    width: 300px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background-color: white;
+    font-size: 16px;
+    color: var(--primary-color);
 }
 
-footer {
-    background-color: #1b1b1b;
-    padding: 20px 0;
-    width: 100%;
-    bottom: 0;
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #ffa31a; /* Adding border */
-    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1); /* Adding shadow */
-    border-radius: 5px; /* Adding rounded corners */
+.infoform input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
 }
 
-.footer-content {
-    text-align: center;
-}
-
-
-@media only screen and (max-width: 800px) {
-    .dropdowns {
-        flex-direction: column;
-    }
+.infoform textarea {
+    width: 300px;
+    height: 100px;
+    resize: none;
 }
