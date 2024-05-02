@@ -29,7 +29,6 @@ public class ShopController {
     }
 
     public static void showOrder(Context ctx, Carport carport) {
-
         // TODO: Sørg for at størrelsesforhold er passende til HTML-siden.
         // Tag potentielt højde for skærmstørrelse samt skaler bredde og højde til passende mål.
         int height = carport.getHeight();
