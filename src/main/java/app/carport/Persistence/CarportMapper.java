@@ -17,9 +17,4 @@ public class CarportMapper {
         return false;
     }
 
-    public Carport getCarportByUser(User user, ConnectionPool connectionPool) {
-        int carportID = user.getOrder().getOrderID();
-
-        return null;
-    }
 }
