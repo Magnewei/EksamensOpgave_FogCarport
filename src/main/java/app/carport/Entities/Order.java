@@ -21,6 +21,7 @@ public class Order {
 
     public int getOrderId() {
         return orderId;
+    }
 
 
     public String getStatus() {
@@ -44,9 +45,5 @@ public class Order {
                 ", userId=" + userId +
                 ", carportId=" + carportId +
                 '}';
-
-    public Carport getCarport() {
-        return carport;
-
     }
 }
