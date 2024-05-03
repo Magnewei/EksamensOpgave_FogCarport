@@ -37,7 +37,7 @@
         <label for="agree">Jeg accepterer betingelserne</label>
         <input type="checkbox" id="agree" name="agree" required>
     </div>
-        <a href="bestilling3.html" class="btn">Bestil</a>
+        <button type="submit" formaction="/Order">Bestil</button>
     </div>
 </div>
 
@@ -45,5 +45,9 @@
     <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
 </div>
 </form>
+
+<div>
+    <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+</div>
 </body>
 </html>
