@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../public/css/styles.css">
 </head>
 <body>
-
+<form method="post">
 <div class="navbar">
     <a href="index.html" class="logo-link"></a>
     <ul>
@@ -21,37 +21,44 @@
         <div class="dropdowns">
 
             <label for="dropdown1">Bredde</label>
-        <select id="dropdown1" name="Bredde">
+        <select id="Bredde" name="Breddevalue">
 
-            <option value="option1">Girth 3</option>
-            <option value="option2">14m</option>
+            <option th:each="width: ${WidthList}"
+                    th:value="${width}"
+                    th:text="${width}">
+            </option>
 
         </select>
             <label for="dropdown2">Længde</label>
-        <select id="dropdown2" name="Længde">
+        <select id="Længde" name="Længdevalue">
 
-            <option value="option1">4cm Prime</option>
-            <option value="option2">3M hård planke</option>
+            <option th:each="length: ${LengthList}"
+                    th:value="${length}"
+                    th:text="${length}">
+            </option>
 
         </select>
 
             <label for="dropdown3">Materiale</label>
-        <select id="dropdown3" name="Materiale">
+        <select id="Materiale" name="Materialevalue">
 
-            <option value="option1">Bedrock</option>
-            <option value="option2">Diamond block</option>
+            <option th:each="name: ${NameList}"
+                    th:value="${name}"
+                    th:text="${name}">
+            </option>
 
         </select>
         </div>
         <label for="message">Extra information</label>
     <textarea id="message" name="message" required></textarea>
-        <a href="bestilling2.html" class="btn">Fortsæt</a>
-</div>
+        <button type="submit" formaction="/Continue">Fortsæt</button>
+    </div>
 </div>
 
 <div class="footer">
     <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
 </div>
 
+</form>
 </body>
 </html>
