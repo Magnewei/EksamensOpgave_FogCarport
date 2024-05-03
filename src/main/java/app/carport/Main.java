@@ -21,7 +21,6 @@ public class Main {
         }).start(7071);
 
         // Routing
-
         app.get("/", ctx -> ctx.render("index.html"));
         AdminPanelController.addRoutes(app, connectionPool);
         LoginController.addRoutes(app, connectionPool);
