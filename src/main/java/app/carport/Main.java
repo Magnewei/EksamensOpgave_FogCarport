@@ -21,10 +21,10 @@ public class Main {
         }).start(7071);
 
         // Routing
-        app.get("/", ctx -> ctx.render("index.html"));
+        app.get("/", ctx -> ctx.render("login.html"));
         AdminPanelController.addRoutes(app, connectionPool);
         LoginController.addRoutes(app, connectionPool);
         HeaderController.addRoutes(app, connectionPool);
-        ShopController.addRoutes(app, connectionPool);
+        UserController.addRoutes(app, connectionPool);
     }
 }
