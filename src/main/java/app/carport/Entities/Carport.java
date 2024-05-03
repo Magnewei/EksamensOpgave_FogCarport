@@ -12,7 +12,7 @@ public class Carport {
     private double width;
     private  double height;
     private  int price;
-    private  Boolean hasShed;
+    private Boolean hasShed;
 
     public Carport(Double width, Double height, Boolean hasShed){
      this.width=width;
@@ -34,6 +34,10 @@ public class Carport {
 
     public double getHeight() {
         return height;
+    }
+
+    public boolean hasShed(){
+        return hasShed;
     }
 
     public int getPrice() {

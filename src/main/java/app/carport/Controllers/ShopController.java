@@ -23,9 +23,19 @@
 
         public static void orderButtonTwo(ConnectionPool connectionPool, Context ctx) {
             ctx.render("bestilling2.html");
-            String length = ctx.formParam("Længdevalue");
-            String width = ctx.formParam("Breddevalue");
-            String name = ctx.formParam("Materialevalue");
+            Double length = Double.valueOf(ctx.formParam("Længdevalue"));
+            Double width = Double.valueOf(ctx.formParam("Breddevalue"));
+            boolean hasShed = Boolean.valueOf(ctx.formParam("hasShed"));
+
+            try{
+                Carport carport = new Carport(length,width,hasShed);
+                ctx.sessionAttribute("hasShed",hasShed);
+                ctx.sessionAttribute("Carport",carport);
+            } catch(Error e){
+                ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
+
+            }
+
 
         }
 
@@ -42,7 +52,6 @@
                 ctx.attribute("number",streetnumber);
                 ctx.attribute("phonenumber",phonenumber);
                 ctx.attribute("email",email);
-            System.out.println(streetname);
 
             if (!name.matches("[a-zA-Z]+")) {
                     ctx.attribute("message", "Name must only contain letters");
@@ -65,12 +74,12 @@
 
         public static void orderCarport(ConnectionPool connectionPool, Context ctx) {
             try{
-                double length = Double.valueOf(ctx.formParam("length"));
-                double width = Double.valueOf(ctx.formParam("width"));
+                System.out.println("hej");
+                double length = Double.valueOf(ctx.formParam("carportlength"));
+                double width = Double.valueOf(ctx.formParam("carportwidth"));
                 boolean hasShed = Boolean.valueOf(ctx.formParam("hasShed"));
                 Carport Carport = new Carport(length,width,hasShed);
                 ctx.sessionAttribute("carportlength",length);
-                System.out.println(length);
                 ctx.sessionAttribute("carportwidth",width);
                 ctx.sessionAttribute("hasShed",hasShed);
                 ctx.sessionAttribute("Carport",Carport);
