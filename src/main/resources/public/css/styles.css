@@ -7,8 +7,6 @@
     --accent-light: #0161b9;
 }
 
-
-/* Resetting default browser styles */
 * {
     margin: 0;
     padding: 0;
@@ -19,8 +17,8 @@
 body {
     font-family: Arial, sans-serif;
 
-    color: var(--primary-color);
-}
+
+    color: var(--secondary-color);
 label {
     display: block; /* Ensures each label appears on its own line */
     font-weight: bold; /* Makes the label text bold */
@@ -48,8 +46,8 @@ label {
     text-align: center;
     position: relative; /* Set position to relative for absolute positioning */
 }
-.navbar::before {
-    content: ""; /* Add an empty content */
+
+.navbar a.logo-link {
     position: absolute;
     top: 50%;
     left: 10px; /* Adjust left position as needed */
@@ -58,7 +56,7 @@ label {
     height: 40px; /* Adjust height as needed */
     background-image: url('Media/FogLogo.png'); /* Specify the path to your image */
     background-size: cover; /* Adjusts the size of the background image */
-
+    display: block; /* Make the anchor element a block-level element */
 }
 
 .navbar ul {
@@ -86,13 +84,10 @@ label {
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     height: 100vh;
-
 }
-
 
 textarea {
     padding: 10px;
@@ -115,12 +110,15 @@ textarea {
     font-size: 16px;
     margin: 10px;
 }
+
 /* Button styles */
 .btn1 {
-    display: inline-block;
+
+    display: flex; /* Use flexbox layout */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
     padding: 10px 20px;
-    width: 200px;
-    height: 80px;
+    flex: 0 0 auto; /* Allow the button to grow and shrink as needed */
     background-color: var(--accent-color);
     color: var(--secondary-color);
     border: none;
@@ -130,29 +128,17 @@ textarea {
     text-decoration: none;
     transition: background-color 0.3s;
     font-size: 30px;
-    line-height: 60px;
+    line-height: 60px; /* Ensure text is vertically centered */
 }
 
 .btn:hover {
     background-color: #a1a39f
 }
+
 .btn1:hover {
     background-color: var(--accent-dark);
 }
 
-/* Image gallery styles */
-.image-gallery {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    max-width: 1200px; /* Limit the width of the image gallery */
-    margin: 0 auto; /* Center the image gallery */
-}
-
-.image-gallery img {
-    max-width: 200px; /* Limit the width of each image */
-    margin: 10px;
-}
 
 /* Contact form styles */
 form {
@@ -187,23 +173,64 @@ form textarea {
     color: var(--secondary-color);
     padding: 20px;
     text-align: center;
+    align-content: center;
 }
 
-.index-page {
-    background-image: url('Media/Bck1.png');
-    background-size: 720px 480px;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex; /* Use flexbox layout */
-    flex-direction: column; /* Stack children vertically */
-    min-height: 100vh; /* Ensure the background covers the entire viewport */
-}
 .login-box {
     background-color: var( --primary-color);
     padding: 30px;
     border-radius: 15px;
     border: 2px solid var(--accent-color); /* Add a border */
 }
+
+.background-image {
+    width: 100%; /* Set the width of the image to fill its container */
+    height: auto; /* Maintain aspect ratio */
+    position: absolute; /* Position the image absolutely */
+    top: 0;
+    left: 0;
+    z-index: -1; /* Move the image behind other content */
+}
+.Bestilling-box {
+    background-color: var(--primary-color);
+    display: flex; /* Use flexbox layout */
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 5px;
+    border: 2px solid var(--accent-color); /* Add a border */
+    margin-bottom: 20px; /* Add space between boxes */
+}
+    .Bestilling-box2 {
+        background-color: var( --accent-dark);
+        display: flex; /* Use flexbox layout */
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        border-radius: 5px;
+        border: 2px solid var(--primary-color); /* Add a border */
+        margin-bottom: 20px; /* Add space between boxes */
+}
+.Billede-box {
+    background-image: url('Media/boxb.jpg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border-radius: 4px;
+    border: 2px solid var(--secondary-color); /* Add a border */
+    margin-bottom: 20px; /* Add space between boxes */
+    width: calc(50% - 20px);
+    max-width: 700px;
+    text-align: center;
+}
+.Billede-box:not(:last-child) {
+    margin-right: 20px; /* Add space between boxes */
+}
+
 .Bestilling-box {
     background-color: var( --primary-color);
     display: flex; /* Use flexbox layout */
@@ -212,8 +239,8 @@ form textarea {
     padding: 30px;
     border-radius: 15px;
     border: 2px solid var(--accent-color); /* Add a border */
-
 }
+
 .dropdowns {
     display: flex; /* Use flexbox layout */
     flex-direction: column;
@@ -267,3 +294,4 @@ form textarea {
     height: 100px;
     resize: none;
 }
+
