@@ -7,8 +7,6 @@
     --accent-light: #0161b9;
 }
 
-
-
 * {
     margin: 0;
     padding: 0;
@@ -19,8 +17,8 @@
 body {
     font-family: Arial, sans-serif;
 
+
     color: var(--secondary-color);
-}
 label {
     display: block; /* Ensures each label appears on its own line */
     font-weight: bold; /* Makes the label text bold */
@@ -48,6 +46,7 @@ label {
     text-align: center;
     position: relative; /* Set position to relative for absolute positioning */
 }
+
 .navbar a.logo-link {
     position: absolute;
     top: 50%;
@@ -88,9 +87,7 @@ label {
     align-items: center;
     justify-content: space-around;
     height: 100vh;
-
 }
-
 
 textarea {
     padding: 10px;
@@ -113,8 +110,10 @@ textarea {
     font-size: 16px;
     margin: 10px;
 }
+
 /* Button styles */
 .btn1 {
+
     display: flex; /* Use flexbox layout */
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
@@ -132,13 +131,14 @@ textarea {
     line-height: 60px; /* Ensure text is vertically centered */
 }
 
-
 .btn:hover {
     background-color: #a1a39f
 }
+
 .btn1:hover {
     background-color: var(--accent-dark);
 }
+
 
 /* Contact form styles */
 form {
@@ -229,6 +229,16 @@ form textarea {
 }
 .Billede-box:not(:last-child) {
     margin-right: 20px; /* Add space between boxes */
+}
+
+.Bestilling-box {
+    background-color: var( --primary-color);
+    display: flex; /* Use flexbox layout */
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid var(--accent-color); /* Add a border */
 }
 
 .dropdowns {

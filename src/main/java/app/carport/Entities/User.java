@@ -4,17 +4,13 @@ public class User {
     private final int userID;
     private final String email;
     private final String password;
-    private final boolean role;
-    private final Address adress;
-    private final Order order;
+    private final String role;
 
-    public User(int userID, String email, String password, boolean role, Address adress, Order order) {
+    public User(int userID, String email, String password, String role) {
         this.userID = userID;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.adress = adress;
-        this.order = order;
     }
 
     public int getUserID() {
@@ -29,15 +25,18 @@ public class User {
         return password;
     }
 
-    public boolean isRole() {
+    public String role() {
         return role;
     }
 
-    public Address getAdress() {
-        return adress;
-    }
 
-    public Order getOrder() {
-        return order;
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userID +
+                ", userName='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }

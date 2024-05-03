@@ -1,5 +1,11 @@
 package app.carport.Entities;
 
+/**
+ * Purpose:
+ *
+ * @Author: Anton Friis Stengaard
+ */
+
 public class Carport {
     private final int carportID;
     private final String material;
