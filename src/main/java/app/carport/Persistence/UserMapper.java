@@ -2,6 +2,7 @@ package app.carport.Persistence;
 
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,8 +25,7 @@ public class UserMapper {
             if (rs.next()) {
                 int id = rs.getInt("userID");
                 String role = rs.getString("role");
-                int balance = rs.getInt("balance");
-                return new User(id, email, password, role, balance);
+                return new User(id, email, password, role);
             } else {
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
@@ -85,61 +85,6 @@ public class UserMapper {
         }
     }
 
-
-    public static boolean checkIfUserExistsByName(String email, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
-        ) {
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                return count > 0;
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException("Kan ikke finde bruger ud fra navn.", e.getMessage());
-        }
-        return false;
-    }
-
-    public static void addMoney(int userId, int amount, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "UPDATE users SET balance = balance + ? WHERE users.\"userID\" = ?";
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql);
-        ) {
-            ps.setInt(1, amount);
-            ps.setInt(2, userId);
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
-                throw new DatabaseException("Fejl ved tilføjelse af penge");
-            }
-        } catch (SQLException | DatabaseException e) {
-            throw new DatabaseException("Fejl ved tilføjelse af penge");
-        }
-    }
-
-    public static void removeMoney(User user, int amount, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "UPDATE users SET balance = balance - ? WHERE users.\"userID\" = ?";
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql);
-        ) {
-            ps.setInt(1, amount);
-            ps.setInt(2, user.getUserID());
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
-                throw new DatabaseException("Kan ikke slette penge fra databasen.");
-            }
-        } catch (SQLException | DatabaseException e) {
-            throw new DatabaseException("Kan ikke slette penge fra databasen.", e.getMessage());
-        }
-    }
-
     public static List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
@@ -154,14 +99,14 @@ public class UserMapper {
                 String email = rs.getString("email");
                 String password = rs.getString("password");
                 String role = rs.getString("role");
-                int balance = rs.getInt("balance");
 
-                User user = new User(id, email, password, role, balance);
+                User user = new User(id, email, password, role);
                 users.add(user);
             }
         } catch (SQLException e) {
             throw new DatabaseException("Kan ikke hente alle brugerne fra databasen.", e.getMessage());
+
         }
-        return users;
+        return null;
     }
 }
