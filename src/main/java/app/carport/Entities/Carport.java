@@ -16,6 +16,8 @@ public class Carport {
 
     public Carport(Double width, Double height, Boolean hasShed){
      this.width=width;
+     this.height=height;
+     this.hasShed=hasShed;
     }
 
     public int getCarportID() {
@@ -26,11 +28,11 @@ public class Carport {
         return material;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
