@@ -35,8 +35,16 @@
                 String streetname = ctx.formParam("streetname");
                 String streetnumber = ctx.formParam("streetnumber");
                 String phonenumber = ctx.formParam("phonenumber");
+                String email = ctx.formParam("mail");
+            ctx.attribute("name",name);
+                ctx.attribute("lastname",lastname);
+                ctx.attribute("streetname",streetname);
+                ctx.attribute("number",streetnumber);
+                ctx.attribute("phonenumber",phonenumber);
+                ctx.attribute("email",email);
+            System.out.println(streetname);
 
-                if (!name.matches("[a-zA-Z]+")) {
+            if (!name.matches("[a-zA-Z]+")) {
                     ctx.attribute("message", "Name must only contain letters");
                 } else if (!lastname.matches("[a-zA-Z]+")) {
                     ctx.attribute("message", "Last name must only contain letters");
@@ -44,8 +52,6 @@
                     ctx.attribute("message", "First and last cant be the same name");
                 } else if (!streetname.matches("[a-zA-Z ]+")) {
                     ctx.attribute("message", "Street name must only contain letters");
-                } else if (!streetnumber.matches("\\d+")) {
-                    ctx.attribute("message", "Street number must only contain digits.");
                 } else if (!phonenumber.matches("\\d+")) {
                     ctx.attribute("message", "Phone number must only contain digits.");
                 } else {
@@ -60,9 +66,6 @@
 
         public static void orderCarport(ConnectionPool connectionPool, Context ctx) {
 
-            // TODO: Byg carport object med ThymeLeaf
-            Carport carport = null;
-            drawCarport(carport, ctx);
         }
 
         private static void drawCarport(Carport carport, Context ctx) {
@@ -84,7 +87,7 @@
             try {
                 ctx.attribute("LengthList", MaterialMapper.getAllLength(connectionPool));
                 ctx.attribute("WidthList", MaterialMapper.getAllWidth(connectionPool));
-                ctx.attribute("NameList", MaterialMapper.getAllName(connectionPool));
+                //ctx.attribute("NameList", MaterialMapper.getAllName(connectionPool));
                 ctx.render("bestilling1.html");
             } catch (DatabaseException e) {
                 ctx.attribute("message", e.getCause());

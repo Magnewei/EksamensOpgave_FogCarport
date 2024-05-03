@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Website - Home</title>
-    <link rel="stylesheet" href="../public/css/styles.css">
+    <link rel="stylesheet" href="../public/css/bestilling1.css" th:href="@{/css/bestilling1.css}">
+
 </head>
 <body>
 <form method="post">
@@ -20,7 +21,7 @@
     <div class="Bestilling-box">
         <div class="dropdowns">
 
-            <label for="dropdown1">Bredde</label>
+            <label>Bredde</label>
         <select id="Bredde" name="Breddevalue">
 
             <option th:each="width: ${WidthList}"
@@ -29,7 +30,7 @@
             </option>
 
         </select>
-            <label for="dropdown2">Længde</label>
+            <label>Længde</label>
         <select id="Længde" name="Længdevalue">
 
             <option th:each="length: ${LengthList}"
@@ -39,18 +40,16 @@
 
         </select>
 
-            <label for="dropdown3">Materiale</label>
-        <select id="Materiale" name="Materialevalue">
-
-            <option th:each="name: ${NameList}"
-                    th:value="${name}"
-                    th:text="${name}">
-            </option>
+            <label>Skur til</label>
+            <select class="form-control" th:field="*{activated}">
+                <option th:value="0" >Nej</option>
+                <option th:value="1" >Ja</option>
+            </select>
 
         </select>
         </div>
         <label for="message">Extra information</label>
-    <textarea id="message" name="message" required></textarea>
+    <textarea id="message" name="message" ></textarea>
         <button type="submit" formaction="/Continue">Fortsæt</button>
     </div>
 </div>

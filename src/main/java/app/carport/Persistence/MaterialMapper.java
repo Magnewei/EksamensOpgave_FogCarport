@@ -12,13 +12,13 @@ import java.util.List;
 
 public class MaterialMapper {
 
-    public static List<String> getAllLength(ConnectionPool connectionPool) throws DatabaseException {
-        List<String> LengthList = new ArrayList<>();
-        String sql = "SELECT DISTINCT length FROM material;";
+    public static List<Double> getAllLength(ConnectionPool connectionPool) throws DatabaseException {
+        List<Double> LengthList = new ArrayList<>();
+        String sql = "SELECT DISTINCT length FROM definedcarports;";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String length = rs.getString("Length");
+                Double length = rs.getDouble("Length");
                 LengthList.add(length);
             }
         } catch (SQLException e) {
@@ -28,13 +28,13 @@ public class MaterialMapper {
     }
 
 
-    public static List<String> getAllWidth(ConnectionPool connectionPool) throws DatabaseException {
-        List<String> WidthList = new ArrayList<>();
-        String sql = "SELECT DISTINCT width FROM material;";
+    public static List<Double> getAllWidth(ConnectionPool connectionPool) throws DatabaseException {
+        List<Double> WidthList = new ArrayList<>();
+        String sql = "SELECT DISTINCT width FROM definedcarports;";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String Width = rs.getString("width");
+                Double Width = rs.getDouble("width");
                 WidthList.add(Width);
             }
         } catch (SQLException e) {
@@ -46,7 +46,7 @@ public class MaterialMapper {
 
 
 
-    public static List<String> getAllName(ConnectionPool connectionPool) throws DatabaseException {
+  /* public static List<String> getAllName(ConnectionPool connectionPool) throws DatabaseException {
         List<String> NameList = new ArrayList<>();
         String sql = "SELECT DISTINCT name FROM material;";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -61,5 +61,5 @@ public class MaterialMapper {
         return NameList;
     }
 
-
+*/
 }

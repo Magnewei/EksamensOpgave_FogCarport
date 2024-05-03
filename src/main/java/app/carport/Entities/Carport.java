@@ -7,18 +7,15 @@ package app.carport.Entities;
  */
 
 public class Carport {
-    private final int carportID;
-    private final String material;
-    private final int width;
-    private final int height;
-    private final int price;
+    private  int carportID;
+    private  String material;
+    private double width;
+    private  double height;
+    private  int price;
+    private  Boolean hasShed;
 
-    public Carport(int carportID, String material, int width, int height, int price) {
-        this.carportID = carportID;
-        this.material = material;
-        this.width = width;
-        this.height = height;
-        this.price = price;
+    public Carport(Double width, Double height, Boolean hasShed){
+     this.width=width;
     }
 
     public int getCarportID() {
