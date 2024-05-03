@@ -1,0 +1,155 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+'Main
+Main <-- config.ThymeleafConfig
+Main <-- persistence.ConnectionPool
+Main <-- controllers.UserController
+Main <-- controllers.CupcakeController
+Main <-- controllers.AdminController
+Main <-- controllers.HeaderController
+
+
+'entities
+entities.Cupcake *-- entities.CupcakeTopping
+entities.Cupcake *-- entities.CupcakeBottom
+entities.Order *-- entities.OrderLine
+entities.OrderLine *-- entities.Cupcake
+entities.User *-- entities.Order
+
+'persistence
+persistence.UserMapper *-- persistence.ConnectionPool
+persistence.CupcakeMapper *-- persistence.ConnectionPool
+persistence.UserMapper <-- exceptions.DatabaseException
+
+'controllers
+controllers.CupcakeController *-- entities.Cupcake
+controllers.UserController *-- entities.User
+
+class Main {
+-String USERNAME
+-String PASSWORD
+-String DB
+-String URL
++main(String args[]): void}
+}
+
+package entities {
+class Cupcake{
+-CupcakeBottom bottom
+-CupcakeTopping topping
+-int price
+}
+
+class User{
+-String email
+-String password
+-String role
+-int balance
+}
+
+class CupcakeBottom {
+-String type
+-int price
+}
+class CupcakeTopping {
+-String type
+-int price
+}
+
+class OrderLine{
+-int price
+-Cupcake cupcake
+-int amount
+}
+
+class Order {
+-int price
+-List<OrderLine> orderLineList
+-boolean isPaidFor
+}
+
+}
+
+package exceptions {
+class DatabaseException {}
+}
+
+package persistence {
+class ConnectionPool {
++getInstance() : ConnectionPool
++getConnection() : Connection
++close() : void
+-createHikariConnectionPool() : getHikariConnection
+}
+
+class CupcakeMapper {
++getAllBottoms() : List<CupcakeBottom>
++getAllToppings() : List<CupcakeTopping>
++getBottomById(int id) : CupcakeBottom
++getBottomByName(String name) : CupcakeBottom
++getCupcakeById( int id ) : Cupcake
++getCupcakeByPartIds( int bottomID, int toppingID ) : Cupcake
++getToppingByName(String name) : CupcakeTopping
++getToppingById(int id) : CupcakeTopping
+}
+
+class UserMapper{
++login() : User
++createUser( String name, String password, String role ) : boolean
++deleteUser( int userID ) : void
++addMoney( int money ) : void
++removeMoney( User user, int money) : void
++checkIfUserExistsByName( String name ) : boolean
+}
+
+class OrderMapper {
++deleteOrderById( int ordeerID ) : void
++deleteOrderlineById( int orderlineID ) : void
++getAllOrders() : List<Order>
++getLastOrder() : int
++getOrderlineByUserId( int userID ) : List<Orderline>
++getOrderlineById( orderlineID ) : List<Orderline>
++GetOrderlinesPlusUsername() : List<Orderline>
++insertNewOrder( Order order ) : void
++insertNewOrderline( Orderline orderline ) : void
++updateIsPaidFor(int orderID, boolean isPaidFor ) : void
+}
+}
+
+package config {
+class ThymeleafConfig{}
+}
+
+package controllers{
+class UserController{
++createUser() : void
++logout() : void
++login() : void
+}
+
+class CupcakeController{
++orderCupcakes() : void
++pay() : void
++removeOrder() : void
++seeCart() : void
+}
+
+class HeaderController {
++createAdmin() : void
++loadAdmin() : void
++loadCart() : void
++loadLogin() : void
++loadShop() : void
++loadUser() : void
+}
+
+class AdminController {
++addMoney() : void
++removeOrderline() : void
++removeUser() : void
+}
+}
+
+
+@enduml
