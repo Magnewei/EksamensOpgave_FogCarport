@@ -19,9 +19,7 @@ public class Main {
         Javalin app = Javalin.create(config -> {
             config.staticFiles.add("/public");
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
-        }).start(7071);
-
-        MailServer.sendMail("magstener@gmail.com", "Magnus", "3000");
+        }).start(7072);
 
         // Routing
         app.get("/", ctx -> ctx.render("index.html"));
