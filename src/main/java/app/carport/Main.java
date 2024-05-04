@@ -28,6 +28,6 @@ public class Main {
         AdminPanelController.addRoutes(app, connectionPool);
         LoginController.addRoutes(app, connectionPool);
         HeaderController.addRoutes(app, connectionPool);
-        ShopController.addRoutes(app, connectionPool);
+        CarportShopController.addRoutes(app, connectionPool);
     }
 }
