@@ -4,11 +4,10 @@
     import app.carport.Exceptions.DatabaseException;
     import app.carport.Persistence.ConnectionPool;
     import app.carport.Persistence.MaterialMapper;
-    import app.carport.SVG.CarportSVG;
     import io.javalin.Javalin;
     import io.javalin.http.Context;
 
-    public class ShopController {
+    public class CarportShopController {
         public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
             app.post("order", ctx -> orderCarport(connectionPool, ctx));
             app.post("CustomizeCarport", ctx -> orderButtonOne(connectionPool, ctx));
