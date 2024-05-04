@@ -11,13 +11,13 @@ import com.sendgrid.helpers.mail.objects.Personalization;
 import java.io.IOException;
 
 public class MailServer {
-    private final static String API_KEY = System.getenv("SENDGRID_API_KEY");
-
     public static boolean sendMail(String to, String name, String zip) {
+        String API_KEY = System.getenv("SENDGRID_API_KEY");
         // Used for return statement;
         int responseCode = 0;
 
         // Get api key
+        String API_KEY = System.getenv("SENDGRID_API_KEY");
         SendGrid sg = new SendGrid(API_KEY);
 
         // Email that we're sending our company mail from:
