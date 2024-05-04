@@ -1,0 +1,130 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+'entities
+Entities.User *-- Entities.Address
+Entities.Order *-- Entities.Carport
+Entities.User o--o Entities.Order
+
+
+'persistence
+Persistence.UserMapper *-- Persistence.ConnectionPool
+Persistence.CarportMapper *-- Persistence.ConnectionPool
+Persistence.OrderMapper *-- Persistence.ConnectionPool
+Persistence.AdminMapper *-- Persistence.ConnectionPool
+Controllers *-- Persistence.ConnectionPool
+Entities o--o Controllers
+Persistence o--o Entities
+
+'Main connections
+Main <-- Controllers.LoginController
+Main <-- Controllers.HeaderController
+Main <-- Controllers.CarportShopController
+Main <-- Controllers.UserController
+Main <-- Controllers.AdminPanelController
+
+class Main {
++main(String args[]): void
+}
+
+package Entities {
+class Carport {
+-double width
+-double length
+-String material
+-boolean hasShed
+}
+
+class User {
+-String email
+-String password
+-boolean isAdmin
+-Address address
+-Order order
+}
+
+class Address {
+-int addressId
+-int postalCode
+-String cityName
+-String streetName
+}
+
+class Order {
+-int orderId
+-String status
+-int userId
+-int carportId
+}
+}
+
+package Persistence {
+class ConnectionPool {
++getInstance() : ConnectionPool
++getConnection() : Connection
++close() : void
+-createHikariConnectionPool() : getHikariConnection
+}
+
+class CarportMapper {
++getCarportByOrder() : Carport
++getCarportByUser() : Carport
++insertCarport() : void
+}
+
+class UserMapper {
++login( String email, String password ) : User
++createUser( String name, String password, String role ) : void
++deleteUser( int userID ) : void
++getAllUsers() : List<User>
+}
+
+class OrderMapper {
++getAllOrders() : List<Order>
++getOrderByUser() : Order
++deleteOrderById( int orderID ) : void
++getLastOrderID() : int
++updateStatus( int orderID, String status ) : void
+}
+
+class AdminMapper {
++editMaterials( Object... changedMaterials) : boolean
++addMaterial( Material material ) : boolean
+}
+
+class MaterialMapper {
++getAllLength() : List<Double>
++getAllWidth() : List<Double>
+}
+}
+
+package Controllers {
+class UserController {
++registerUser() : void
++login() : void
++logout() : void
++userStatus() : void
+}
+
+class CarportShopController {
++orderButtonOne() : void
++orderButtonTwo() : void
++orderButtonThree() : void
++orderCarport() : void
+}
+
+class HeaderController {
++gotoShop() : void
++gotoCreateUser() : void
++gotoOrder() : void
+}
+
+class AdminPanelController {
++editMaterials() : void
++addMaterial() : void
+
+}
+}
+
+
+@enduml

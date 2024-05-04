@@ -1,7 +1,6 @@
 package app.carport;
 
 import app.carport.Controllers.*;
-import app.carport.MailServer.MailServer;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;
@@ -19,13 +18,13 @@ public class Main {
         Javalin app = Javalin.create(config -> {
             config.staticFiles.add("/public");
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
-        }).start(7072);
+        }).start(7071);
 
         // Routing
         app.get("/", ctx -> ctx.render("index.html"));
         AdminPanelController.addRoutes(app, connectionPool);
         LoginController.addRoutes(app, connectionPool);
         HeaderController.addRoutes(app, connectionPool);
-        ShopController.addRoutes(app, connectionPool);
+        CarportShopController.addRoutes(app, connectionPool);
     }
 }
