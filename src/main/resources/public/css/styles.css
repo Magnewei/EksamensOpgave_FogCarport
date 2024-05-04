@@ -19,190 +19,201 @@ body {
 
 
     color: var(--secondary-color);
-label {
-    display: block; /* Ensures each label appears on its own line */
-    font-weight: bold; /* Makes the label text bold */
-    color: var(--secondary-color); /* Sets the color of the label text */
-    margin: 5px;
 }
+    label {
+        display: block; /* Ensures each label appears on its own line */
+        font-weight: bold; /* Makes the label text bold */
+        color: var(--secondary-color); /* Sets the color of the label text */
+        margin: 5px;
+    }
 
-/* Header styles */
-.header {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    padding: 20px;
-    text-align: center;
-}
+    /* Header styles */
 
-.header h1 {
-    font-size: 36px;
-}
+    .header {
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+        padding: 20px;
+        text-align: center;
+    }
 
-/* Navigation styles */
-.navbar {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    padding: 10px 20px;
-    text-align: center;
-    position: relative; /* Set position to relative for absolute positioning */
-}
+    .header h1 {
+        font-size: 36px;
+    }
 
-.navbar a.logo-link {
-    position: absolute;
-    top: 50%;
-    left: 10px; /* Adjust left position as needed */
-    transform: translateY(-50%);
-    width: 40px; /* Adjust width as needed */
-    height: 40px; /* Adjust height as needed */
-    background-image: url('Media/FogLogo.png'); /* Specify the path to your image */
-    background-size: cover; /* Adjusts the size of the background image */
-    display: block; /* Make the anchor element a block-level element */
-}
+    /* Navigation styles */
 
-.navbar ul {
-    list-style-type: none;
-    text-align: right; /* Align list items to the right */
+    .navbar {
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+        padding: 10px 20px;
+        text-align: center;
+        position: relative; /* Set position to relative for absolute positioning */
+    }
 
-}
+    .navbar a.logo-link {
+        position: absolute;
+        top: 50%;
+        left: 10px; /* Adjust left position as needed */
+        transform: translateY(-50%);
+        width: 40px; /* Adjust width as needed */
+        height: 40px; /* Adjust height as needed */
+        background-image: url('Media/FogLogo.png'); /* Specify the path to your image */
+        background-size: cover; /* Adjusts the size of the background image */
+        display: block; /* Make the anchor element a block-level element */
+    }
 
-.navbar ul li {
-    display: inline;
-    margin-left: 20px; /* Add margin between list items */
-}
+    .navbar ul {
+        list-style-type: none;
+        text-align: right; /* Align list items to the right */
 
-.navbar ul li a {
-    margin-left: 0; /* Remove margin from the first list item */
-    text-decoration: none;
-    color: var(--secondary-color);
-    font-size: 18px;
-}
+    }
 
-/* Main content styles */
-.main-content {
-    background-image: url('Media/Bck1.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    height: 100vh;
-}
+    .navbar ul li {
+        display: inline;
+        margin-left: 20px; /* Add margin between list items */
+    }
 
-textarea {
-    padding: 10px;
-    border: 1px solid #ccc; /* Add a border */
-    border-radius: 5px;
-    resize: none;
-}
+    .navbar ul li a {
+        margin-left: 0; /* Remove margin from the first list item */
+        text-decoration: none;
+        color: var(--secondary-color);
+        font-size: 18px;
+    }
 
-/* Button styles */
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s;
-    font-size: 16px;
-    margin: 10px;
-}
+    /* Main content styles */
 
-/* Button styles */
-.btn1 {
+    .main-content {
+        background-image: url('Media/Bck1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 100vh;
+    }
 
-    display: flex; /* Use flexbox layout */
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    padding: 10px 20px;
-    flex: 0 0 auto; /* Allow the button to grow and shrink as needed */
-    background-color: var(--accent-color);
-    color: var(--secondary-color);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s;
-    font-size: 30px;
-    line-height: 60px; /* Ensure text is vertically centered */
-}
+    textarea {
+        padding: 10px;
+        border: 1px solid #ccc; /* Add a border */
+        border-radius: 5px;
+        resize: none;
+    }
 
-.btn:hover {
-    background-color: #a1a39f
-}
+    /* Button styles */
 
-.btn1:hover {
-    background-color: var(--accent-dark);
-}
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        font-size: 16px;
+        margin: 10px;
+    }
+
+    /* Button styles */
+
+    .btn1 {
+
+        display: flex; /* Use flexbox layout */
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+        padding: 10px 20px;
+        flex: 0 0 auto; /* Allow the button to grow and shrink as needed */
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        font-size: 30px;
+        line-height: 60px; /* Ensure text is vertically centered */
+    }
+
+    .btn:hover {
+        background-color: #a1a39f
+    }
+
+    .btn1:hover {
+        background-color: var(--accent-dark);
+    }
 
 
-/* Contact form styles */
-form {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 600px; /* Limit the width of the contact form */
-    margin: 0 auto; /* Center the contact form */
-}
+    /* Contact form styles */
 
-form label {
-    margin-bottom: 5px;
-}
+    form {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 600px; /* Limit the width of the contact form */
+        margin: 0 auto; /* Center the contact form */
+    }
 
-form input,
-form textarea {
-    width: 100%;
-    max-width: 400px; /* Limit the width of text fields */
-    padding: 10px;
-    margin-bottom: 10px;
-}
+    form label {
+        margin-bottom: 5px;
+    }
 
-/* Testimonials styles */
-.testimonials {
-    margin-top: 20px;
-}
+    form input,
+    form textarea {
+        width: 100%;
+        max-width: 400px; /* Limit the width of text fields */
+        padding: 10px;
+        margin-bottom: 10px;
+    }
 
-/* Footer styles */
-.footer {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    padding: 20px;
-    text-align: center;
-    align-content: center;
-}
+    /* Testimonials styles */
 
-.login-box {
-    background-color: var( --primary-color);
-    padding: 30px;
-    border-radius: 15px;
-    border: 2px solid var(--accent-color); /* Add a border */
-}
+    .testimonials {
+        margin-top: 20px;
+    }
 
-.background-image {
-    width: 100%; /* Set the width of the image to fill its container */
-    height: auto; /* Maintain aspect ratio */
-    position: absolute; /* Position the image absolutely */
-    top: 0;
-    left: 0;
-    z-index: -1; /* Move the image behind other content */
-}
-.Bestilling-box {
-    background-color: var(--primary-color);
-    display: flex; /* Use flexbox layout */
-    flex-direction: column;
-    align-items: center;
-    padding: 30px;
-    border-radius: 5px;
-    border: 2px solid var(--accent-color); /* Add a border */
-    margin-bottom: 20px; /* Add space between boxes */
-}
+    /* Footer styles */
+
+    .footer {
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+        padding: 20px;
+        text-align: center;
+        align-content: center;
+    }
+
+    .login-box {
+        background-color: var(--primary-color);
+        padding: 30px;
+        border-radius: 15px;
+        border: 2px solid var(--accent-color); /* Add a border */
+    }
+
+    .background-image {
+        width: 100%; /* Set the width of the image to fill its container */
+        height: auto; /* Maintain aspect ratio */
+        position: absolute; /* Position the image absolutely */
+        top: 0;
+        left: 0;
+        z-index: -1; /* Move the image behind other content */
+    }
+
+    .Bestilling-box {
+        background-color: var(--primary-color);
+        display: flex; /* Use flexbox layout */
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        border-radius: 5px;
+        border: 2px solid var(--accent-color); /* Add a border */
+        margin-bottom: 20px; /* Add space between boxes */
+    }
+
     .Bestilling-box2 {
-        background-color: var( --accent-dark);
+        background-color: var(--accent-dark);
         display: flex; /* Use flexbox layout */
         flex-direction: column;
         align-items: center;
@@ -210,88 +221,94 @@ form textarea {
         border-radius: 5px;
         border: 2px solid var(--primary-color); /* Add a border */
         margin-bottom: 20px; /* Add space between boxes */
-}
-.Billede-box {
-    background-image: url('Media/boxb.jpg.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
-    border-radius: 4px;
-    border: 2px solid var(--secondary-color); /* Add a border */
-    margin-bottom: 20px; /* Add space between boxes */
-    width: calc(50% - 20px);
-    max-width: 700px;
-    text-align: center;
-}
-.Billede-box:not(:last-child) {
-    margin-right: 20px; /* Add space between boxes */
-}
+    }
 
-.Bestilling-box {
-    background-color: var( --primary-color);
-    display: flex; /* Use flexbox layout */
-    flex-direction: column;
-    align-items: center;
-    padding: 30px;
-    border-radius: 15px;
-    border: 2px solid var(--accent-color); /* Add a border */
-}
+    .Billede-box {
+        background-image: url('Media/Boxb.jpg.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        border-radius: 4px;
+        border: 2px solid var(--secondary-color); /* Add a border */
+        margin-bottom: 20px; /* Add space between boxes */
+        width: calc(50% - 20px);
+        max-width: 700px;
+        text-align: center;
+    }
 
-.dropdowns {
-    display: flex; /* Use flexbox layout */
-    flex-direction: column;
-    align-items: center;
-    margin: 10px; /* Adjust spacing between dropdowns and textarea */
-}
-.dropdowns select {
-    width: 300px; /* Adjust the width of the dropdowns as needed */
-    padding: 10px;
-    border: 1px solid #ccc; /* Add a border */
-    border-radius: 5px;
-    background-color: white; /* Set background color */
-    font-size: 16px; /* Set font size */
-    color: var(--primary-color); /* Set text color */
-    appearance: none; /* Remove default dropdown arrow */
-    outline: none; /* Remove outline */
-    cursor: pointer; /* Show pointer cursor */
-}
+    .Billede-box:not(:last-child) {
+        margin-right: 20px; /* Add space between boxes */
+    }
 
-/* Style the options within the dropdown */
-.dropdowns select option {
-    background-color: white; /* Set background color */
-    color: var(--primary-color); /* Set text color */
-}
-.infoform {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
+    .Bestilling-box {
+        background-color: var(--primary-color);
+        display: flex; /* Use flexbox layout */
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        border-radius: 15px;
+        border: 2px solid var(--accent-color); /* Add a border */
+    }
 
-.infoform input,
-.infoform textarea {
-    width: 300px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: white;
-    font-size: 16px;
-    color: var(--primary-color);
-}
+    .dropdowns {
+        display: flex; /* Use flexbox layout */
+        flex-direction: column;
+        align-items: center;
+        margin: 10px; /* Adjust spacing between dropdowns and textarea */
+    }
 
-.infoform input[type="checkbox"] {
-    width: 25px;
-    height: 25px;
-    margin-right: 5px;
-}
+    .dropdowns select {
+        width: 300px; /* Adjust the width of the dropdowns as needed */
+        padding: 10px;
+        border: 1px solid #ccc; /* Add a border */
+        border-radius: 5px;
+        background-color: white; /* Set background color */
+        font-size: 16px; /* Set font size */
+        color: var(--primary-color); /* Set text color */
+        appearance: none; /* Remove default dropdown arrow */
+        outline: none; /* Remove outline */
+        cursor: pointer; /* Show pointer cursor */
+    }
 
-.infoform textarea {
-    width: 300px;
-    height: 100px;
-    resize: none;
-}
+    /* Style the options within the dropdown */
+
+    .dropdowns select option {
+        background-color: white; /* Set background color */
+        color: var(--primary-color); /* Set text color */
+    }
+
+    .infoform {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .infoform input,
+    .infoform textarea {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: white;
+        font-size: 16px;
+        color: var(--primary-color);
+    }
+
+    .infoform input[type="checkbox"] {
+        width: 25px;
+        height: 25px;
+        margin-right: 5px;
+    }
+
+    .infoform textarea {
+        width: 300px;
+        height: 100px;
+        resize: none;
+    }
+
 

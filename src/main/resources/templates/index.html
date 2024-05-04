@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Website - Home</title>
-    <link rel="stylesheet" href="../public/css/styles.css">
+    <link rel="stylesheet" href="../public/css/index.css" th:href="@{/css/index.css}">
+
 </head>
 <body>
 
+<form method="post">
 <div class="navbar">
 
     <a href="index.html" class="logo-link"></a>
@@ -21,18 +23,18 @@
 <div class="main-content">
         <div class="Billede-box">
         <label> Bestil carpot Idag </label>
-    <a href="bestilling1.html" class="btn1">Customize</a>
+                <button type="submit" formaction="/CustomizeCarport">Customize</button>
         </div>
 
     <div class="Billede-box">
         <label> Bestil carpot Idag </label>
-        <a href="bestilling1.html" class="btn1">Customize</a>
+        <button type="submit" formaction="/CustomizeCarport">Customize</button>
     </div>
 </div>
 <div class="footer">
     <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
 </div>
-
+</form>
 </body>
 </html>
 

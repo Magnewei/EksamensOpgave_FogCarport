@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Website - Home</title>
-    <link rel="stylesheet" href="../public/css/styles.css">
+    <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}">
 </head>
 <body>
-
+<form method="post" action="order">
 <div class="navbar">
     <a href="index.html" class="logo-link"></a>
     <ul>
@@ -20,20 +20,21 @@
 <div class="main-content">
     <div class="Bestilling-box2">
         <div class="Bestilling-box">
-        <label> Du har Bestilt: </label>
-        <p> TEMP X </p>
-        <p> TEMP X </p>
+        <p> Du har Bestilt en Carport med følgende mål </p>
         </div>
-        <div class="Bestilling-box">
-        <p> Model: </p>
-        <div class="Billede-box">
-        <p> // PLACEHOLDER PLANTEGNING BILLEDE HER //</p>
-        </div>
-        </div>
+        <p>
+         Højde: <span type="text" name="Carportheight" required th:text="${session.Carport.height}">
+        </p>
+        <p>
+            Bredde: <span type="text" name="Carportwidth" required th:text="${session.Carport.width}">
+        </p>
+
+        <p>
+            Skur til : <span type="text" name="Carportwidth" required th:text="${session.Carport.hasShed}">
+        </p>
     </div>
     </div>
-
-
+</form>
 
 <div class="footer">
     <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
