@@ -21,8 +21,6 @@ public class Main {
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
         }).start(7071);
 
-        MailServer.sendMail("magstener@gmail.com", "Magnus", "3000");
-
         // Routing
         app.get("/", ctx -> ctx.render("index.html"));
         AdminPanelController.addRoutes(app, connectionPool);
