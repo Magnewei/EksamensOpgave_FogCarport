@@ -10,7 +10,6 @@ public class HeaderController {
     }
 
     private static void goToAdmin(ConnectionPool connectionPool, Context ctx) {
-
         try {
             AdminPanelController.renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException e) {
@@ -30,6 +29,4 @@ public class HeaderController {
 
     public static void gotoOrder(ConnectionPool connectionPool) {
     }
-
-
 }

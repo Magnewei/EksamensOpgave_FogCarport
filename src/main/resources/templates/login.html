@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Website - Home</title>
-    <link rel="stylesheet" href="../public/css/styles.css">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
 
@@ -20,12 +20,15 @@
 
 <div class="main-content">
     <div class="login-box">
-    <form class="login-form" action="login.php" method="post">
+    <form class="login-form"  method="post">
         <input type="text" name="username" placeholder="Email" required>
         <br>
         <input type="password" name="password" placeholder="Password" required>
         <br>
-        <a href="ordrer.html" class="btn">Login</a>
+
+        <button type="submit" formaction="/login" class="btn">Login</button>
+        <button type="submit" formaction="/createUser" class="btn">Opret bruger</button>
+
     </form>
     </div>
 </div>
