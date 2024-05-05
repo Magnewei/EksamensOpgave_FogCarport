@@ -1,5 +1,6 @@
 package app.carport.Persistence;
 
+import app.carport.Entities.Material;
 import app.carport.Exceptions.DatabaseException;
 
 import javax.naming.Name;
@@ -41,6 +42,40 @@ public class MaterialMapper {
             throw new DatabaseException("Width fejl", e.getMessage());
         }
         return WidthList;
+    }
+
+    public static List<Material> getAllMaterials(ConnectionPool connectionPool) throws DatabaseException {
+        List<Material> materialList = new ArrayList<>();
+        String sql = "select * from material";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int materialId = rs.getInt("materialID");
+                String name = rs.getString("name");
+                double price = rs.getDouble("price");
+                double length = rs.getDouble("length");
+                String unit = rs.getString("unit");
+                int quantityInStock = rs.getInt("quantityInStock");
+                materialList.add(new Material(materialId, name, price, length, unit, quantityInStock));
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl ved returnering af materialeliste", e.getMessage());
+        }
+        return materialList;
+    }
+
+    public static void deleteMaterialById(ConnectionPool connectionPool, int materialID) throws DatabaseException {
+        String sql = "DELETE FROM material WHERE \"materialID\" = ?";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, materialID);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl ved sletning af materiale");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl ved sletning af en task", e.getMessage());
+        }
     }
 
 

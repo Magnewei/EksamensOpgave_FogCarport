@@ -9,14 +9,14 @@ package app.carport.Entities;
 public class Order {
     private int orderId;
     private String status;
-    private int userId;
-    private int carportId;
+    private User user;
+    private Carport carport;
 
-    public Order(int orderId, String status, int userId, int carportId) {
+    public Order(int orderId, String status, User user, Carport carport) {
         this.orderId = orderId;
         this.status = status;
-        this.userId = userId;
-        this.carportId = carportId;
+        this.user = user;
+        this.carport = carport;
     }
 
     public int getOrderId() {
@@ -29,12 +29,12 @@ public class Order {
     }
 
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public int getCarportId() {
-        return carportId;
+    public Carport getCarport() {
+        return carport;
     }
 
     @Override
@@ -42,8 +42,8 @@ public class Order {
         return "Order{" +
                 "orderId=" + orderId +
                 ", status='" + status + '\'' +
-                ", userId=" + userId +
-                ", carportId=" + carportId +
+                ", user=" + user +
+                ", carport=" + carport +
                 '}';
     }
 }
