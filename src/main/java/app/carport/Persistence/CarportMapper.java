@@ -24,7 +24,7 @@ public class CarportMapper {
             ps.setInt(1, carportId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                int carportID = rs.getInt("carportID");
+                int carportID = rs.getInt("carportID"); //
                 double length = rs.getDouble("length");
                 double width = rs.getDouble("width");
                 boolean hasShed = rs.getBoolean("hasShed");
