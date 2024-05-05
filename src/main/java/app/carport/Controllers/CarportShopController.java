@@ -26,16 +26,13 @@
             Double width = Double.valueOf(ctx.formParam("Breddevalue"));
             boolean hasShed = Boolean.valueOf(ctx.formParam("hasShed"));
 
-            try{
+            try {
                 Carport carport = new Carport(length,width,hasShed);
                 ctx.sessionAttribute("hasShed",hasShed);
                 ctx.sessionAttribute("Carport",carport);
             } catch(Error e){
                 ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
-
             }
-
-
         }
 
         public static void orderButtonThree(ConnectionPool connectionPool, Context ctx) {

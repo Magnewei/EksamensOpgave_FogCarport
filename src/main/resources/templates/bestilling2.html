@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<form method="post">
+
 <div class="navbar">
 
     <a href="index.html" class="logo-link"></a>
@@ -20,6 +20,7 @@
     </ul>
 </div>
 <div class="main-content">
+    <form method="post">
     <div class="Bestilling-box">
     <div class="infoform">
         <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
@@ -41,12 +42,12 @@
     </div>
         <button type="submit" formaction="/Order">Bestil</button>
     </div>
-
+    </form>
 </div>
 <div class="footer">
     <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
 </div>
-</form>
+
 
 </body>
 </html>
