@@ -9,17 +9,12 @@ import io.javalin.http.Context;
 
 import static app.carport.Persistence.UserMapper.createUser;
 
-//import static app.carport.Controllers.CarportController.reRenderCupcakeShop; TODO fix
 
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.get("createUser", ctx -> ctx.render("index.html"));
-        app.post("createUser", ctx -> createUser(ctx, false, connectionPool));
         app.post("login", ctx -> login(ctx, connectionPool));
         app.get("logout", ctx -> logout(ctx));
     }
-
-
 
     public static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) {
         String username = ctx.formParam("username");
@@ -40,9 +35,6 @@ public class UserController {
             ctx.render("index.html");
         }
     }
-
-
-
 
     public static void logout(Context ctx) {
         ctx.req().getSession().invalidate();

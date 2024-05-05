@@ -23,8 +23,8 @@ public class Main {
         // Routing
         app.get("/", ctx -> ctx.render("login.html"));
         AdminPanelController.addRoutes(app, connectionPool);
-        LoginController.addRoutes(app, connectionPool);
-        HeaderController.addRoutes(app, connectionPool);
         UserController.addRoutes(app, connectionPool);
+        HeaderController.addRoutes(app, connectionPool);
+        CarportShopController.addRoutes(app, connectionPool);
     }
 }
