@@ -85,6 +85,26 @@ public class UserMapper {
         }
     }
 
+
+    public static boolean checkIfUserExistsByName(String email, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Kan ikke finde bruger ud fra navn.", e.getMessage());
+        }
+        return false;
+    }
+
+
     public static List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
@@ -109,6 +129,7 @@ public class UserMapper {
         }
         return null;
     }
+
 
     public static User getUserByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM users WHERE \"userID\" = ?";

@@ -21,6 +21,7 @@ public class OrderMapper {
                 String status = rs.getString("status");
                 int userId = rs.getInt("userID");
                 int carportId = rs.getInt("carportID");
+
                 User user = UserMapper.getUserByUserId(userId,connectionPool);
                 Carport carport = CarportMapper.getCarportByCarportId(carportId,connectionPool);
                 orderList.add(new Order(orderId, status, user,carport));

@@ -4,12 +4,18 @@ import app.carport.Entities.Carport;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Purpose:
+ *
+ * @Author: Anton Friis Stengaard
+ */
 public class CarportMapper {
     public static Carport getCarportByCarportId(int carportId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM carport WHERE \"carportID\" = ?";
@@ -35,13 +41,4 @@ public class CarportMapper {
     public Carport getCarportByOrder(Order order, ConnectionPool connectionPool) {
         return null;
     }
-
-    public Carport getCarportById(int id, ConnectionPool connectionPool) {
-        return null;
-    }
-
-    public boolean insertCarport(Carport carport, ConnectionPool connectionPool) {
-        return false;
-    }
-
 }

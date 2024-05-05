@@ -12,10 +12,10 @@ public class Carport {
     private int carportID;
     private double length;
     private double width;
-    private Boolean hasShed;
+    private boolean hasShed;
     private List<Material> materialList;
 
-    public Carport(int carportID, Double length, Double width, Boolean hasShed, List<Material> materialList){
+    public Carport(int carportID, double length, double width, boolean hasShed, List<Material> materialList){
      this.carportID = carportID;
      this.length = length;
      this.width = width;
@@ -27,7 +27,9 @@ public class Carport {
         return carportID;
     }
 
-    public double getLength() {return length;}
+    public double getLength() {
+      return length;
+    }
 
     public double getWidth() {
         return width;
@@ -37,7 +39,9 @@ public class Carport {
         return hasShed;
     }
 
-    public List<Material> getMaterialList() {return materialList;}
+    public List<Material> getMaterialList() {
+      return materialList;
+      }
 
     public double getTotalPrice(){
         double totalPrice = 0;
