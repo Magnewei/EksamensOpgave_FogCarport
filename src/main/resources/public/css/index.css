@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url('Media/Boxb.jpg.png');
+    background-image: url('Media/Boxb.png');
     color: var(--secondary-color);
 }
 /* Color scheme */
@@ -221,7 +221,7 @@ form textarea {
 }
 
 .Billede-box {
-    background-image: url('Media/Boxb.jpg.png');
+    background-image: url('Media/Boxb.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
