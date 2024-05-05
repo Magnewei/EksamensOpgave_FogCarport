@@ -1,5 +1,6 @@
 package app.carport;
 
+
 import app.carport.Controllers.*;
 import app.carport.MailServer.MailServer;
 import io.javalin.Javalin;
@@ -26,7 +27,7 @@ public class Main {
         // Routing
         app.get("/", ctx -> ctx.render("index.html"));
         AdminPanelController.addRoutes(app, connectionPool);
-        LoginController.addRoutes(app, connectionPool);
+        UserController.addRoutes(app, connectionPool);
         HeaderController.addRoutes(app, connectionPool);
         CarportShopController.addRoutes(app, connectionPool);
     }

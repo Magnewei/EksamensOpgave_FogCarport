@@ -7,12 +7,12 @@ package app.carport.Entities;
  */
 
 public class Carport {
-    private  int carportID;
-    private  String material;
+    private int carportID;
+    private String material;
     private double width;
-    private  double height;
-    private  int price;
-    private Boolean hasShed;
+    private double height;
+    private int price;
+    private boolean hasShed;
 
     public Carport(Double width, Double height, Boolean hasShed){
      this.width=width;
