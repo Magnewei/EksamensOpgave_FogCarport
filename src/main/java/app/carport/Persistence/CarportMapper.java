@@ -29,7 +29,7 @@ public class CarportMapper {
                 double width = rs.getDouble("width");
                 boolean hasShed = rs.getBoolean("hasShed");
                 //TODO: Få liste af materialer der skal bruges til en carport med
-                return new Carport(carportID, length, width, hasShed,);
+                return new Carport(carportID, length, width, hasShed,new ArrayList<>());
 
             }
         } catch (SQLException e) {
