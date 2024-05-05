@@ -126,4 +126,8 @@ public class UserMapper {
         }
         return users;
     }
+
+    public static User getUserFromUserId(int userId) {
+
+    }
 }

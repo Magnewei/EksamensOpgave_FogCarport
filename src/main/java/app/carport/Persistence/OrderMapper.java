@@ -21,7 +21,9 @@ public class OrderMapper {
                 String status = rs.getString("status");
                 int userId = rs.getInt("userID");
                 int carportId = rs.getInt("carportID");
-                orderList.add(new Order(orderId, status, userId,carportId));
+                User user = UserMapper.getUserFromUserId(userId);
+                Carport carport = CarportMapper.getCarportFromCarportId(carportId,connectionPool);
+                orderList.add(new Order(orderId, status, user,carport));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Fejl!!!!", e.getMessage());

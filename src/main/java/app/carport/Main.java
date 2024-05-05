@@ -1,6 +1,6 @@
 package app.carport;
 
-import app.carport.Controllers.AdminController;
+import app.carport.Controllers.AdminPanelController;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;
@@ -22,7 +22,7 @@ public class Main {
 
         // Routing
         app.get("/", ctx -> ctx.render("index.html"));
-        AdminController.addRoutes(app, connectionPool);
+        AdminPanelController.addRoutes(app, connectionPool);
 
     }
 }
