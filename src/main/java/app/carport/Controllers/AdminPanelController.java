@@ -7,3 +7,4 @@ public class AdminPanelController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
     }
 }
+

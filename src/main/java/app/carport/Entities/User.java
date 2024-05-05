@@ -29,14 +29,4 @@ public class User {
         return role;
     }
 
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userID +
-                ", userName='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                '}';
-    }
 }
