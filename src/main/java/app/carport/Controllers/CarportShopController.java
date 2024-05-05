@@ -92,7 +92,7 @@
         private static void drawCarport(Carport carport, Context ctx) {
 
             // TODO: Integere forneden kræver
-            double height = carport.getHeight();
+            double length = carport.getLength();
             double width = carport.getWidth();
 
 

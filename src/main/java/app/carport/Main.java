@@ -24,7 +24,7 @@ public class Main {
         MailServer.sendMail("magstener@gmail.com", "Magnus", "3000");
 
         // Routing
-        app.get("/", ctx -> ctx.render("login.html"));
+        app.get("/", ctx -> ctx.render("index.html"));
         AdminPanelController.addRoutes(app, connectionPool);
         UserController.addRoutes(app, connectionPool);
         HeaderController.addRoutes(app, connectionPool);
