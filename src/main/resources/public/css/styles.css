@@ -139,7 +139,6 @@ textarea {
     background-color: var(--accent-dark);
 }
 
-
 /* Contact form styles */
 form {
     margin-top: 20px;
@@ -161,6 +160,7 @@ form textarea {
     padding: 10px;
     margin-bottom: 10px;
 }
+
 
 /* Testimonials styles */
 .testimonials {
