@@ -15,6 +15,12 @@ public class Carport {
     private boolean hasShed;
     private List<Material> materialList;
 
+    public Carport(double length, double width, boolean hasShed){
+        this.length = length;
+        this.width = width;
+        this.hasShed = hasShed;
+    }
+
     public Carport(int carportID, double length, double width, boolean hasShed, List<Material> materialList){
      this.carportID = carportID;
      this.length = length;
