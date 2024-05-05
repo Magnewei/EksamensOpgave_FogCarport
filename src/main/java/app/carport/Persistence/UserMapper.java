@@ -2,6 +2,7 @@ package app.carport.Persistence;
 
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -103,6 +104,7 @@ public class UserMapper {
         return false;
     }
 
+
     public static List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
@@ -123,11 +125,12 @@ public class UserMapper {
             }
         } catch (SQLException e) {
             throw new DatabaseException("Kan ikke hente alle brugerne fra databasen.", e.getMessage());
+
         }
-        return users;
+        return null;
     }
 
     public static User getUserFromUserId(int userId) {
-
+      return null;
     }
 }

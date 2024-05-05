@@ -33,14 +33,4 @@ public class Order {
     public Carport getCarport() {
         return carport;
     }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "orderId=" + orderId +
-                ", status='" + status + '\'' +
-                ", user=" + user +
-                ", carport=" + carport +
-                '}';
-    }
 }

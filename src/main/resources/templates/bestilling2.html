@@ -2,9 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Website - Home</title>
+    <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}">
+
 </head>
 <body>
+
+<form method="post">
+<div class="navbar">
+
+    <a href="index.html" class="logo-link"></a>
+    <ul>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="ordrer.html">Ordrer</a></li>
+        <li><a href="admin.html">Admin</a></li>
+    </ul>
+</div>
+<div class="main-content">
+    <div class="Bestilling-box">
+    <div class="infoform">
+        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+        <input type="text" name="name" placeholder="Navn" required th:value="${name}">
+        <input type="text" name="lastname" placeholder="Efternavn" required th:value="${lastname}">
+    </div>
+    <div class="infoform">
+        <input type="text" name="streetname" placeholder="Vejnavn" required th:value="${streetname}">
+        <input type="text" name="streetnumber" placeholder="Nummer" required th:value="${number}">
+    </div>
+    <div class="infoform">
+        <input type="email" name="mail" placeholder="Email" required th:value="${email}">
+        <input type="tel" name="phonenumber" placeholder="Telefonnummer" required th:value="${phonenumber}">
+    </div>
+    <div class="infoform">
+        <textarea id="additional-comments" name="additional-comments" placeholder="TOS" readonly></textarea>
+        <label for="agree">Jeg accepterer betingelserne</label>
+        <input type="checkbox" id="agree" name="agree" required>
+    </div>
+        <button type="submit" formaction="/Order">Bestil</button>
+    </div>
+
+</div>
+<div class="footer">
+    <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
+</div>
+</form>
 
 </body>
 </html>

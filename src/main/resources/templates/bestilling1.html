@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Website - Home</title>
+    <link rel="stylesheet" href="../public/css/bestilling1.css" th:href="@{/css/bestilling1.css}">
+
+</head>
+<body>
+<form method="post">
+<div class="navbar">
+    <a href="index.html" class="logo-link"></a>
+    <ul>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="ordrer.html">Ordrer</a></li>
+        <li><a href="admin.html">Admin</a></li>
+    </ul>
+</div>
+<div class="main-content">
+    <div class="Bestilling-box">
+        <div class="dropdowns">
+
+            <label>Bredde</label>
+        <select id="Bredde" name="Breddevalue">
+
+            <option th:each="width: ${WidthList}"
+                    th:value="${width}"
+                    th:text="${width}">
+            </option>
+
+        </select>
+            <label>Længde</label>
+        <select id="Længde" name="Længdevalue">
+
+            <option th:each="length: ${LengthList}"
+                    th:value="${length}"
+                    th:text="${length}">
+            </option>
+
+        </select>
+            <label>Skur til</label>
+            <select class="form-control" th:name="hasShed">
+                <option th:value="0" >Nej</option>
+                <option th:value="1" >Ja</option>
+            </select>
+
+        </select>
+        </div>
+        <label for="message">Extra information</label>
+    <textarea id="message" name="message" ></textarea>
+        <button type="submit" formaction="/Continue">Fortsæt</button>
+    </div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
+</div>
+
+</form>
+</body>
+</html>

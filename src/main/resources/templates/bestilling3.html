@@ -2,9 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Website - Home</title>
+    <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}">
 </head>
 <body>
+<form method="post" action="order">
+<div class="navbar">
+    <a href="index.html" class="logo-link"></a>
+    <ul>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="ordrer.html">Ordrer</a></li>
+        <li><a href="admin.html">Admin</a></li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="Bestilling-box2">
+        <div class="Bestilling-box">
+        <p> Du har Bestilt en Carport med følgende mål </p>
+        </div>
+        <p>
+         Højde: <span type="text" name="Carportheight" required th:text="${session.Carport.height}">
+        </p>
+        <p>
+            Bredde: <span type="text" name="Carportwidth" required th:text="${session.Carport.width}">
+        </p>
+
+        <p>
+            Skur til : <span type="text" name="Carportwidth" required th:text="${session.Carport.hasShed}">
+        </p>
+    </div>
+    </div>
+</form>
+
+<div class="footer">
+    <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
+</div>
 
 </body>
 </html>
