@@ -2,6 +2,7 @@
 
     import app.carport.Entities.Carport;
     import app.carport.Exceptions.DatabaseException;
+    import app.carport.MailServer.MailServer;
     import app.carport.Persistence.ConnectionPool;
     import app.carport.Persistence.MaterialMapper;
     import io.javalin.Javalin;
@@ -61,11 +62,13 @@
                     ctx.attribute("message", "Phone number must only contain digits.");
                 } else {
                     ctx.render("bestilling3.html");
-                    return;
+                MailServer.sendMail(email,name,"3000");
+                return;
 
                 }
                 ctx.render("bestilling2.html");
             }
+
 
 
         public static void orderCarport(ConnectionPool connectionPool, Context ctx) {
