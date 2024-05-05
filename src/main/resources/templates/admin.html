@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Website - Home</title>
-    <link rel="stylesheet" href="../public/css/styles.css">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
 
@@ -17,13 +19,62 @@
     </ul>
 </div>
 <div class="main-content">
-    <div class="Bestilling-box">
-        <label> Dine ordre </label>
+    <div class="Inventar-liste">
+        <label> Stocklist </label>
+        <table>
+            <thead>
+            <tr>
+                <th>MaterialeID</th>
+                <th>Navn</th>
+                <th>Pris</th>
+                <th>Længde</th>
+                <th>Enhed</th>
+                <th>Mængde i beholdning</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="material : ${materiallist}">
+                <td th:text="${material.materialID}"></td>
+                <td th:text="${material.name}"></td>
+                <td th:text="${material.price}"></td>
+                <td th:text="${material.length}"></td>
+                <td th:text="${material.unit}"></td>
+                <td th:text="${material.quantityInStock}"></td>
+                <td>
+                    <form method="post" action="/removematerial">
+                        <input type="hidden" name="remove_material" th:value="${material.materialID}">
+                        <button type="submit">Delete material</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
     </div>
 
-    <div class="Bestilling-box">
-        <label> CRUD </label>
-        <div class="Bestilling-box2">
+    <div class="Ordre-liste">
+        <label> Ordrer </label>
+        <table>
+            <thead>
+            <tr>
+                <th>OrdreID</th>
+                <th>Kundens navn</th>
+                <th>Pris</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orderlist}">
+                <td th:text="${order.orderID}"></td>
+                <td th:text="${order.user.name}"></td>
+                <td th:text="${order.carport.price}"></td>
+                <td th:text="${order.status}"></td>
+                <td>
+                    <form method="post" action="/removeorder">
+                        <input type="hidden" name="remove_order" th:value="${order.orderID}">
+                        <button type="submit">Delete order</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
     </div>
     </div>
 

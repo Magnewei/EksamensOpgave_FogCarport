@@ -1,5 +1,7 @@
 package app.carport.Entities;
 
+import java.util.List;
+
 /**
  * Purpose:
  *
@@ -8,39 +10,47 @@ package app.carport.Entities;
 
 public class Carport {
     private int carportID;
-    private String material;
+    private double length;
     private double width;
-    private double height;
-    private int price;
     private boolean hasShed;
+    private List<Material> materialList;
 
-    public Carport(Double width, Double height, Boolean hasShed){
-     this.width=width;
-     this.height=height;
-     this.hasShed=hasShed;
+    public Carport(int carportID, double length, double width, boolean hasShed, List<Material> materialList){
+     this.carportID = carportID;
+     this.length = length;
+     this.width = width;
+     this.hasShed = hasShed;
+     this.materialList = materialList;
     }
 
     public int getCarportID() {
         return carportID;
     }
 
-    public String getMaterial() {
-        return material;
+    public double getLength() {
+      return length;
     }
 
     public double getWidth() {
         return width;
     }
 
-    public double getHeight() {
-        return height;
-    }
-
     public boolean hasShed(){
         return hasShed;
     }
 
-    public int getPrice() {
-        return price;
+    public List<Material> getMaterialList() {
+      return materialList;
+      }
+
+    public double getTotalPrice(){
+        double totalPrice = 0;
+        for(Material material : materialList){
+            totalPrice += material.getPrice();
+        }
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
     }
 }

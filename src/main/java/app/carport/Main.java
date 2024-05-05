@@ -1,6 +1,5 @@
 package app.carport;
 
-
 import app.carport.Controllers.*;
 import app.carport.MailServer.MailServer;
 import io.javalin.Javalin;
@@ -25,7 +24,7 @@ public class Main {
         MailServer.sendMail("magstener@gmail.com", "Magnus", "3000");
 
         // Routing
-        app.get("/", ctx -> ctx.render("index.html"));
+        app.get("/", ctx -> ctx.render("login.html"));
         AdminPanelController.addRoutes(app, connectionPool);
         UserController.addRoutes(app, connectionPool);
         HeaderController.addRoutes(app, connectionPool);
