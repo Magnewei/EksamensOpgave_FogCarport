@@ -36,7 +36,6 @@ public class CarportMapper {
                 length = rs.getDouble("length");
                 width = rs.getDouble("width");
                 hasShed = rs.getBoolean("hasShed");
-
             }
         }catch (SQLException e) {
             throw new DatabaseException("Get carport data fejl", e.getMessage());
