@@ -1,6 +1,7 @@
 package app.carport.Persistence;
 
 import app.carport.Entities.Material;
+import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
 
 import javax.naming.Name;
@@ -76,6 +77,27 @@ public class MaterialMapper {
         } catch (SQLException e) {
             throw new DatabaseException("Fejl ved sletning af en task", e.getMessage());
         }
+    }
+
+    public static Material getMaterialById(int materialId,ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM material WHERE \"materialID\" = ?";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setInt(1, materialId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int materialID = rs.getInt("materialID");
+                String name = rs.getString("name");
+                double price = rs.getDouble("price");
+                double length = rs.getDouble("length");
+                String unit = rs.getString("unit");
+                int quantityInStock = rs.getInt("quantityInStock");
+                return new Material(materialId,name,price,length,unit,quantityInStock);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Get user fejl", e.getMessage());
+        }
+        return null;
     }
 
 
