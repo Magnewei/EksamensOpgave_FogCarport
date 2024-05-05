@@ -1,6 +1,7 @@
 package app.carport.Persistence;
 
 import app.carport.Entities.Carport;
+import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
 import java.sql.Connection;
@@ -16,26 +17,28 @@ import java.util.List;
  * @Author: Anton Friis Stengaard
  */
 public class CarportMapper {
-    public static Carport getCarportFromCarportId(int carportId, ConnectionPool connectionPool) {
-        String sql = "SELECT * FROM users WHERE \"carportID\" = ?";
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql);
-        ) {
+    public static Carport getCarportByCarportId(int carportId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM carport WHERE \"carportID\" = ?";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setInt(1, carportId);
             ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int carportID = rs.getInt("carportID");
+                double length = rs.getDouble("length");
+                double width = rs.getDouble("width");
+                boolean hasShed = rs.getBoolean("hasShed");
+                //TODO: Få liste af materialer der skal bruges til en carport med
+                return new Carport(carportID, length, width, hasShed,);
 
-            while (rs.next()) {
-                int id = rs.getInt("carportID");
-                int length = rs.getInt("length");
-
-
-                User user = new User(id, email, password, role);
-                users.add(user);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Kan ikke hente alle brugerne fra databasen.", e.getMessage());
+            throw new DatabaseException("Get user fejl", e.getMessage());
         }
-        return users;
+        return null;
+    }
+
+    public Carport getCarportByOrder(Order order, ConnectionPool connectionPool) {
+        return null;
     }
 }

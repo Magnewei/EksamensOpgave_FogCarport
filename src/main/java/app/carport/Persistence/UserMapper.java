@@ -24,8 +24,8 @@ public class UserMapper {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("userID");
-                String role = rs.getString("role");
-                return new User(id, email, password, role);
+                boolean isAdmin = rs.getBoolean("isAdmin");
+                return new User(id, email, password, isAdmin);
             } else {
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
@@ -118,9 +118,9 @@ public class UserMapper {
                 int id = rs.getInt("userID");
                 String email = rs.getString("email");
                 String password = rs.getString("password");
-                String role = rs.getString("role");
+                boolean isAdmin = rs.getBoolean("isAdmin");
 
-                User user = new User(id, email, password, role);
+                User user = new User(id, email, password, isAdmin);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -130,7 +130,23 @@ public class UserMapper {
         return null;
     }
 
-    public static User getUserFromUserId(int userId) {
-      return null;
+
+    public static User getUserByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM users WHERE \"userID\" = ?";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int userID = rs.getInt("userID");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                boolean isAdmin = rs.getBoolean("isAdmin");
+                return new User(userID, email, password, isAdmin);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Get user fejl", e.getMessage());
+        }
+        return null;
     }
 }
