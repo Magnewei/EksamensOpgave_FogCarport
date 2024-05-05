@@ -1,6 +1,7 @@
 package app.carport;
 
 import app.carport.Controllers.*;
+import app.carport.MailServer.MailServer;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;
@@ -19,6 +20,8 @@ public class Main {
             config.staticFiles.add("/public");
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
         }).start(7071);
+
+        MailServer.sendMail("magstener@gmail.com", "Magnus", "3000");
 
         // Routing
         app.get("/", ctx -> ctx.render("index.html"));
