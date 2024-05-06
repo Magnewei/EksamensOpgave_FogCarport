@@ -16,7 +16,7 @@ public class MaterialMapper {
 
     public static List<Double> getAllLength(ConnectionPool connectionPool) throws DatabaseException {
         List<Double> LengthList = new ArrayList<>();
-        String sql = "SELECT DISTINCT length FROM definedcarports;";
+        String sql = "SELECT DISTINCT length FROM carport ORDER BY length;";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -32,7 +32,7 @@ public class MaterialMapper {
 
     public static List<Double> getAllWidth(ConnectionPool connectionPool) throws DatabaseException {
         List<Double> WidthList = new ArrayList<>();
-        String sql = "SELECT DISTINCT width FROM definedcarports;";
+        String sql = "SELECT DISTINCT width FROM carport ORDER BY width;";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

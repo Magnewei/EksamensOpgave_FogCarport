@@ -20,6 +20,7 @@
 </div>
 <div class="main-content">
     <div class="Inventar-liste">
+        <div class="Bestilling-box">
         <label> Stocklist </label>
         <table>
             <thead>
@@ -32,6 +33,7 @@
                 <th>Mængde i beholdning</th>
             </tr>
             </thead>
+
             <tbody>
             <tr th:each="material : ${materiallist}">
                 <td th:text="${material.materialID}"></td>
@@ -48,9 +50,11 @@
                 </td>
             </tr>
         </table>
+            </div>
     </div>
 
     <div class="Ordre-liste">
+        <div class="Bestilling-box">
         <label> Ordrer </label>
         <table>
             <thead>
@@ -75,10 +79,11 @@
                 </td>
             </tr>
         </table>
+            </div>
     </div>
     </div>
 
-</div>
+
 
 
 
