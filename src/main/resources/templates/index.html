@@ -7,19 +7,31 @@
     <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
-
-
+  
 <div class="navbar">
-
-    <a href="index.html" class="logo-link"></a>
+    <form method="post">
+        <a th:href="@{index.html}" class="logo-link"></a>
     <ul>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="ordrer.html">Ordrer</a></li>
-        <li><a href="admin.html">Admin</a></li>
+        <li>
+            <button type="submit" formaction="/goToLogin" name="button">Login</button>
+        </li>
+
+        <li>
+            <button type="submit" formaction="/goToOrdrer" name="button">Ordrer</button>
+        </li>
+
+        <button th:if="${session.currentUser != null} ? ${session.currentUser.isAdmin == true}"
+                type="submit" formaction="/loadadmin" name="button">Admin
+        </button>
+
     </ul>
+    </form>
 </div>
 
 <div class="main-content">
+    <div>
+        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+    </div>
     <form method="post">
         <div class="Billede-box">
         <label> Bestil carpot Idag </label>
@@ -32,6 +44,7 @@
     </div>
     </form>
 </div>
+
 <div class="footer">
     <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
 </div>

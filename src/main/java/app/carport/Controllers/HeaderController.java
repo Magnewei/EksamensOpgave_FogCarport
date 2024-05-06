@@ -6,7 +6,10 @@ import io.javalin.http.Context;
 
 public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.post("loadadmin", ctx -> gotoAdmin(connectionPool, ctx));
+        app.post("loadadmin", ctx -> goToAdmin(connectionPool, ctx));
+        app.post("goToLogin", ctx -> goToLogin(ctx));
+        app.post("goToOrdrer", ctx -> goToOrdrer(ctx));
+        app.post("goToIndex", ctx -> goToIndex(ctx));
     }
 
     private static void gotoAdmin(ConnectionPool connectionPool, Context ctx) {
@@ -14,19 +17,23 @@ public class HeaderController {
             AdminPanelController.renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("index.html");
+            ctx.render("admin.html");
         }
     }
 
-    public static void gotoShop(ConnectionPool connectionPool) {
-    }
+    public static void goToLogin(Context ctx) {
 
-    public static void gotoCreateUser(ConnectionPool connectionPool) {
-    }
+            ctx.render("login.html");
+        }
 
-    public static void gotoLogin(ConnectionPool connectionPool) {
-    }
 
-    public static void gotoOrder(ConnectionPool connectionPool) {
+    public static void goToOrdrer(Context ctx) {
+
+            ctx.render("ordrer.html");
+        }
+
+
+    public static void goToIndex(Context ctx) {
+           ctx.render("index.html");
+        }
     }
-}

@@ -1,11 +1,17 @@
 package app.carport.Controllers;
 
+import app.carport.Entities.Material;
+import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.ConnectionPool;
+import app.carport.Persistence.MaterialMapper;
+import app.carport.Persistence.OrderMapper;
 import app.carport.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.util.List;
 
 import static app.carport.Persistence.UserMapper.createUser;
 
@@ -26,10 +32,10 @@ public class UserController {
             if (!UserMapper.checkIfUserExistsByName(username, connectionPool)) {
                 UserMapper.createUser(username, password, role, connectionPool);
                 ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + username + ". Nu skal du logge på");
-                ctx.render("index.html");
+                ctx.render("bestilling1.html");
             } else {
                 ctx.attribute("message", "Brugernavnet eksisterer allerede. Vælg venligst et andet brugernavn.");
-                ctx.render("index.html");
+                ctx.render("login.html");
             }
         } catch (DatabaseException e) {
             ctx.attribute("message", "Der opstod en fejl under oprettelsen. Prøv venligst igen.");
@@ -57,4 +63,6 @@ public class UserController {
             ctx.render("login.html");
         }
     }
+
+
 }
