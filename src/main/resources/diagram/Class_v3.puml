@@ -13,6 +13,8 @@ Persistence.CarportMapper *-- Persistence.ConnectionPool
 Persistence.OrderMapper *-- Persistence.ConnectionPool
 Persistence.AdminMapper *-- Persistence.ConnectionPool
 Controllers *-- Persistence.ConnectionPool
+Controllers <-- SVG.CarportSVG
+Controllers <-- MailServer.MailServer
 Entities o--o Controllers
 Persistence o--o Entities
 
@@ -22,19 +24,26 @@ Main <-- Controllers.CarportShopController
 Main <-- Controllers.UserController
 Main <-- Controllers.AdminPanelController
 
+
+'Services
+SVG.CarportSVG <-- SVG.SVGDrawer
+
 class Main {
 +main(String args[]): void
 }
 
 package Entities {
 class Carport {
+-int carportID
 -double width
 -double length
 -String material
 -boolean hasShed
+-Map materialList<Material material, Integer amount>
 }
 
 class User {
+-int userID
 -String email
 -String password
 -boolean isAdmin
@@ -52,8 +61,8 @@ class Address {
 class Order {
 -int orderId
 -String status
--int userId
--int carportId
+-User user
+-Carport carport
 }
 }
 
@@ -66,9 +75,7 @@ class ConnectionPool {
 }
 
 class CarportMapper {
-+getCarportByOrder() : Carport
-+getCarportByUser() : Carport
-+insertCarport() : void
++getCarportByID(int ID) : Carport
 }
 
 class UserMapper {
@@ -76,6 +83,8 @@ class UserMapper {
 +createUser( String name, String password, String role ) : void
 +deleteUser( int userID ) : void
 +getAllUsers() : List<User>
++checkIfUserExistsByName(String email, ConnectionPool connectionPool) : boolean
++getUserByUserId(int userId, ConnectionPool connectionPool) : User
 }
 
 class OrderMapper {
@@ -84,6 +93,8 @@ class OrderMapper {
 +deleteOrderById( int orderID ) : void
 +getLastOrderID() : int
 +updateStatus( int orderID, String status ) : void
++getLastOrderID() : int
++insertNewOrder(User user, String status, int carportId, ConnectionPool connectionPool) : void
 }
 
 class AdminMapper {
@@ -94,6 +105,9 @@ class AdminMapper {
 class MaterialMapper {
 +getAllLength() : List<Double>
 +getAllWidth() : List<Double>
++deleteMaterialById(int ID) : void
++getAllMaterials() : List<Material>
++getMaterialById(int ID) : Material
 }
 }
 
@@ -102,6 +116,7 @@ class UserController {
 +registerUser() : void
 +login() : void
 +logout() : void
++createUser() : void
 +userStatus() : void
 }
 
@@ -110,18 +125,45 @@ class CarportShopController {
 +orderButtonTwo() : void
 +orderButtonThree() : void
 +orderCarport() : void
+-drawCarport() : void
 }
 
 class HeaderController {
 +gotoShop() : void
 +gotoCreateUser() : void
 +gotoOrder() : void
++gotoLogin() : void
++gotoAdmin() : void
 }
 
 class AdminPanelController {
 +editMaterials() : void
 +addMaterial() : void
+-removeMaterial() : void
+-removeOrder() : void
+}
+}
 
+package MailServer {
+class MailServer {
+-sendMail(String to, String name, String zip) : boolean
+}
+}
+
+package SVG {
+class SVGDrawer {
+-String SVG_TEMPLATE
+-String SVG_ARROW_DEFS
++addRectangle(double x, double y, double height, double width, String style) : void
++addLine(int x1, int y1, int x2, int y2, String style) : void
++addArrow(int x1, int y1, int x2, int y2, String style) : void
++addSvg(SVGDrawer innerSvg)
+}
+
+class carportSVG {
+-SVGDrawer carportSvg
+-addBeams() : void
+-addRafters() : void
 }
 }
 

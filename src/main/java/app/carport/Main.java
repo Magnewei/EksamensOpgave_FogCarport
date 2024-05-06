@@ -1,7 +1,6 @@
 package app.carport;
 
 import app.carport.Controllers.*;
-import app.carport.MailServer.MailServer;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;

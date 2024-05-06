@@ -5,6 +5,7 @@ public class User {
     private final String email;
     private final String password;
     private final boolean isAdmin;
+    private Order order;
 
     public User(int userID, String email, String password, boolean isAdmin) {
         this.userID = userID;
@@ -27,5 +28,13 @@ public class User {
 
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
