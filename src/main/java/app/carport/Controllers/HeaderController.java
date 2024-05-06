@@ -6,10 +6,10 @@ import io.javalin.http.Context;
 
 public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.post("loadadmin", ctx -> goToAdmin(connectionPool, ctx));
+        app.post("loadadmin", ctx -> gotoAdmin(connectionPool, ctx));
     }
 
-    private static void goToAdmin(ConnectionPool connectionPool, Context ctx) {
+    private static void gotoAdmin(ConnectionPool connectionPool, Context ctx) {
         try {
             AdminPanelController.renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException e) {

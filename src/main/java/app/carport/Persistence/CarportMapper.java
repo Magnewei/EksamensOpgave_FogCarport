@@ -45,6 +45,7 @@ public class CarportMapper {
         try(Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlGetMaterials);){
             ps.setInt(1, carportId);
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 int materialId = rs.getInt("materialID");
                 int quantity = rs.getInt("quantity");
@@ -55,6 +56,7 @@ public class CarportMapper {
         }
 
         return new Carport(carportID,length,width,hasShed,materialList);
+
     }
 
 }
