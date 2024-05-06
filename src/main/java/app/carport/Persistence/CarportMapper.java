@@ -27,6 +27,7 @@ public class CarportMapper {
         double length = 0;
         double width = 0;
         boolean hasShed = false;
+        Map<Material,Integer> materialList = new HashMap<>();
 
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlGetCarportData);) {
             ps.setInt(1, carportId);
@@ -45,18 +46,16 @@ public class CarportMapper {
         try(Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlGetMaterials);){
             ps.setInt(1, carportId);
             ResultSet rs = ps.executeQuery();
-            Map<Material,Integer> materialList = new HashMap<>();
             while (rs.next()) {
                 int materialId = rs.getInt("materialID");
                 int quantity = rs.getInt("quantity");
                 materialList.put(MaterialMapper.getMaterialById(materialId,connectionPool),quantity);
-                return new Carport(carportID,length,width,hasShed,materialList);
             }
         } catch (SQLException e) {
             throw new DatabaseException("Get user fejl", e.getMessage());
         }
 
-        return null;
+        return new Carport(carportID,length,width,hasShed,materialList);
     }
 
 }
