@@ -62,7 +62,6 @@
                     ctx.attribute("message", "Phone number must only contain digits.");
                 } else {
                     ctx.render("bestilling3.html");
-                MailServer.sendMail(email,name,"3000");
                 return;
 
                 }
