@@ -1,5 +1,6 @@
 package app.carport.MailServer;
 
+import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -42,6 +43,89 @@ public class MailServer {
 
             // TemplateID is corresponding with the template created on SendGrid
             mail.templateId = "d-20b61e76c5374d138d3636e8c9247716";
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+
+            // Get response code for return statement.
+            responseCode = response.getStatusCode();
+
+        } catch (IOException e) {
+            System.out.println("Error sending mail");
+            System.out.println(e.getMessage());
+        }
+        return responseCode == 202;
+    }
+
+    public static boolean mailOnOrderDone(String buyerEmail, String buyerName , int orderID) {
+        int responseCode = 0;
+
+        // Get api key
+        SendGrid sg = new SendGrid(API_KEY);
+
+        // Email that we're sending our company mail from:
+        Email from = new Email(email);
+        from.setName("Johannes Fog Byggemarked");
+        Mail mail = new Mail();
+        mail.setFrom(from);
+        Personalization personalization = new Personalization();
+
+        // Instantiate customer details into a mail.
+        personalization.addTo(new Email(buyerEmail));
+        personalization.addDynamicTemplateData("name", buyerName);
+        personalization.addDynamicTemplateData("orderID", orderID);
+        mail.addPersonalization(personalization);
+        mail.addCategory("carportapp");
+
+        // Send mail
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+
+            // TemplateID is corresponding with the template created on SendGrid
+            mail.templateId = "d-20b61e76c5374d138d3636e8c9247716";
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+
+            // Get response code for return statement.
+            responseCode = response.getStatusCode();
+
+        } catch (IOException e) {
+            System.out.println("Error sending mail");
+            System.out.println(e.getMessage());
+        }
+        return responseCode == 202;
+    }
+
+    public static boolean mailOnStatysUpdate(String buyerEmail, String buyerName, Order order) {
+        int responseCode = 0;
+
+        // Get api key
+        SendGrid sg = new SendGrid(API_KEY);
+
+        // Email that we're sending our company mail from:
+        Email from = new Email(email);
+        from.setName("Johannes Fog Byggemarked");
+        Mail mail = new Mail();
+        mail.setFrom(from);
+        Personalization personalization = new Personalization();
+
+        // Instantiate customer details into a mail.
+        personalization.addTo(new Email(buyerEmail));
+        personalization.addDynamicTemplateData("name", buyerName);
+        personalization.addDynamicTemplateData("orderID", order.getOrderId());
+        personalization.addDynamicTemplateData("orderStatus", order.getStatus());
+        mail.addPersonalization(personalization);
+        mail.addCategory("carportapp");
+
+        // Send mail
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+
+            // TemplateID is corresponding with the template created on SendGrid
+            mail.templateId = "d-953b6496a4194c4cb16cf9c8aa718805";
             request.setBody(mail.build());
             Response response = sg.api(request);
 
