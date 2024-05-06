@@ -304,6 +304,4 @@ public class MailServer {
         }
         return responseCode == 202;
     }
-
-
 }
