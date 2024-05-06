@@ -95,5 +95,25 @@ public class OrderMapper {
             throw new DatabaseException("Error updating order status", e.getMessage());
         }
     }
+
+    public static void acceptOrder(ConnectionPool connectionPool, int orderID) {
+        String sql = "UPDATE orders SET status = 'accepted' WHERE \"orderID\" = ?";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, orderID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void denyOrder(ConnectionPool connectionPool, int orderID) {
+        String sql = "UPDATE orders SET status = 'denied' WHERE \"orderID\" = ?";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, orderID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
 

@@ -100,6 +100,20 @@ public class MaterialMapper {
         return null;
     }
 
+    public static void addMaterial(ConnectionPool connectionPool, String name, double price, double length, String unit, int quantityInStock) {
+        String sql = "INSERT INTO material (name, price, length, unit, quantityInStock) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setDouble(2, price);
+            ps.setDouble(3, length);
+            ps.setString(4, unit);
+            ps.setInt(5, quantityInStock);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 
