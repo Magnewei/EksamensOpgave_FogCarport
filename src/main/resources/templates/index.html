@@ -7,13 +7,9 @@
     <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
-
-
+  
 <div class="navbar">
-
     <form method="post">
-
-
         <a th:href="@{index.html}" class="logo-link"></a>
     <ul>
         <li>
@@ -32,14 +28,10 @@
     </form>
 </div>
 
-
-
 <div class="main-content">
-
     <div>
         <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
     </div>
-
     <form method="post">
         <div class="Billede-box">
         <label> Bestil carpot Idag </label>
@@ -52,8 +44,6 @@
     </div>
     </form>
 </div>
-
-
 
 <div class="footer">
     <p>&copy; 2024 Sample Website. All Rights Reserved.</p>

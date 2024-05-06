@@ -139,6 +139,7 @@ textarea {
     background-color: var(--accent-dark);
 }
 
+
 /* Contact form styles */
 form {
     margin-top: 20px;
@@ -148,6 +149,7 @@ form {
     max-width: 600px; /* Limit the width of the contact form */
     margin: 0 auto; /* Center the contact form */
 }
+
 
 form label {
     margin-bottom: 5px;

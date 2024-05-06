@@ -1,6 +1,7 @@
 package app.carport.Entities;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Purpose:
@@ -13,7 +14,7 @@ public class Carport {
     private double length;
     private double width;
     private boolean hasShed;
-    private List<Material> materialList;
+    private Map<Material,Integer> materialList;
 
     public Carport(double length, double width, boolean hasShed){
         this.length = length;
@@ -21,7 +22,7 @@ public class Carport {
         this.hasShed = hasShed;
     }
 
-    public Carport(int carportID, double length, double width, boolean hasShed, List<Material> materialList){
+    public Carport(int carportID, double length, double width, boolean hasShed, Map<Material,Integer> materialList){
      this.carportID = carportID;
      this.length = length;
      this.width = width;
@@ -45,14 +46,36 @@ public class Carport {
         return hasShed;
     }
 
-    public List<Material> getMaterialList() {
-      return materialList;
-      }
+    public Map<Material,Integer> getMaterialList(){
+        return materialList;
+    }
+
+    public void setCarportID(int carportID) {
+        this.carportID = carportID;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public void setHasShed(boolean hasShed) {
+        this.hasShed = hasShed;
+    }
+
+    public void setMaterialList(Map<Material, Integer> materialList) {
+        this.materialList = materialList;
+    }
 
     public double getTotalPrice(){
         double totalPrice = 0;
-        for(Material material : materialList){
-            totalPrice += material.getPrice();
+        for(Map.Entry<Material,Integer> entry:materialList.entrySet()){
+            Material material = entry.getKey();
+            int quantity = entry.getValue();
+            totalPrice += material.getPrice() * quantity;
         }
         return totalPrice;
     }

@@ -10,10 +10,9 @@ public class HeaderController {
         app.post("goToLogin", ctx -> goToLogin(ctx));
         app.post("goToOrdrer", ctx -> goToOrdrer(ctx));
         app.post("goToIndex", ctx -> goToIndex(ctx));
-
     }
 
-    private static void goToAdmin(ConnectionPool connectionPool, Context ctx) {
+    private static void gotoAdmin(ConnectionPool connectionPool, Context ctx) {
         try {
             AdminPanelController.renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException e) {
@@ -38,12 +37,3 @@ public class HeaderController {
            ctx.render("index.html");
         }
     }
-
-
-/*
-   <a href="index.html" class="logo-link"></a>
-    <ul>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="ordrer.html">Ordrer</a></li>
-        <li><a href="admin.html">Admin</a></li>
- */
