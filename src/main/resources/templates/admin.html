@@ -76,6 +76,14 @@
                         <input type="hidden" name="remove_order" th:value="${order.orderID}">
                         <button type="submit">Delete order</button>
                     </form>
+                    <form method="post" action="/acceptorder">
+                        <input type="hidden" name="accept_order" th:value="${order.orderID}">
+                        <button type="submit">Accept order</button>
+                    </form>
+                    <form method="post" action="/denyorder">
+                        <input type="hidden" name="deny_order" th:value="${order.orderID}">
+                        <button type="submit">Deny order</button>
+                    </form>
                 </td>
             </tr>
         </table>
