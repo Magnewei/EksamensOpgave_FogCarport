@@ -115,5 +115,41 @@ public class OrderMapper {
             e.printStackTrace();
         }
     }
+
+    public static Order getOrderByUserId(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM orders WHERE \"userID\" = ? ORDER BY \"orderID\" DESC LIMIT 1";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int orderID = rs.getInt("orderID");
+                String status = rs.getString("status");
+                Carport carport = CarportMapper.getCarportByCarportId(rs.getInt("carportID"), connectionPool);
+                return new Order(orderID, status, carport);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Get order by userID fejl", e.getMessage());
+        }
+        return null;
+    }
+
+    public static boolean checkIfUserHasOrder(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT COUNT(*) AS count FROM orders WHERE userID = ?";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Kan ikke finde bruger ud fra navn.", e.getMessage());
+        }
+        return false;
+    }
 }
 

@@ -1,10 +1,7 @@
 package app.carport.Persistence;
 
 import app.carport.Entities.Material;
-import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
-
-import javax.naming.Name;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -101,7 +98,7 @@ public class MaterialMapper {
     }
 
     public static void addMaterial(ConnectionPool connectionPool, String name, double price, double length, String unit, int quantityInStock) {
-        String sql = "INSERT INTO material (name, price, length, unit, quantityInStock) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO material (name, price, length, unit, \"quantityInStock\") VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, name);
             ps.setDouble(2, price);
@@ -113,7 +110,6 @@ public class MaterialMapper {
             e.printStackTrace();
         }
     }
-
 
 
 
