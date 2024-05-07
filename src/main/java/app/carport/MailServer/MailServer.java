@@ -18,9 +18,6 @@ public class MailServer {
     public static boolean mailOnOrderDone(User user) {
         int responseCode = 0;
 
-        // Get api key
-        SendGrid sg = new SendGrid(API_KEY);
-
         // Email that we're sending our company mail from:
         Email from = new Email(email);
         from.setName("Johannes Fog Byggemarked");
@@ -36,6 +33,7 @@ public class MailServer {
         mail.addCategory("carportapp");
 
         // Send mail
+        SendGrid sg = new SendGrid(API_KEY);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
@@ -59,9 +57,6 @@ public class MailServer {
     public static boolean mailOnOrderDone(String buyerEmail, String buyerName , int orderID) {
         int responseCode = 0;
 
-        // Get api key
-        SendGrid sg = new SendGrid(API_KEY);
-
         // Email that we're sending our company mail from:
         Email from = new Email(email);
         from.setName("Johannes Fog Byggemarked");
@@ -77,6 +72,7 @@ public class MailServer {
         mail.addCategory("carportapp");
 
         // Send mail
+        SendGrid sg = new SendGrid(API_KEY);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
@@ -100,9 +96,6 @@ public class MailServer {
     public static boolean mailOnStatusUpdate(String buyerEmail, String buyerName, Order order) {
         int responseCode = 0;
 
-        // Get api key
-        SendGrid sg = new SendGrid(API_KEY);
-
         // Email that we're sending our company mail from:
         Email from = new Email(email);
         from.setName("Johannes Fog Byggemarked");
@@ -119,6 +112,7 @@ public class MailServer {
         mail.addCategory("carportapp");
 
         // Send mail
+        SendGrid sg = new SendGrid(API_KEY);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
@@ -184,9 +178,6 @@ public class MailServer {
     public static boolean mailOnUserChanges(User user) {
         int responseCode = 0;
 
-        // Get api key
-        SendGrid sg = new SendGrid(API_KEY);
-
         // Email that we're sending our company mail from:
         Email from = new Email(email);
         from.setName("Johannes Fog Byggemarked");
@@ -203,6 +194,7 @@ public class MailServer {
         mail.addCategory("carportapp");
 
         // Send mail
+        SendGrid sg = new SendGrid(API_KEY);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
@@ -226,9 +218,6 @@ public class MailServer {
     public static boolean mailOnOrder(User user) {
         int responseCode = 0;
 
-        // Get api key
-        SendGrid sg = new SendGrid(API_KEY);
-
         // Email that we're sending our company mail from:
         Email from = new Email(email);
         from.setName("Johannes Fog Byggemarked");
@@ -244,6 +233,7 @@ public class MailServer {
         mail.addCategory("carportapp");
 
         // Send mail
+        SendGrid sg = new SendGrid(API_KEY);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
@@ -267,9 +257,6 @@ public class MailServer {
     public static boolean mailOnOrder(String buyerEmail, String buyerName, int orderID) {
         int responseCode = 0;
 
-        // Get api key
-        SendGrid sg = new SendGrid(API_KEY);
-
         // Email that we're sending our company mail from:
         Email from = new Email(email);
         from.setName("Johannes Fog Byggemarked");
@@ -285,6 +272,7 @@ public class MailServer {
         mail.addCategory("carportapp");
 
         // Send mail
+        SendGrid sg = new SendGrid(API_KEY);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
