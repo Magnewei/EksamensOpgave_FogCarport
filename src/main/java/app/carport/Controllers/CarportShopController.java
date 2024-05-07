@@ -71,7 +71,7 @@
 
 
         public static void orderCarport(ConnectionPool connectionPool, Context ctx) {
-            try{
+            try {
                 System.out.println("hej");
                 double length = Double.valueOf(ctx.formParam("carportlength"));
                 double width = Double.valueOf(ctx.formParam("carportwidth"));
@@ -81,11 +81,10 @@
                 ctx.sessionAttribute("carportwidth",width);
                 ctx.sessionAttribute("hasShed",hasShed);
                 ctx.sessionAttribute("Carport",Carport);
-            } catch(Error e){
+
+            } catch(IllegalArgumentException e){
                 ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
-
             }
-
         }
 
         private static void drawCarport(Carport carport, Context ctx) {
