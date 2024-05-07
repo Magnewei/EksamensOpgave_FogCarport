@@ -2,23 +2,34 @@ package app.carport.Entities;
 
 public class User {
     private final int userID;
-    private final String email;
-    private final String password;
     private final boolean isAdmin;
     private final String firstName;
     private final String lastName;
-    private Address adress;
+    private Address address;
     private Order order;
+    private String email;
+    private String password;
 
-    public User(int userID, String email, String password, boolean isAdmin, String firstName, String lastName, Address adress, Order order) {
+    public User(int userID, String email, String password, boolean isAdmin, String firstName, String lastName, Address address, Order order) {
         this.userID = userID;
         this.email = email;
         this.password = password;
         this.isAdmin = isAdmin;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.adress = adress;
+        this.address = address;
         this.order = order;
+    }
+
+    // Constructor contains no order, for when a user is first created.
+    public User(int userID, String email, String password, boolean isAdmin, String firstName, String lastName, Address address) {
+        this.userID = userID;
+        this.email = email;
+        this.password = password;
+        this.isAdmin = isAdmin;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
     }
 
     public int getUserID() {
@@ -46,10 +57,26 @@ public class User {
     }
 
     public Address getAdress() {
-        return adress;
+        return address;
     }
 
     public Order getOrder() {
         return order;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -58,5 +58,4 @@ public class CarportMapper {
         return new Carport(carportID,length,width,hasShed,materialList);
 
     }
-
 }

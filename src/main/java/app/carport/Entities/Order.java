@@ -18,6 +18,12 @@ public class Order {
         this.carport = carport;
     }
 
+    public Order(int orderId, String status, Carport carport) {
+        this.orderId = orderId;
+        this.status = status;
+        this.carport = carport;
+    }
+
     public int getOrderId() {
         return orderId;
     }

@@ -133,5 +133,23 @@ public class OrderMapper {
         }
         return null;
     }
+
+    public static boolean checkIfUserHasOrder(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT COUNT(*) AS count FROM orders WHERE userID = ?";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Kan ikke finde bruger ud fra navn.", e.getMessage());
+        }
+        return false;
+    }
 }
 
