@@ -5,14 +5,20 @@ public class User {
     private final String email;
     private final String password;
     private final boolean isAdmin;
-    private Order order;
+    private final String firstName;
+    private final String lastName;
     private Address adress;
+    private Order order;
 
-    public User(int userID, String email, String password, boolean isAdmin) {
+    public User(int userID, String email, String password, boolean isAdmin, String firstName, String lastName, Address adress, Order order) {
         this.userID = userID;
         this.email = email;
         this.password = password;
         this.isAdmin = isAdmin;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.adress = adress;
+        this.order = order;
     }
 
     public int getUserID() {
@@ -31,15 +37,19 @@ public class User {
         return isAdmin;
     }
 
-    public Order getOrder() {
-        return order;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public String getLastName() {
+        return lastName;
     }
 
     public Address getAdress() {
         return adress;
+    }
+
+    public Order getOrder() {
+        return order;
     }
 }
