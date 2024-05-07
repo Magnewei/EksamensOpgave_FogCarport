@@ -16,7 +16,7 @@ public class AdminPanelController {
         app.post("removerOrder", ctx -> removeOrder(connectionPool, ctx));
         app.post("removematerial", ctx -> removeMaterial(connectionPool, ctx));
         app.post("addmaterial", ctx -> addMaterial(connectionPool, ctx));
-        app.post("renderadmin",ctx -> renderAdmin(connectionPool,ctx));
+       // app.post("renderadmin",ctx -> renderAdmin(connectionPool,ctx));
         app.post("acceptorder",ctx -> acceptOrder(connectionPool,ctx));
         app.post("denyorder",ctx -> denyOrder(connectionPool,ctx));
     }
@@ -29,9 +29,9 @@ public class AdminPanelController {
             String unit = ctx.formParam("unit");
             int quantityInStock = Integer.parseInt(ctx.formParam("quantityInStock"));
             MaterialMapper.addMaterial(connectionPool, name, price, length, unit, quantityInStock);
-            renderAdmin(connectionPool,ctx);
+            //renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException e) {
-            renderAdmin(connectionPool,ctx);
+           // renderAdmin(connectionPool,ctx);
         }
     }
 
@@ -39,9 +39,9 @@ public class AdminPanelController {
         try {
             int orderID = Integer.parseInt(ctx.formParam("deny_order"));
             OrderMapper.denyOrder(connectionPool, orderID);
-            renderAdmin(connectionPool,ctx);
+         //  renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException e) {
-            renderAdmin(connectionPool,ctx);
+          //  renderAdmin(connectionPool,ctx);
         }
     }
 
@@ -49,9 +49,9 @@ public class AdminPanelController {
         try {
             int orderID = Integer.parseInt(ctx.formParam("remove_order"));
             OrderMapper.deleteOrderById(orderID, connectionPool);
-            renderAdmin(connectionPool,ctx);
+          //  renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException | DatabaseException e) {
-            renderAdmin(connectionPool,ctx);
+           // renderAdmin(connectionPool,ctx);
         }
     }
 
@@ -59,9 +59,9 @@ public class AdminPanelController {
         try {
             int orderID = Integer.parseInt(ctx.formParam("accept_order"));
             OrderMapper.acceptOrder(connectionPool, orderID);
-            renderAdmin(connectionPool,ctx);
+          //  renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException e) {
-            renderAdmin(connectionPool,ctx);
+          //  renderAdmin(connectionPool,ctx);
         }
     }
 
@@ -69,13 +69,13 @@ public class AdminPanelController {
         try{
             int materialID = Integer.parseInt(ctx.formParam("remove_material"));
             MaterialMapper.deleteMaterialById(connectionPool,materialID);
-            renderAdmin(connectionPool,ctx);
+         //   renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException | DatabaseException e) {
-            renderAdmin(connectionPool,ctx);
+           // renderAdmin(connectionPool,ctx);
         }
     }
 
-    public static void renderAdmin(ConnectionPool connectionPool,Context ctx) {
+    /*public static void renderAdmin(ConnectionPool connectionPool,Context ctx) {
         try {
             List<Order> orderList = OrderMapper.getAllOrders(connectionPool);
             orderList.forEach(order -> {
@@ -90,6 +90,6 @@ public class AdminPanelController {
             ctx.attribute("message", e.getMessage());
             ctx.render("admin.html");
         }
-    }
+    }*/
 }
 

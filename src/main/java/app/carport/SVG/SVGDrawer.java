@@ -19,8 +19,8 @@ public class SVGDrawer {
 
         private StringBuilder svg = new StringBuilder();
 
-        public SVGDrawer(int x, int y, String viewBox, String width) {
-            svg.append(String.format(SVG_TEMPLATE, x, y, viewBox, width));
+        public SVGDrawer(int x, int y, String viewBox, String width ) {
+            svg.append(String.format(SVG_TEMPLATE, x, y, viewBox, width ));
             svg.append(SVG_ARROW_DEFS);
         }
 
