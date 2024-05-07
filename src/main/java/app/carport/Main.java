@@ -11,7 +11,7 @@ public class Main {
     private static final String PASSWORD = System.getenv("JDBC_PASSWORD");
     private static final String URL = System.getenv("JDBC_CONNECTION_STRING");
     private static final String DB = System.getenv("JDBC_DB");
-    private static final ConnectionPool connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
+    public static final ConnectionPool connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
 
     public static void main(String[] args) {
         // Initializing Javalin and Jetty webserver

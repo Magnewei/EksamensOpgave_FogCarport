@@ -1,15 +1,14 @@
 package app.carport.Persistence;
 
+import app.carport.Entities.Address;
+import app.carport.Exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+
 
 class OrderMapperTest {
 
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
     void getAllOrders() {
@@ -46,4 +45,6 @@ class OrderMapperTest {
     @Test
     void checkIfUserHasOrder() {
     }
+
+
 }
