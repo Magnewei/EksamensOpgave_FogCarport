@@ -1,8 +1,9 @@
 package app.carport.Persistence;
 
+import app.carport.Entities.Address;
+import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserMapper {
-
     public static User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "select * from users where email=? and password=?";
         try (
@@ -23,40 +23,77 @@ public class UserMapper {
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                int id = rs.getInt("userID");
+                int userId = rs.getInt("userID");
                 boolean isAdmin = rs.getBoolean("isAdmin");
-                return new User(id, email, password, isAdmin);
-            } else {
-                throw new DatabaseException("Fejl i login. Prøv igen");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                Address address = getAddressByAddressId(rs.getInt("addressID"), connectionPool);
+
+                // If the user has an order, return the user object with the order.
+                if (OrderMapper.checkIfUserHasOrder(userId, connectionPool)) {
+                    Order order = OrderMapper.getOrderByOrderId(rs.getInt("orderID"), connectionPool);
+                    return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
+                }
+
+                // Else return a user without an order.
+                return new User(userId, email, password, isAdmin, firstName, lastName, address);
             }
+        } catch (SQLException | DatabaseException e) {
+            throw new DatabaseException("Database does not contain a user with the given information.", e.getMessage());
+        }
+        return null;
+    }
+
+    public static boolean insertAddress(Address address, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into address (streetname, postalcode, house_number) values (?,?,?)";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, address.getStreetName());
+            ps.setInt(2, address.getPostalCode());
+            ps.setInt(3, address.getHouseNumber());
+
+            int rowsAffected = ps.executeUpdate();
+
+            // Return true if insert was successful.
+            return rowsAffected == 1;
+
         } catch (SQLException e) {
-            throw new DatabaseException("DB fejl", e.getMessage());
+            String msg = "Der er sket en fejl. Prøv igen";
+            if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
+                msg = "Brugernavnet findes allerede. Vælg et andet";
+            }
+            throw new DatabaseException(msg, e.getMessage());
         }
     }
 
-    public static void createUser(String Email, String password, String role, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into users (email, password,role) values (?,?,?)";
-            try (
-                    Connection connection = connectionPool.getConnection();
-                    PreparedStatement ps = connection.prepareStatement(sql)
-            ) {
-                ps.setString(1, Email);
-                ps.setString(2, password);
-                ps.setString(3, role);
+    public static void createUser(String Email, String password, int phoneNumber, Address address, String firstName, String lastName, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into users (email, password, role, phonenumber, firstname, lastname) values (?,?,?,?,?,?)";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, Email);
+            ps.setString(2, password);
+            ps.setBoolean(3, false);  // Every user created should be a non-admin.
+            ps.setInt(4, phoneNumber);
+            ps.setString(5, firstName);
+            ps.setString(6, lastName);
+            insertAddress(address, connectionPool);
 
-                int rowsAffected = ps.executeUpdate();
-                if (rowsAffected != 1) {
-                    throw new DatabaseException("Fejl ved oprettelse af ny bruger");
-                }
-            } catch (SQLException e) {
-                String msg = "Der er sket en fejl. Prøv igen";
-                if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
-                    msg = "Brugernavnet findes allerede. Vælg et andet";
-                }
-                throw new DatabaseException(msg, e.getMessage());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl ved oprettelse af ny bruger");
             }
+        } catch (SQLException e) {
+            String msg = "Der er sket en fejl. Prøv igen";
+            if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
+                msg = "Brugernavnet findes allerede. Vælg et andet";
+            }
+            throw new DatabaseException(msg, e.getMessage());
         }
-
+    }
 
     public static void deleteUser(int userID, ConnectionPool connectionPool) throws DatabaseException {
         String deleteOrderLinesSQL = "DELETE FROM orderline WHERE \"orderID\" IN (SELECT \"orderID\" FROM orders WHERE \"userID\" = ?)";
@@ -86,7 +123,6 @@ public class UserMapper {
         }
     }
 
-
     public static boolean checkIfUserExistsByName(String email, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
         try (
@@ -105,49 +141,81 @@ public class UserMapper {
         return false;
     }
 
-
     public static List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
         try (
                 Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql);
+                PreparedStatement ps = connection.prepareStatement(sql)
         ) {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                int id = rs.getInt("userID");
+                int userId = rs.getInt("userID");
                 String email = rs.getString("email");
                 String password = rs.getString("password");
                 boolean isAdmin = rs.getBoolean("isAdmin");
-
-                User user = new User(id, email, password, isAdmin);
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                Address address = getAddressByAddressId(rs.getInt("addressID"), connectionPool);
+                Order order = OrderMapper.getOrderByOrderId(rs.getInt("addressID"), connectionPool);
+                User user = new User(userId, email, password, isAdmin, firstName, lastName, address, order);
                 users.add(user);
             }
         } catch (SQLException e) {
             throw new DatabaseException("Kan ikke hente alle brugerne fra databasen.", e.getMessage());
 
         }
-        return null;
+        // Return users if List contains objects.
+        return users = !users.isEmpty() ? users : null;
     }
-
 
     public static User getUserByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM users WHERE \"userID\" = ?";
 
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                int userID = rs.getInt("userID");
                 String email = rs.getString("email");
                 String password = rs.getString("password");
                 boolean isAdmin = rs.getBoolean("isAdmin");
-                return new User(userID, email, password, isAdmin);
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                Address address = getAddressByAddressId(rs.getInt("addressID"), connectionPool);
+
+                // If the user has an order, return the user object with the order.
+                if (OrderMapper.checkIfUserHasOrder(userId, connectionPool)) {
+                    Order order = OrderMapper.getOrderByOrderId(rs.getInt("orderID"), connectionPool);
+                    return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
+                }
+
+                // Else return a user without an order.
+                return new User(userId, email, password, isAdmin, firstName, lastName, address);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Get user fejl", e.getMessage());
         }
         return null;
     }
+
+    public static Address getAddressByAddressId(int addressId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM users WHERE \"addressID\" = ?";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, addressId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int postalCode = rs.getInt("postalcode");
+                int houseNumber = rs.getInt("house_number");
+                String cityName = rs.getString("cityname");
+                String streetName = rs.getString("streetname");
+                return new Address(addressId, postalCode, houseNumber, cityName, streetName);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Get address fejl", e.getMessage());
+        }
+        return null;
+    }
+
 }
