@@ -25,6 +25,17 @@ public class Order {
         this.carport = carport;
     }
 
+    public Order(int orderId, String status, User user) {
+        this.orderId = orderId;
+        this.status = status;
+        this.user = user;
+    }
+
+    public Order(int orderId, String status) {
+        this.orderId = orderId;
+        this.status = status;
+    }
+
     public int getOrderId() {
         return orderId;
     }
