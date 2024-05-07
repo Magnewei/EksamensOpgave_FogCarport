@@ -142,9 +142,6 @@ public class MailServer {
     public static boolean mailOnStatusUpdate(User user) {
         int responseCode = 0;
 
-        // Get api key
-
-
         // Email that we're sending our company mail from:
         Email from = new Email(email);
         from.setName("Johannes Fog Byggemarked");
@@ -153,10 +150,10 @@ public class MailServer {
         Personalization personalization = new Personalization();
 
         // Instantiate customer details into a mail.
-        personalization.addTo(new Email("magnewei@icloud.com"));
-        personalization.addDynamicTemplateData("name", "Magnus");
-        personalization.addDynamicTemplateData("orderID", "3");
-        personalization.addDynamicTemplateData("orderStatus", "denied");
+        personalization.addTo(new Email(email));
+        personalization.addDynamicTemplateData("name", user.getFullName());
+        personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId());
+        personalization.addDynamicTemplateData("orderStatus", user.getOrder().getStatus());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
