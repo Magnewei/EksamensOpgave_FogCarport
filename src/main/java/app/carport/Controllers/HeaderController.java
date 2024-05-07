@@ -12,7 +12,7 @@ public class HeaderController {
         app.post("goToIndex", ctx -> goToIndex(ctx));
     }
 
-    private static void gotoAdmin(ConnectionPool connectionPool, Context ctx) {
+    private static void goToAdmin(ConnectionPool connectionPool, Context ctx) {
         try {
             AdminPanelController.renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException e) {
