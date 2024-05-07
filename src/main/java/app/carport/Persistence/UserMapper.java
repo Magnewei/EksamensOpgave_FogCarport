@@ -4,6 +4,7 @@ import app.carport.Entities.Address;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -156,12 +157,31 @@ public class UserMapper {
                 String lastName = rs.getString("lastName");
                 Address address = AddressMapper.getAddressByAddressId(rs.getInt("addressID"), connectionPool);
                 // If the user has an order, return the user object with the order.
-                    Order order = OrderMapper.getOrderByUserId(userId, connectionPool);
-                    return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
 
+                Order order = OrderMapper.getOrderByUserId(userId, connectionPool);
+                return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
+            }
+        } catch (SQLException | DatabaseException e) {
+            throw new DatabaseException("Get user fejl", e.getMessage());
+        }
+        return null;
+    }
 
-                // Else return a user without an order.
+    public static User getLimitedUserByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT \"userID\", \"email\", \"firstName\", \"lastName\" FROM users WHERE \"userID\" = ?";
 
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int userID = rs.getInt("userID");
+                String email = rs.getString("email");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                // If the user has an order, return the user object with the order.
+
+                Order order = OrderMapper.getReducedOrderByUserId(userId, connectionPool);
+                return new User(userID, email, firstName, lastName, order);
             }
         } catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Get user fejl", e.getMessage());
