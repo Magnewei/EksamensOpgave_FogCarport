@@ -151,5 +151,24 @@ public class OrderMapper {
         }
         return false;
     }
+
+    public static Order getOrderByOrderId(int orderID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM orders WHERE \"orderID\" = ?";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setInt(1, orderID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String status = rs.getString("status");
+                int userID = rs.getInt("userID");
+                Carport carport = CarportMapper.getCarportByCarportId(rs.getInt("carportID"), connectionPool);
+                User user = UserMapper.getUserByUserId(userID, connectionPool);
+                return new Order(orderID, status, user, carport);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Get order by userID fejl", e.getMessage());
+        }
+        return null;
+    }
 }
 

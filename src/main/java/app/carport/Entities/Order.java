@@ -10,6 +10,7 @@ public class Order {
     private String status;
     private User user;
     private Carport carport;
+    private int totalPrice;
 
     public Order(int orderId, String status, User user, Carport carport) {
         this.orderId = orderId;
@@ -39,6 +40,16 @@ public class Order {
     public Carport getCarport() {
         return carport;
     }
+
+    private void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+
 
     @Override
     public String toString() {

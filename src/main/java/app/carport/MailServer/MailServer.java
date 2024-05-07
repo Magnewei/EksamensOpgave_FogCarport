@@ -97,7 +97,7 @@ public class MailServer {
         return responseCode == 202;
     }
 
-    public static boolean mailOnStatysUpdate(String buyerEmail, String buyerName, Order order) {
+    public static boolean mailOnStatusUpdate(String buyerEmail, String buyerName, Order order) {
         int responseCode = 0;
 
         // Get api key
@@ -139,7 +139,7 @@ public class MailServer {
         return responseCode == 202;
     }
 
-    public static boolean mailOnStatysUpdate(User user) {
+    public static boolean mailOnStatusUpdate(User user) {
         int responseCode = 0;
 
         // Get api key

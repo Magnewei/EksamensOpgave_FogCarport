@@ -22,6 +22,7 @@ public class Carport {
     private double width;
     private boolean hasShed;
     private Map<Material,Integer> materialList;
+    private double totalPrice;
 
     public Carport(double length, double width, boolean hasShed){
         this.length = length;
@@ -126,5 +127,13 @@ public class Carport {
         materialList.put(getShortestSpærThatFits(spærMaterials, width), ((int) length/55) + 1);
         return materialList;
 
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

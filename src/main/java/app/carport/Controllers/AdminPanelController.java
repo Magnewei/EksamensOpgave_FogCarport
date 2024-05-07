@@ -2,16 +2,16 @@ package app.carport.Controllers;
 
 import app.carport.Entities.Material;
 import app.carport.Entities.Order;
+import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
 import app.carport.MailServer.MailServer;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.MaterialMapper;
 import app.carport.Persistence.OrderMapper;
-import app.carport.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
 import java.util.List;
+import java.util.Objects;
 
 public class AdminPanelController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -40,9 +40,14 @@ public class AdminPanelController {
     private static void denyOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             int orderID = Integer.parseInt(ctx.formParam("deny_order"));
+
+            Order order = OrderMapper.getOrderByOrderId(orderID, connectionPool);
+            User user = Objects.requireNonNull(order).getUser();
+            MailServer.mailOnStatusUpdate(user);
+
             OrderMapper.denyOrder(connectionPool, orderID);
             renderAdmin(connectionPool,ctx);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | DatabaseException e) {
             renderAdmin(connectionPool,ctx);
         }
     }
@@ -50,6 +55,7 @@ public class AdminPanelController {
     private static void removeOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             int orderID = Integer.parseInt(ctx.formParam("remove_order"));
+
             OrderMapper.deleteOrderById(orderID, connectionPool);
             renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException | DatabaseException e) {
@@ -61,8 +67,13 @@ public class AdminPanelController {
         try {
             int orderID = Integer.parseInt(ctx.formParam("accept_order"));
             OrderMapper.acceptOrder(connectionPool, orderID);
+
+            Order order = OrderMapper.getOrderByOrderId(orderID, connectionPool);
+            User user = Objects.requireNonNull(order).getUser();
+            MailServer.mailOnStatusUpdate(user);
+
             renderAdmin(connectionPool,ctx);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | DatabaseException e) {
             renderAdmin(connectionPool,ctx);
         }
     }
