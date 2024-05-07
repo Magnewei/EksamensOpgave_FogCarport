@@ -2,7 +2,7 @@ package app.carport.Entities;
 
 public class User {
     private final int userID;
-    private final boolean isAdmin;
+    private boolean isAdmin;
     private final String firstName;
     private final String lastName;
     private Address address;
@@ -31,6 +31,18 @@ public class User {
         this.lastName = lastName;
         this.address = address;
     }
+
+    public User(int userID, String email, String firstName, String lastName, Order order) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
 
     public int getUserID() {
         return userID;
