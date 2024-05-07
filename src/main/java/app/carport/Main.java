@@ -1,6 +1,11 @@
 package app.carport;
 
 import app.carport.Controllers.*;
+import app.carport.Entities.Address;
+import app.carport.Entities.User;
+import app.carport.Exceptions.DatabaseException;
+import app.carport.Persistence.AddressMapper;
+import app.carport.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;
@@ -21,7 +26,7 @@ public class Main {
         }).start(7071);
 
         // Routing
-        app.get("/", ctx -> ctx.render("login.html"));
+        app.get("/", ctx -> ctx.render("index.html"));
         AdminPanelController.addRoutes(app, connectionPool);
         UserController.addRoutes(app, connectionPool);
         HeaderController.addRoutes(app, connectionPool);

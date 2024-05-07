@@ -116,20 +116,20 @@ public class OrderMapper {
         }
     }
 
-    public static Order getOrderByOrderId(int orderID, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM orders WHERE \"orderID\" = ?";
+    public static Order getOrderByUserId(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM orders WHERE \"userID\" = ? ORDER BY \"orderID\" DESC LIMIT 1";
 
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
-            ps.setInt(1, orderID);
+            ps.setInt(1, userID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+                int orderID = rs.getInt("orderID");
                 String status = rs.getString("status");
-                User user = UserMapper.getUserByUserId(rs.getInt("userID"), connectionPool);
                 Carport carport = CarportMapper.getCarportByCarportId(rs.getInt("carportID"), connectionPool);
-                return new Order(orderID, status, user, carport);
+                return new Order(orderID, status, carport);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Get order by orderID fejl", e.getMessage());
+            throw new DatabaseException("Get order by userID fejl", e.getMessage());
         }
         return null;
     }
