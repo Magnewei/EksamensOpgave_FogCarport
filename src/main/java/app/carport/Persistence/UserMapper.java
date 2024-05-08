@@ -155,17 +155,36 @@ public class UserMapper {
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 Address address = AddressMapper.getAddressByAddressId(rs.getInt("addressID"), connectionPool);
-                // If the user has an order, return the user object with the order.
+
                     Order order = OrderMapper.getOrderByUserId(userId, connectionPool);
                     return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
 
-
-                // Else return a user without an order.
 
             }
         } catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Get user fejl", e.getMessage());
         }
         return null;
+    }
+
+    public static void updateUser(User user, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE users SET \"firstName\" = ?, \"lastName\" = ?, email = ?, password = ? WHERE \"userID\" = ?";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getEmail());
+            ps.setInt(5, user.getUserID());
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Error updating user.");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("An error occurred while updating the user.", e.getMessage());
+        }
     }
 }

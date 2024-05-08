@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Website - Home</title>
-    <link rel="stylesheet" href="../public/css/styles.css">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
 
@@ -20,26 +20,25 @@
 <div class="main-content">
     <div class="Bestilling-box">
         <label> Dine Informationer </label>
-        <div class="infoform">
-            <input type="text" id="navn" name="navn" placeholder="Navn" required>
-            <input type="text" id="efternavn" name="efternavn" placeholder="Efternavn" required>
-
-        </div>
-        <div class="infoform">
-            <input type="text" id="vejnavn" name="vejnavn" placeholder="Vejnavn" required>
-            <input type="text" id="number" name="number" placeholder="Nummer" required>
-        </div>
-        <div class="infoform">
-            <input type="email" id="email" name="email" placeholder="Email" required>
-            <input type="tel" id="phone" name="phone" placeholder="Telefonnummer" required>
-        </div>
+        <form method="post" action="/updateUser">
+            <label for="firstName">First Name:</label><br>
+            <input type="text" id="firstName" name="firstName" th:value="${session.currentUser.firstName}"><br>
+            <label for="lastName">Last Name:</label><br>
+            <input type="text" id="lastName" name="lastName" th:value="${session.currentUser.lastName}"><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" th:value="${session.currentUser.password}"><br>
+            <label for="email">Email:</label><br>
+            <input type="text" id="email" name="email" th:value="${session.currentUser.email}"><br>
+           
+            <button type="submit">Update Information</button>
+        </form>
     </div>
 
-    <div class="Bestilling-box">
-<label> Dine ordre </label>
-        </div>
-</div>
 
+    <div class="Bestilling-box">
+        <label> Dine ordre </label>
+    </div>
+</div>
 
 
 <div class="footer">
