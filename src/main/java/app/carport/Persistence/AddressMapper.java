@@ -33,6 +33,31 @@ public class AddressMapper {
             throw new DatabaseException(msg, e.getMessage());
         }
     }
+    public static boolean updateAddress(Address address, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE address SET \"streetname\"=?,\"postalcode\"=?,\"housenumber\"=? WHERE \"addressID\" = ?";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, address.getStreetName());
+            ps.setInt(3, address.getHouseNumber());
+            ps.setInt(4, address.getAddressID());
+            upgradeCityData(address, connectionPool);
+            ps.setInt(2, address.getPostalCode());
+
+            int rowsAffected = ps.executeUpdate();
+
+            // Return true if insert was successful.
+            return rowsAffected == 1;
+
+        } catch (SQLException e) {
+            String msg = "Der er sket en fejl. Prøv igen";
+            if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
+                msg = "Addressen findes allerede. Vælg et andet";
+            }
+            throw new DatabaseException(msg, e.getMessage());
+        }
+    }
 
     public static Address getAddressByAddressId(int addressId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM address WHERE \"addressID\" = ?";
@@ -61,6 +86,30 @@ public class AddressMapper {
         ) {
             ps.setInt(1, address.getPostalCode());
             ps.setString(2, address.getCityName());
+
+            int rowsAffected = ps.executeUpdate();
+
+            // Return true if insert was successful.
+            return rowsAffected == 1;
+
+        } catch (SQLException e) {
+            String msg = "Der er sket en fejl. Prøv igen";
+            if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
+                msg = "Brugernavnet findes allerede. Vælg et andet";
+            }
+            throw new DatabaseException(msg, e.getMessage());
+        }
+    }
+    public static boolean upgradeCityData(Address address, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE postalcode SET \"postalcode\" = ?, \"cityname\" = ? WHERE \"postalcode\" = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setInt(1, address.getPostalCode());
+            ps.setString(2, address.getCityName());
+            ps.setInt(3, address.getPostalCode());
 
             int rowsAffected = ps.executeUpdate();
 

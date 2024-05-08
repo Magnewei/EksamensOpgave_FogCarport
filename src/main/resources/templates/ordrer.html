@@ -1,36 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Website - Home</title>
-    <link rel="stylesheet" href="../public/css/styles.css">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
 <div th:replace="~{fragments :: header}"></div>
 <div class="main-content">
     <div class="Bestilling-box">
         <label> Dine Informationer </label>
-        <div class="infoform">
-            <input type="text" id="navn" name="navn" placeholder="Navn" required>
-            <input type="text" id="efternavn" name="efternavn" placeholder="Efternavn" required>
+        <form method="post" action="/updateUser">
+            <label for="firstName">First Name:</label><br>
+            <input type="text" id="firstName" name="firstName" th:value="${session.currentUser.firstName}"><br>
+            <label for="lastName">Last Name:</label><br>
+            <input type="text" id="lastName" name="lastName" th:value="${session.currentUser.lastName}"><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" th:value="${session.currentUser.password}"><br>
+            <label for="email">Email:</label><br>
+            <input type="text" id="email" name="email" th:value="${session.currentUser.email}"><br>
+            <label for="phoneNumber">Phone Number:</label><br>
+            <input type="text" id="phoneNumber" name="phoneNumber" th:value="${session.currentUser.phoneNumber}"><br>
+            <fieldset>
+                <legend>Address:</legend>
+                <input type="text" id="streetName" name="streetName" th:value="${session.currentUser.address.streetName}"><br>
+                <input type="text" id="houseNumber" name="houseNumber" th:value="${session.currentUser.address.houseNumber}"><br>
+                <input type="text" id="postalCode" name="postalCode" th:value="${session.currentUser.address.postalCode}"><br>
+                <input type="text" id="cityName" name="cityName" th:value="${session.currentUser.address.cityName}"><br>
+            </fieldset>
 
-        </div>
-        <div class="infoform">
-            <input type="text" id="vejnavn" name="vejnavn" placeholder="Vejnavn" required>
-            <input type="text" id="number" name="number" placeholder="Nummer" required>
-        </div>
-        <div class="infoform">
-            <input type="email" id="email" name="email" placeholder="Email" required>
-            <input type="tel" id="phone" name="phone" placeholder="Telefonnummer" required>
-        </div>
+            <button type="submit">Update Information</button>
+        </form>
     </div>
 
-    <div class="Bestilling-box">
-<label> Dine ordre </label>
-        </div>
-</div>
 
+    <div class="Bestilling-box">
+        <label> Dine ordre </label>
+    </div>
+</div>
 
 
 <div class="footer">

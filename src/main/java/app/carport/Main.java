@@ -9,6 +9,8 @@ import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Thymeleaf.ThymeleafConfig;
 
+import static app.carport.Persistence.UserMapper.getUserByUserId;
+
 public class Main {
     private static final String USER = System.getenv("JDBC_USER");
     private static final String PASSWORD = System.getenv("JDBC_PASSWORD");

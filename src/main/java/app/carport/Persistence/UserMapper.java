@@ -29,10 +29,11 @@ public class UserMapper {
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 Address address = AddressMapper.getAddressByAddressId(rs.getInt("addressID"), connectionPool);
+                int phoneNumber = rs.getInt("phoneNumber");
 
                 // If the user has an order, return the user object with the order.
                 Order order = OrderMapper.getOrderByUserId(userId, connectionPool);
-                return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
+                return new User(userId, isAdmin, firstName, lastName, address,  order, email, password, phoneNumber);
 
             }
         } catch (SQLException | DatabaseException e) {
@@ -156,7 +157,11 @@ public class UserMapper {
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 Address address = AddressMapper.getAddressByAddressId(rs.getInt("addressID"), connectionPool);
-                // If the user has an order, return the user object with the order.
+
+
+                    Order order = OrderMapper.getOrderByUserId(userId, connectionPool);
+                    return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
+
 
                 Order order = OrderMapper.getOrderByUserId(userId, connectionPool);
                 return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
@@ -167,26 +172,28 @@ public class UserMapper {
         return null;
     }
 
-    public static User getLimitedUserByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT \"userID\", \"email\", \"firstName\", \"lastName\" FROM users WHERE \"userID\" = ?";
 
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int userID = rs.getInt("userID");
-                String email = rs.getString("email");
-                String firstName = rs.getString("firstName");
-                String lastName = rs.getString("lastName");
-                // If the user has an order, return the user object with the order.
+    public static void updateUser(User user, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE users SET \"firstName\" = ?, \"lastName\" = ?, email = ?, password = ?, phoneNumber = ? WHERE \"userID\" = ?";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPassword());
+            ps.setInt(5, user.getphoneNumber());
+            ps.setInt(6, user.getUserID());
+            AddressMapper.updateAddress(user.getAddress(), connectionPool);
 
-                Order order = OrderMapper.getReducedOrderByUserId(userId, connectionPool);
-                return new User(userID, email, firstName, lastName, order);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Error updating user.");
             }
-        } catch (SQLException | DatabaseException e) {
-            throw new DatabaseException("Get user fejl", e.getMessage());
+        } catch (SQLException e) {
+            throw new DatabaseException("An error occurred while updating the user.", e.getMessage());
         }
-        return null;
     }
 
 }
