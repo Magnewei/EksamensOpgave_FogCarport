@@ -177,7 +177,7 @@ public class Carport {
 
         //Så mangler der kun spær. Vi går ud fra en afstand på 55 cm mellem spærene, og en spærbredde på 4.5 cm.
         //Ved at caste længden til int, kan vi finde ud af hvor mange spær der skal bruges.
-        int spærAmount = ((int) (length/(55+4.5)) + 1);
+        int spærAmount = ((int) ((length-(59.5/2))/(55+4.5)) + 1);
         materialList.put(getShortestWoodThatFits(spærMaterials, width), spærAmount);
 
         //Der skal også bruges tagplader. Tagpladerne lægges på tværs, og findes i de samme længder, som der er bredder tilgængelige.

@@ -14,7 +14,7 @@ public class HeaderController {
 
     private static void goToAdmin(ConnectionPool connectionPool, Context ctx) {
         try {
-         //   AdminPanelController.renderAdmin(connectionPool,ctx);
+            AdminPanelController.renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("admin.html");
