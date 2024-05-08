@@ -296,3 +296,33 @@ form textarea {
     height: 100px;
     resize: none;
 }
+/* Table styles */
+table {
+    width: 100%; /* Ensure the table fills its container */
+    border-collapse: collapse; /* Collapse borders into a single border */
+    margin-bottom: 20px; /* Add space between tables */
+}
+
+/* Table header styles */
+th {
+    background-color: var(--primary-color); /* Set background color */
+    color: var(--secondary-color); /* Set text color */
+    padding: 10px; /* Add padding */
+    text-align: left; /* Align text to the left */
+}
+
+/* Table cell styles */
+td {
+    padding: 10px; /* Add padding */
+}
+
+/* Alternate row background color */
+tr:nth-child(even) {
+    background-color: var(--accent-light); /* Set alternate row background color */
+}
+
+/* Hover effect on rows */
+tr:hover {
+    background-color: var(--accent-dark); /* Set hover background color */
+    color: var(--secondary-color); /* Set hover text color */
+}

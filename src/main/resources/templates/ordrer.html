@@ -37,6 +37,22 @@
 
     <div class="Bestilling-box">
         <label> Dine ordre </label>
+        <table>
+            <thead>
+            <tr>
+                <th>OrdreID</th>
+                <th>Pris</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${session.currentUser.order.orderId}"></td>
+                <td th:text="${session.currentUser.order.totalPrice}"></td>
+                <td th:text="${session.currentUser.order.status}"></td>
+            </tr>
+        </table>
+
     </div>
 </div>
 

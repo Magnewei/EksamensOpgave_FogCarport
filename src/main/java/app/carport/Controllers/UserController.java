@@ -69,21 +69,13 @@ public class UserController {
         }
     }
     public static void updateUser(Context ctx, ConnectionPool connectionPool) {
-        // Retrieve form data
-        String firstName = ctx.formParam("firstName");
-        String lastName = ctx.formParam("lastName");
-        String email = ctx.formParam("email");
-        String password = ctx.formParam("password");
-        int phoneNumber = Integer.parseInt(ctx.formParam("phoneNumber"));
-
-        // Get the current user from the session
         User currentUser = ctx.sessionAttribute("currentUser");
 
-        currentUser.setFirstName(firstName);
-        currentUser.setLastName(lastName);
-        currentUser.setEmail(email);
-        currentUser.setPassword(password);
-        currentUser.setPhoneNumber(phoneNumber);
+        currentUser.setFirstName(ctx.formParam("firstName"));
+        currentUser.setLastName(ctx.formParam("lastName"));
+        currentUser.setEmail(ctx.formParam("email"));
+        currentUser.setPassword(ctx.formParam("password"));
+        currentUser.setPhoneNumber(Integer.parseInt(ctx.formParam("phoneNumber")));
 
         Address address = currentUser.getAddress();
         address.setCityName(ctx.formParam("cityName"));
