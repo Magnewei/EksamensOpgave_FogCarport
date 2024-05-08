@@ -30,10 +30,12 @@ public class SVGDrawer {
 
 
         public void addLine(int x1, int y1, int x2, int y2, String style) {
+            svg.append(String.format(SVG_ARROW_DEFS,x1,y1,x2,y2,style));
         }
 
-        public void addArrow(int x1, int y1, int x2, int y2, String style) {
-            // Kald addLine med en style der indeholder pilehoveder
+        public void addArrow(double x1, double y1, double x2, double y2, String style) {
+            svg.append(String.format("<line x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" style=\"%s\" marker-start=\"url(#beginArrow)\" marker-end=\"url(#endArrow)\" />\n",
+                    x1, y1, x2, y2, style));
         }
 
         public void addText(int x, int y, int rotation, String text) {

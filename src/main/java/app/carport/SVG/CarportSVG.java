@@ -12,6 +12,9 @@ public class CarportSVG {
         carportSvg.addRectangle(0,0,width, length, "stroke-width:1px; stroke:#000000; fill: #ffffff");
         addBeams();
         addRafters();
+        addArrows();
+        addPost();
+
     }
 
     // TODO: Fix konstanter i metoderne til at være baseret på width og height.
@@ -25,6 +28,18 @@ public class CarportSVG {
             carportSvg.addRectangle(i, 0.0, width, 4.5,"stroke:#000000; fill: #ffffff" );
         }
     }
+
+    private void addArrows(){
+        carportSvg.addArrow(0, 0, length, width, "stroke: black; stroke-width: 2;");
+        carportSvg.addArrow(0, width, length, 0, "stroke: black; stroke-width: 2;");
+    }
+
+    private void addPost(){
+        carportSvg.addRectangle(100,32.4,9.7, 9.7, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+        carportSvg.addRectangle(length-100,32.4,9.7, 9.7, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+    }
+
+
 
     @Override
     public String toString() {
