@@ -142,9 +142,6 @@ public class MailServer {
     public static boolean mailOnStatusUpdate(User user) {
         int responseCode = 0;
 
-        // Get api key
-
-
         // Email that we're sending our company mail from:
         Email from = new Email(email);
         from.setName("Johannes Fog Byggemarked");
