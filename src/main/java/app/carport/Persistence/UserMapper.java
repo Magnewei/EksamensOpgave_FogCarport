@@ -28,10 +28,11 @@ public class UserMapper {
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 Address address = AddressMapper.getAddressByAddressId(rs.getInt("addressID"), connectionPool);
+                int phoneNumber = rs.getInt("phoneNumber");
 
                 // If the user has an order, return the user object with the order.
                 Order order = OrderMapper.getOrderByUserId(userId, connectionPool);
-                return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
+                return new User(userId, isAdmin, firstName, lastName, address,  order, email, password, phoneNumber);
 
             }
         } catch (SQLException | DatabaseException e) {
@@ -168,16 +169,18 @@ public class UserMapper {
     }
 
     public static void updateUser(User user, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "UPDATE users SET \"firstName\" = ?, \"lastName\" = ?, email = ?, password = ? WHERE \"userID\" = ?";
+        String sql = "UPDATE users SET \"firstName\" = ?, \"lastName\" = ?, email = ?, password = ?, phoneNumber = ? WHERE \"userID\" = ?";
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
         ) {
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setString(3, user.getPassword());
-            ps.setString(4, user.getEmail());
-            ps.setInt(5, user.getUserID());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPassword());
+            ps.setInt(5, user.getphoneNumber());
+            ps.setInt(6, user.getUserID());
+            AddressMapper.updateAddress(user.getAddress(), connectionPool);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
