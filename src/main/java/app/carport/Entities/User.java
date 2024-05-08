@@ -3,7 +3,7 @@ package app.carport.Entities;
 public class User {
     private final int userID;
 
-    private final boolean isAdmin;
+    private boolean isAdmin;
     private String firstName;
     private String lastName;
     private Address address;
@@ -47,6 +47,14 @@ public class User {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
+    }
+
+    public User(int userID, String email, String firstName, String lastName, Order order) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.order = order;
     }
 
     public int getphoneNumber() {return phoneNumber;}

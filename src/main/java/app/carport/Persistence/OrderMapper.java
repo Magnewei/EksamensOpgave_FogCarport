@@ -51,6 +51,7 @@ public class OrderMapper {
         return orderList;
     }
 
+
     public static void deleteOrderById(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String sqlDeleteOrderline = "DELETE FROM orderline WHERE \"orderID\" = ?";
         String sqlDeleteOrder = "DELETE FROM orders WHERE \"orderID\" = ?";
