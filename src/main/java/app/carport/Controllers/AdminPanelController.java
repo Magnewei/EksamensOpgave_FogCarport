@@ -16,7 +16,7 @@ public class AdminPanelController {
         app.post("removerOrder", ctx -> removeOrder(connectionPool, ctx));
         app.post("removematerial", ctx -> removeMaterial(connectionPool, ctx));
         app.post("addmaterial", ctx -> addMaterial(connectionPool, ctx));
-       // app.post("renderadmin",ctx -> renderAdmin(connectionPool,ctx));
+        app.post("renderadmin",ctx -> renderAdmin(connectionPool,ctx));
         app.post("acceptorder",ctx -> acceptOrder(connectionPool,ctx));
         app.post("denyorder",ctx -> denyOrder(connectionPool,ctx));
     }
@@ -75,7 +75,7 @@ public class AdminPanelController {
         }
     }
 
-    /*public static void renderAdmin(ConnectionPool connectionPool,Context ctx) {
+    public static void renderAdmin(ConnectionPool connectionPool,Context ctx) {
         try {
             List<Order> orderList = OrderMapper.getAllOrders(connectionPool);
             orderList.forEach(order -> {
@@ -90,6 +90,6 @@ public class AdminPanelController {
             ctx.attribute("message", e.getMessage());
             ctx.render("admin.html");
         }
-    }*/
+    }
 }
 
