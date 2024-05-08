@@ -20,11 +20,11 @@ public class CarportSVG {
     // TODO: Fix konstanter i metoderne til at være baseret på width og height.
     private void addBeams() {
         carportSvg.addRectangle(0,35,4.5, length, "stroke-width:1px; stroke:#000000; fill: #ffffff");
-        carportSvg.addRectangle(0,width-35,4.5, length, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+        carportSvg.addRectangle(0,width-30.15,4.5, length, "stroke-width:1px; stroke:#000000; fill: #ffffff");
     }
 
     private void addRafters() {
-        for (double i = 59.5/2; i < length; i+= 59.5) {
+        for (double i = 0; i < length; i+= 59.5) {
             carportSvg.addRectangle(i, 0.0, width, 4.5,"stroke:#000000; fill: #ffffff" );
         }
     }
@@ -35,8 +35,27 @@ public class CarportSVG {
     }
 
     private void addPost(){
-        carportSvg.addRectangle(100,32.4,9.7, 9.7, "stroke-width:1px; stroke:#000000; fill: #ffffff");
-        carportSvg.addRectangle(length-100,32.4,9.7, 9.7, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+        double postWidth = 9.7;
+        double remWidth = 4.5;
+        int distanceToEdge = 100;
+        double remDistance = 35;
+        if(length < 500){
+            carportSvg.addRectangle(distanceToEdge,remDistance-(remWidth/2),postWidth, postWidth, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+            carportSvg.addRectangle(length-(distanceToEdge + postWidth),remDistance-(remWidth/2),postWidth, postWidth, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+
+            carportSvg.addRectangle(distanceToEdge,width-(remDistance-(remWidth/2)),postWidth, postWidth, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+            carportSvg.addRectangle(length-(distanceToEdge + postWidth),width-(remDistance-(remWidth/2)),postWidth, postWidth, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+        }else{
+            carportSvg.addRectangle(distanceToEdge,remDistance-(remWidth/2),postWidth, postWidth, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+            carportSvg.addRectangle(length-(distanceToEdge + postWidth),remDistance-(remWidth/2),postWidth, postWidth, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+            carportSvg.addRectangle(length/2-(postWidth/2),remDistance-(remWidth/2),postWidth, postWidth, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+
+            carportSvg.addRectangle(distanceToEdge,width-(remDistance-(remWidth/2)),postWidth, postWidth, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+            carportSvg.addRectangle(length-(distanceToEdge + postWidth),width-(remDistance-(remWidth/2)),postWidth, postWidth, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+            carportSvg.addRectangle(length/2-(postWidth/2),width-(remDistance-(remWidth/2)),postWidth, postWidth, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+
+        }
+
     }
 
 

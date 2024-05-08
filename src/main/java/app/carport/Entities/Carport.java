@@ -158,7 +158,6 @@ public class Carport {
         }
 
         //Så skal der regnes stolper. Vi går ud fra en maksimal aftsand på 300 cm mellem stolperne, med maks 100 cm fra enden
-        //materialId 12 er stolpen.
         if(length <= 500) {
             materialList.put(MaterialMapper.getMaterialById(12, connectionPool), 4);
         }else{
