@@ -7,16 +7,7 @@
     <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
-
-<div class="navbar">
-    <a href="index.html" class="logo-link"></a>
-    <ul>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="ordrer.html">Ordrer</a></li>
-        <li><a href="admin.html">Admin</a></li>
-    </ul>
-</div>
-
+<div th:replace="~{fragments :: header}"></div>
 <div class="main-content">
     <div class="Bestilling-box">
         <label> Dine Informationer </label>

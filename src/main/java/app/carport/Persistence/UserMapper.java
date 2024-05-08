@@ -4,6 +4,7 @@ import app.carport.Entities.Address;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -157,16 +158,20 @@ public class UserMapper {
                 String lastName = rs.getString("lastName");
                 Address address = AddressMapper.getAddressByAddressId(rs.getInt("addressID"), connectionPool);
 
+
                     Order order = OrderMapper.getOrderByUserId(userId, connectionPool);
                     return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
 
 
+                Order order = OrderMapper.getOrderByUserId(userId, connectionPool);
+                return new User(userId, email, password, isAdmin, firstName, lastName, address, order);
             }
         } catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Get user fejl", e.getMessage());
         }
         return null;
     }
+
 
     public static void updateUser(User user, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET \"firstName\" = ?, \"lastName\" = ?, email = ?, password = ?, phoneNumber = ? WHERE \"userID\" = ?";
@@ -190,4 +195,5 @@ public class UserMapper {
             throw new DatabaseException("An error occurred while updating the user.", e.getMessage());
         }
     }
+
 }

@@ -44,11 +44,11 @@ public class AdminPanelController {
             Order order = OrderMapper.getOrderByOrderId(orderID, connectionPool);
             User user = Objects.requireNonNull(order).getUser();
             MailServer.mailOnStatusUpdate(user);
-
             OrderMapper.denyOrder(connectionPool, orderID);
             renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException | DatabaseException e) {
             renderAdmin(connectionPool,ctx);
+
         }
     }
 
@@ -66,12 +66,11 @@ public class AdminPanelController {
     private static void acceptOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             int orderID = Integer.parseInt(ctx.formParam("accept_order"));
-            OrderMapper.acceptOrder(connectionPool, orderID);
 
+            OrderMapper.acceptOrder(connectionPool, orderID);
             Order order = OrderMapper.getOrderByOrderId(orderID, connectionPool);
             User user = Objects.requireNonNull(order).getUser();
             MailServer.mailOnStatusUpdate(user);
-
             renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException | DatabaseException e) {
             renderAdmin(connectionPool,ctx);
@@ -84,7 +83,7 @@ public class AdminPanelController {
             MaterialMapper.deleteMaterialById(connectionPool,materialID);
             renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException | DatabaseException e) {
-            renderAdmin(connectionPool,ctx);
+           // renderAdmin(connectionPool,ctx);
         }
     }
 

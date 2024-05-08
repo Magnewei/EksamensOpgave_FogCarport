@@ -142,9 +142,6 @@ public class MailServer {
     public static boolean mailOnStatusUpdate(User user) {
         int responseCode = 0;
 
-        // Get api key
-        SendGrid sg = new SendGrid(API_KEY);
-
         // Email that we're sending our company mail from:
         Email from = new Email(email);
         from.setName("Johannes Fog Byggemarked");
@@ -153,14 +150,15 @@ public class MailServer {
         Personalization personalization = new Personalization();
 
         // Instantiate customer details into a mail.
-        personalization.addTo(new Email(user.getEmail()));
-        personalization.addDynamicTemplateData("name", user.getEmail());
-        personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId());
-        personalization.addDynamicTemplateData("orderStatus", user.getOrder().getStatus());
+        personalization.addTo(new Email("magnewei@icloud.com"));
+        personalization.addDynamicTemplateData("name", "Magnus");
+        personalization.addDynamicTemplateData("orderID", "3");
+        personalization.addDynamicTemplateData("orderStatus", "denied");
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
         // Send mail
+        SendGrid sg = new SendGrid(API_KEY);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
@@ -173,6 +171,8 @@ public class MailServer {
 
             // Get response code for return statement.
             responseCode = response.getStatusCode();
+            System.out.println(response.getBody());
+            System.out.println(response.getHeaders());
 
         } catch (IOException e) {
             System.out.println("Error sending mail");
