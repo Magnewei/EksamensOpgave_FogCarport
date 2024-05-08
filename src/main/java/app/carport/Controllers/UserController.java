@@ -30,7 +30,7 @@ public class UserController {
 
         try {
             if (!UserMapper.checkIfUserExistsByName(username, connectionPool)) {
-                UserMapper.createUser(username, password, role, connectionPool);
+               // UserMapper.createUser(username, password, role, connectionPool);
                 ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + username + ". Nu skal du logge på");
                 ctx.render("bestilling1.html");
             } else {

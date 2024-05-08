@@ -2,14 +2,16 @@ package app.carport.Controllers;
 
 import app.carport.Entities.Material;
 import app.carport.Entities.Order;
+import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
+import app.carport.MailServer.MailServer;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.MaterialMapper;
 import app.carport.Persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
 import java.util.List;
+import java.util.Objects;
 
 public class AdminPanelController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -29,39 +31,49 @@ public class AdminPanelController {
             String unit = ctx.formParam("unit");
             int quantityInStock = Integer.parseInt(ctx.formParam("quantityInStock"));
             MaterialMapper.addMaterial(connectionPool, name, price, length, unit, quantityInStock);
-            //renderAdmin(connectionPool,ctx);
+            renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException e) {
-           // renderAdmin(connectionPool,ctx);
+            renderAdmin(connectionPool,ctx);
         }
     }
 
     private static void denyOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             int orderID = Integer.parseInt(ctx.formParam("deny_order"));
+
+            Order order = OrderMapper.getOrderByOrderId(orderID, connectionPool);
+            User user = Objects.requireNonNull(order).getUser();
+            MailServer.mailOnStatusUpdate(user);
             OrderMapper.denyOrder(connectionPool, orderID);
-         //  renderAdmin(connectionPool,ctx);
-        } catch (NumberFormatException e) {
-          //  renderAdmin(connectionPool,ctx);
+            renderAdmin(connectionPool,ctx);
+        } catch (NumberFormatException | DatabaseException e) {
+            renderAdmin(connectionPool,ctx);
+
         }
     }
 
     private static void removeOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             int orderID = Integer.parseInt(ctx.formParam("remove_order"));
+
             OrderMapper.deleteOrderById(orderID, connectionPool);
-          //  renderAdmin(connectionPool,ctx);
+            renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException | DatabaseException e) {
-           // renderAdmin(connectionPool,ctx);
+            renderAdmin(connectionPool,ctx);
         }
     }
 
     private static void acceptOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             int orderID = Integer.parseInt(ctx.formParam("accept_order"));
+
             OrderMapper.acceptOrder(connectionPool, orderID);
-          //  renderAdmin(connectionPool,ctx);
-        } catch (NumberFormatException e) {
-          //  renderAdmin(connectionPool,ctx);
+            Order order = OrderMapper.getOrderByOrderId(orderID, connectionPool);
+            User user = Objects.requireNonNull(order).getUser();
+            MailServer.mailOnStatusUpdate(user);
+            renderAdmin(connectionPool,ctx);
+        } catch (NumberFormatException | DatabaseException e) {
+            renderAdmin(connectionPool,ctx);
         }
     }
 
@@ -69,7 +81,7 @@ public class AdminPanelController {
         try{
             int materialID = Integer.parseInt(ctx.formParam("remove_material"));
             MaterialMapper.deleteMaterialById(connectionPool,materialID);
-         //   renderAdmin(connectionPool,ctx);
+            renderAdmin(connectionPool,ctx);
         } catch (NumberFormatException | DatabaseException e) {
            // renderAdmin(connectionPool,ctx);
         }

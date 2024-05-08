@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class OrderMapper {
     public static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
@@ -22,9 +21,29 @@ public class OrderMapper {
                 int userId = rs.getInt("userID");
                 int carportId = rs.getInt("carportID");
 
-                User user = UserMapper.getUserByUserId(userId,connectionPool);
-                Carport carport = CarportMapper.getCarportByCarportId(carportId,connectionPool);
-                orderList.add(new Order(orderId, status, user,carport));
+                User user = UserMapper.getLimitedUserByUserId(userId,connectionPool);
+                Carport carport = CarportMapper.getCarportByCarportId(carportId, connectionPool);
+                orderList.add(new Order(orderId, status, user, carport));
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl!!!!", e.getMessage());
+        }
+        return orderList;
+    }
+
+    public static List<Order> getReducedOrdersWithUsers(ConnectionPool connectionPool) throws DatabaseException {
+        List<Order> orderList = new ArrayList<>();
+        String sql = "select \"orderID\", \"status\", \"userID\" from orders";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int orderId = rs.getInt("orderID");
+                String status = rs.getString("status");
+                int userId = rs.getInt("userID");
+
+                User user = UserMapper.getLimitedUserByUserId(userId,connectionPool);
+
+                orderList.add(new Order(orderId, status, user));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Fejl!!!!", e.getMessage());
@@ -114,6 +133,79 @@ public class OrderMapper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Order getOrderByUserId(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM orders WHERE \"userID\" = ? ORDER BY \"orderID\" DESC LIMIT 1";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int orderID = rs.getInt("orderID");
+                String status = rs.getString("status");
+                Carport carport = CarportMapper.getCarportByCarportId(rs.getInt("carportID"), connectionPool);
+                return new Order(orderID, status, carport);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Get order by userID fejl", e.getMessage());
+        }
+        return null;
+    }
+
+    public static Order getReducedOrderByUserId(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT \"orderID\", \"status\" FROM orders WHERE \"userID\" = ? ORDER BY \"orderID\" DESC LIMIT 1";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int orderID = rs.getInt("orderID");
+                String status = rs.getString("status");
+                return new Order(orderID, status);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Get order by userID fejl", e.getMessage());
+        }
+        return null;
+    }
+
+
+    public static boolean checkIfUserHasOrder(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT COUNT(*) AS count FROM orders WHERE userID = ?";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Kan ikke finde bruger ud fra navn.", e.getMessage());
+        }
+        return false;
+    }
+
+    public static Order getOrderByOrderId(int orderID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM orders WHERE \"orderID\" = ?";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setInt(1, orderID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String status = rs.getString("status");
+                int userID = rs.getInt("userID");
+                Carport carport = CarportMapper.getCarportByCarportId(rs.getInt("carportID"), connectionPool);
+                User user = UserMapper.getUserByUserId(userID, connectionPool);
+                return new Order(orderID, status, user, carport);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Get order by userID fejl", e.getMessage());
+        }
+        return null;
     }
 }
 

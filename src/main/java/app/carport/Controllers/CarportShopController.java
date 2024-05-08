@@ -19,7 +19,6 @@
             app.post("CustomizeCarport", ctx -> orderButtonOne(connectionPool, ctx));
             app.post("Continue", ctx -> orderButtonTwo(connectionPool, ctx));
             app.post("Order", ctx -> orderButtonThree(connectionPool, ctx));
-
         }
 
         public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
@@ -38,9 +37,7 @@
                 Carport carport = new Carport(length,width,hasShed);
                 ctx.sessionAttribute("hasShed",hasShed);
                 ctx.sessionAttribute("Carport",carport);
-
                 CarportSVG svg = new CarportSVG(width,length);
-
                 ctx.sessionAttribute("svg",svg.toString());
             } catch(Error e){
                 ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
@@ -93,22 +90,10 @@
                 ctx.sessionAttribute("carportwidth",width);
                 ctx.sessionAttribute("hasShed",hasShed);
                 ctx.sessionAttribute("Carport",Carport);
-            } catch(Error e){
+
+            } catch(IllegalArgumentException e){
                 ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
-
             }
-
-        }
-
-        private static void drawCarport(Carport carport, Context ctx) {
-
-            // TODO: Integere forneden kræver
-            double length = carport.getLength();
-            double width = carport.getWidth();
-
-
-          //  CarportSVG svg = new CarportSVG(width, height);
-           // ctx.attribute("svg", svg.toString());
         }
 
 
@@ -122,6 +107,5 @@
                 ctx.attribute("message", e.getCause());
                 ctx.render("bestilling1.html");
             }
-
         }
     }
