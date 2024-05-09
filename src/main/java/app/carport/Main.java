@@ -1,12 +1,13 @@
 package app.carport;
 
 import app.carport.Controllers.*;
+import app.carport.Entities.User;
+import app.carport.Exceptions.DatabaseException;
+import app.carport.Persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Thymeleaf.ThymeleafConfig;
-
-import static app.carport.Persistence.UserMapper.getUserByUserId;
 
 public class Main {
     private static final String USER = System.getenv("JDBC_USER");
@@ -15,7 +16,7 @@ public class Main {
     private static final String DB = System.getenv("JDBC_DB");
     public static final ConnectionPool connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         // Initializing Javalin and Jetty webserver
         Javalin app = Javalin.create(config -> {
             config.staticFiles.add("/public");

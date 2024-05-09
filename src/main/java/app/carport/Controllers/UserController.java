@@ -14,7 +14,7 @@ public class UserController {
         app.post("login", ctx -> login(ctx, connectionPool));
         app.get("logout", ctx -> logout(ctx));
         app.post("createUser", ctx -> createUser(ctx, false, connectionPool));
-        app.get("/getUserCompleteData", ctx -> renderOrdrer(ctx, connectionPool));
+        app.get("/getUserCompleteData", ctx -> renderOrder(ctx, connectionPool));
         app.post("updateUser", ctx -> updateUser(ctx, connectionPool));
     }
 
@@ -58,7 +58,7 @@ public class UserController {
             ctx.render("login.html");
         }
     }
-    public static void renderOrdrer(Context ctx, ConnectionPool connectionPool) {
+    public static void renderOrder(Context ctx, ConnectionPool connectionPool) {
         try {
             User user = ctx.sessionAttribute("currentuser");
             ctx.render("ordrer.html");

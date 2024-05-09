@@ -1,0 +1,219 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+'entities
+Entities.User *-- Entities.Address
+Entities.Order *-- Entities.Carport
+Entities.User o--o Entities.Order
+
+
+'persistence
+Persistence.UserMapper *-- Persistence.ConnectionPool
+Persistence.CarportMapper *-- Persistence.ConnectionPool
+Persistence.OrderMapper *-- Persistence.ConnectionPool
+Persistence.AdminMapper *-- Persistence.ConnectionPool
+Controllers *-- Persistence.ConnectionPool
+Controllers <-- SVG.CarportSVG
+Controllers <-- MailServer.MailServer
+Entities o--o Controllers
+Persistence o--o Entities
+
+'Main connections
+Main <-- Controllers.HeaderController
+Main <-- Controllers.CarportShopController
+Main <-- Controllers.UserController
+Main <-- Controllers.AdminPanelController
+
+
+'Services
+SVG.CarportSVG <-- SVG.SVGDrawer
+
+class Main {
++main(String args[]): void
+}
+
+package Entities {
+class Carport {
+-int carportID
+-double width
+-double length
+-String material
+-boolean hasShed
+-int totalPrice
+-Map materialList<Material material, Integer amount>
+}
+
+class Material {
+-int length
+-int materialID
+-String name
+-int price
+-int quantityInStock
+-String unit
+}
+
+class User {
+-int userID
+-String email
+-String firstName
+-String lastName
+-String password
+-boolean isAdmin
+-Address address
+-int phoneNumber
+-Order order
+}
+
+class Address {
+-int addressId
+-int postalCode
+-int houseNumber
+-String cityName
+-String streetName
+}
+
+class Order {
+-int totalPrice
+-int orderId
+-String status
+-User user
+-Carport carport
+}
+}
+
+package Persistence {
+class ConnectionPool {
++getInstance() : ConnectionPool
++getConnection() : Connection
++close() : void
+-createHikariConnectionPool() : getHikariConnection
+}
+
+class CarportMapper {
++getCarportByID( int ID ) : Carport
+}
+
+class UserMapper {
++login( String email, String password ) : User
++createUser( String name, String password, String role ) : void
++deleteUser( int userID ) : void
++getAllUsers() : List<User>
++checkIfUserExistsByName( String email ) : boolean
++getUserByUserId( int userId ) : User
++getLimitedUserByUserId( int userId ) : User
++updateUser( User user, ConnectionPool connectionPool) : void
+}
+
+class OrderMapper {
++getAllOrders() : List<Order>
++getOrderByUser() : Order
++deleteOrderById( int orderID ) : void
++getLastOrderID() : int
++updateStatus( int orderID, String status ) : void
++getLastOrderID() : int
++insertNewOrder(User user, String status, int carportId, ConnectionPool connectionPool) : void
++acceptOrder( int orderID ) : void
++denyOrder( int orderID ) : void
++getReducedOrdersWithUsers() : List<Order>
+}
+
+class AdminMapper {
++editMaterials( Object... changedMaterials) : boolean
++addMaterial( Material material ) : boolean
+}
+
+class MaterialMapper {
++getAllLength() : List<Double>
++getAllWidth() : List<Double>
++deleteMaterialById( int materialID ) : void
++getAllMaterials( int materialID ) : List<Material>
++getMaterialById(int ID) : Material
++addMaterial( String name, double price, double length, String unit, int quantityInStock )
+}
+
+class AddressMapper {
++insertAddress( Address address ) : boolean
++updateAddress( Address address ) : boolean
++getAddressByAddressId( int addressId ) : Address
++insertCityData( Address address ) : boolean
++upgradeCityData( Address address ) : boolean
++getCtyNameFromPostcode( int postalcode ) : String
+
+}
+}
+
+package Controllers {
+class UserController {
++createUser() : void
++login() : void
++logout() : void
++createUser() : void
++userStatus() : void
++renderOrder() : void
++updateUser() : void
+}
+
+class CarportShopController {
++orderButtonOne() : void
++orderButtonTwo() : void
++orderButtonThree() : void
++orderCarport() : void
++renderBestilling( String message ) : void
++renderCarportShop() : void
+-drawCarport() : void
+}
+
+class HeaderController {
++goToCreateUser() : void
++goToOrder() : void
++goToLogin() : void
++gotoAdmin() : void
++goToIndex() : void
+}
+
+class AdminPanelController {
++editMaterials() : void
++addMaterial() : void
+-removeMaterial() : void
+-removeOrder() : void
+-acceptOrder() : void
+-denyOrder() : void
+}
+}
+
+package MailServer {
+class MailServer {
+-String API_KEY
+-String email
++mailOnOrder( User user ) : boolean
++mailOnOrderDone( User user ) : boolean
++mailOnStatusUpdate( User user ) : boolean
++mailOnUserChange( User user ) : boolean
+}
+}
+
+package SVG {
+class SVGDrawer {
+-String SVG_TEMPLATE
+-String SVG_RECT_TEMPLATE
+-String SVG_ARROW_DEFS
++addRectangle(double x, double y, double height, double width, String style) : void
++addLine(int x1, int y1, int x2, int y2, String style) : void
++addArrow(int x1, int y1, int x2, int y2, String style) : void
++addSvg(SVGDrawer innerSvg) : void
++addText(int x, int y, int rotation, String text) : void
+}
+
+class carportSVG {
+-int length
+-int width
+-SVGDrawer carportSvg
+-addBeams() : void
+-addRafters() : void
+-addArrows() : void
+-addPost() : void
+}
+}
+
+
+@enduml
