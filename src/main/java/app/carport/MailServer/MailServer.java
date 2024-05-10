@@ -189,7 +189,7 @@ public class MailServer {
         personalization.addTo(new Email(user.getEmail()));
         personalization.addDynamicTemplateData("name", user.getEmail());
         personalization.addDynamicTemplateData("email", user.getEmail());
-        personalization.addDynamicTemplateData("adress", user.getAdress());
+        personalization.addDynamicTemplateData("adress", user.getAddress());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
