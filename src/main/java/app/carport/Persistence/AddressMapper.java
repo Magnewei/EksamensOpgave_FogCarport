@@ -108,6 +108,7 @@ public class AddressMapper {
             throw new DatabaseException(msg, e.getMessage());
         }
     }
+
     public static boolean upgradeCityData(Address address, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE postalcode SET \"postalcode\" = ?, \"cityname\" = ? WHERE \"postalcode\" = ?";
 
@@ -140,7 +141,7 @@ public class AddressMapper {
             ps.setInt(1, postalcode);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                String cityname =  rs.getString("cityname");
+                String cityname = rs.getString("cityname");
 
                 return cityname;
             }
@@ -149,8 +150,4 @@ public class AddressMapper {
         }
         return null;
     }
-
-
-
-
 }
