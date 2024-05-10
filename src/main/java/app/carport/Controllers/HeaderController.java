@@ -23,10 +23,6 @@ public class HeaderController {
             ctx.render("login.html");
     }
 
-    public static void goToOrdrer(Context ctx, ConnectionPool connectionPool) {
-            UserController.renderOrdrer(ctx, connectionPool);
-    }
-
     public static void goToOrder(Context ctx, ConnectionPool connectionPool) {
             UserController.renderOrder(ctx, connectionPool);
     }
