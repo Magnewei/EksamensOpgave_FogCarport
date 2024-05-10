@@ -13,6 +13,7 @@ public class HeaderController {
         app.post("goToLogin", ctx -> goToLogin(ctx));
         app.post("goToOrdrer", ctx -> goToOrdrer(ctx, connectionPool));
         app.post("goToIndex", ctx -> goToIndex(ctx));
+
     }
 
     private static void goToAdmin(ConnectionPool connectionPool, Context ctx) {
@@ -28,6 +29,7 @@ public class HeaderController {
 
             ctx.render("login.html");
         }
+
 
 
     public static void goToOrdrer(Context ctx, ConnectionPool connectionPool) {
