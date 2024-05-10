@@ -12,22 +12,24 @@
     <div>
         <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
     </div>
-    <form method="post">
-        <div class="Billede-box">
-        <label> Bestil carpot Idag </label>
-                <button type="submit" formaction="/loadadmin">Customize</button>
-        </div>
 
     <div class="Billede-box">
+    <form method="post">
+        <label> Bestil carpot Idag </label>
+                <button type="submit" formaction="/loadadmin">Customize</button>
+    </form>
+    </div>
+
+    <div class="Billede-box">
+        <form method="post">
         <label> Bestil carpot Idag </label>
         <button type="submit" formaction="/CustomizeCarport">Customize</button>
-    </div>
     </form>
 </div>
 
-<div class="footer">
-    <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
 </div>
+
+<div th:replace="~{fragments :: footer}"></div>
 
 </body>
 </html>
