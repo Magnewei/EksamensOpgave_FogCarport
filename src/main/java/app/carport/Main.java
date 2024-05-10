@@ -1,9 +1,6 @@
 package app.carport;
 
 import app.carport.Controllers.*;
-import app.carport.Entities.User;
-import app.carport.Exceptions.DatabaseException;
-import app.carport.Persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;

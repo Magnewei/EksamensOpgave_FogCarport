@@ -26,7 +26,7 @@ public class OrderMapper {
                 orderList.add(new Order(orderId, status, user, carport));
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl!!!!", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get orders from database.", e.getMessage());
         }
         return orderList;
     }
@@ -46,30 +46,19 @@ public class OrderMapper {
                 orderList.add(new Order(orderId, status, user));
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl!!!!", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get reduced orders and users from database.", e.getMessage());
         }
         return orderList;
     }
 
-
-    public static void deleteOrderById(int orderId, ConnectionPool connectionPool) throws DatabaseException {
-        String sqlDeleteOrderline = "DELETE FROM orderline WHERE \"orderID\" = ?";
-        String sqlDeleteOrder = "DELETE FROM orders WHERE \"orderID\" = ?";
-
-        try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement psOrderline = connection.prepareStatement(sqlDeleteOrderline)) {
-                psOrderline.setInt(1, orderId);
-                psOrderline.executeUpdate();
-            }
-            try (PreparedStatement psOrder = connection.prepareStatement(sqlDeleteOrder)) {
-                psOrder.setInt(1, orderId);
-                int rowsAffected = psOrder.executeUpdate();
-                if (rowsAffected != 1) {
-                    throw new DatabaseException("Fejl i opdatering af en order");
-                }
-            }
+    public static boolean deleteOrderById(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "DELETE FROM orders WHERE \"orderID\" = ?";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl ved sletning af en order", e.getMessage());
+            throw new DatabaseException("Error. Couldn't delete the order from orderID.", e.getMessage());
         }
     }
 
@@ -86,53 +75,54 @@ public class OrderMapper {
         return orderNumber;
     }
 
-    //TODO Evt. lav om så den tager en Carport som argument og finder dennes id via .getCarportId metode
-    public static void insertNewOrder(User user, String status, int carportId, ConnectionPool connectionPool) throws DatabaseException {
+    public static boolean insertNewOrder(User user, String status, int carportId, ConnectionPool connectionPool) throws DatabaseException {
         String sqlMakeOrder = "INSERT INTO orders (\"status\",\"userID\",\"carportID\") VALUES (?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlMakeOrder)) {
             ps.setString(1, status);
             ps.setInt(2, user.getUserID());
             ps.setInt(3, carportId);
             int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
-                throw new DatabaseException("Fejl i opdatering af ordrer, se String sqlMakeOrder");
-            }
+            return rowsAffected > 0;
+
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl ved indsættelse af ordre", e.getMessage());
+            throw new DatabaseException("Error. Couldn't insert the order.", e.getMessage());
         }
     }
 
-    public static void updateStatus(int orderId, String status, ConnectionPool connectionPool) throws DatabaseException {
+    public static boolean updateStatus(int orderId, String status, ConnectionPool connectionPool) throws DatabaseException {
         String sqlUpdateStatus = "UPDATE orders SET \"status\" = ? WHERE \"orderID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlUpdateStatus)) {
             ps.setString(1, status);
             ps.setInt(2, orderId);
             int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
-                throw new DatabaseException("Error updating order status, see sqlUpdateStatus");
-            }
+            return rowsAffected > 0;
+
         } catch (SQLException e) {
             throw new DatabaseException("Error updating order status", e.getMessage());
         }
     }
 
-    public static void acceptOrder(ConnectionPool connectionPool, int orderID) {
+    public static boolean acceptOrder(ConnectionPool connectionPool, int orderID) throws DatabaseException {
         String sql = "UPDATE orders SET status = 'accepted' WHERE \"orderID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderID);
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Error accepting order.", e.getMessage());
         }
     }
 
-    public static void denyOrder(ConnectionPool connectionPool, int orderID) {
+    public static boolean denyOrder(ConnectionPool connectionPool, int orderID) throws DatabaseException {
         String sql = "UPDATE orders SET status = 'denied' WHERE \"orderID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderID);
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Error denying order.", e.getMessage());
         }
     }
 
@@ -149,14 +139,13 @@ public class OrderMapper {
                 return new Order(orderID, status, carport);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Get order by userID fejl", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get order from userID.", e.getMessage());
         }
         return null;
     }
 
     public static Order getReducedOrderByUserId(int userID, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT \"orderID\", \"status\" FROM orders WHERE \"userID\" = ? ORDER BY \"orderID\" DESC LIMIT 1";
-
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setInt(1, userID);
             ResultSet rs = ps.executeQuery();
@@ -166,18 +155,14 @@ public class OrderMapper {
                 return new Order(orderID, status);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Get order by userID fejl", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get reduced order from userID.", e.getMessage());
         }
         return null;
     }
 
-
     public static boolean checkIfUserHasOrder(int userID, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT COUNT(*) AS count FROM orders WHERE userID = ?";
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
-        ) {
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -185,14 +170,13 @@ public class OrderMapper {
                 return count > 0;
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Kan ikke finde bruger ud fra navn.", e.getMessage());
+            throw new DatabaseException("Error. Couldn't find an order from the userID, or the userID doesn't exist.", e.getMessage());
         }
         return false;
     }
 
     public static Order getOrderByOrderId(int orderID, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM orders WHERE \"orderID\" = ?";
-
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setInt(1, orderID);
             ResultSet rs = ps.executeQuery();
@@ -204,7 +188,7 @@ public class OrderMapper {
                 return new Order(orderID, status, user, carport);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Get order by userID fejl", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get order from orderID.", e.getMessage());
         }
         return null;
     }

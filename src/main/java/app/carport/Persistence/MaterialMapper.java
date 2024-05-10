@@ -2,6 +2,7 @@ package app.carport.Persistence;
 
 import app.carport.Entities.Material;
 import app.carport.Exceptions.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ public class MaterialMapper {
                 LengthList.add(length);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Length fejl fejl", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get retrieve length element from database.", e.getMessage());
         }
         return LengthList;
     }
@@ -37,7 +38,7 @@ public class MaterialMapper {
                 WidthList.add(Width);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Width fejl", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get retrieve width element from database.", e.getMessage());
         }
         return WidthList;
     }
@@ -57,26 +58,25 @@ public class MaterialMapper {
                 materialList.add(new Material(materialId, name, price, length, unit, quantityInStock));
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl ved returnering af materialeliste", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get list containing all materials from database.", e.getMessage());
         }
         return materialList;
     }
 
-    public static void deleteMaterialById(ConnectionPool connectionPool, int materialID) throws DatabaseException {
+    public static boolean deleteMaterialById(ConnectionPool connectionPool, int materialID) throws DatabaseException {
         String sql = "DELETE FROM material WHERE \"materialID\" = ?";
 
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, materialID);
             int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
-                throw new DatabaseException("Fejl ved sletning af materiale");
-            }
+            return rowsAffected > 0;
+
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl ved sletning af en task", e.getMessage());
+            throw new DatabaseException("Error. Couldn't delete material from the given materialID.", e.getMessage());
         }
     }
 
-    public static Material getMaterialById(int materialId,ConnectionPool connectionPool) throws DatabaseException {
+    public static Material getMaterialById(int materialId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM material WHERE \"materialID\" = ?";
 
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -89,15 +89,15 @@ public class MaterialMapper {
                 double length = rs.getDouble("length");
                 String unit = rs.getString("unit");
                 int quantityInStock = rs.getInt("quantityInStock");
-                return new Material(materialId,name,price,length,unit,quantityInStock);
+                return new Material(materialId, name, price, length, unit, quantityInStock);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Get user fejl", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get material from the given materialID.", e.getMessage());
         }
         return null;
     }
 
-    public static void addMaterial(ConnectionPool connectionPool, String name, double price, double length, String unit, int quantityInStock) {
+    public static boolean addMaterial(ConnectionPool connectionPool, String name, double price, double length, String unit, int quantityInStock) {
         String sql = "INSERT INTO material (name, price, length, unit, \"quantityInStock\") VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, name);
@@ -105,10 +105,14 @@ public class MaterialMapper {
             ps.setDouble(3, length);
             ps.setString(4, unit);
             ps.setInt(5, quantityInStock);
-            ps.executeUpdate();
+            int executeUpdate = ps.executeUpdate();
+
+            return (executeUpdate >= 0);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
 
