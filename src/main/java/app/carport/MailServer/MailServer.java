@@ -27,7 +27,7 @@ public class MailServer {
 
         // Instantiate customer details into a mail.
         personalization.addTo(new Email(user.getEmail()));
-        personalization.addDynamicTemplateData("name", user.getEmail());
+        personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName()); // User full name.
         personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
@@ -187,7 +187,7 @@ public class MailServer {
 
         // Instantiate customer details into a mail.
         personalization.addTo(new Email(user.getEmail()));
-        personalization.addDynamicTemplateData("name", user.getEmail());
+        personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName()); // User full name.
         personalization.addDynamicTemplateData("email", user.getEmail());
         personalization.addDynamicTemplateData("adress", user.getAddress());
         mail.addPersonalization(personalization);
@@ -227,7 +227,7 @@ public class MailServer {
 
         // Instantiate customer details into a mail.
         personalization.addTo(new Email(user.getEmail()));
-        personalization.addDynamicTemplateData("name", user.getEmail());
+        personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName()); // User full name.
         personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
