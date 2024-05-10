@@ -117,4 +117,8 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
 }

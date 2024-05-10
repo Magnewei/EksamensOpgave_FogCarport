@@ -9,29 +9,36 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AddressMapper {
-    public static boolean insertAddress(Address address, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into address (streetname, postalcode, housenumber) values (?,?,?)";
+    public static int insertAddress(Address address, ConnectionPool connectionPool) throws DatabaseException {
+        String checkSql = "SELECT \"addressID\" FROM address WHERE postalcode = ? AND housenumber = ? AND streetname = ?";
+        String insertSql = "INSERT INTO address (postalcode, housenumber, streetname) VALUES (?, ?, ?) RETURNING \"addressID\"";
+
         try (
                 Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
+                PreparedStatement checkPs = connection.prepareStatement(checkSql);
+                PreparedStatement insertPs = connection.prepareStatement(insertSql)
         ) {
-            ps.setString(1, address.getStreetName());
-            ps.setInt(2, address.getPostalCode());
-            ps.setInt(3, address.getHouseNumber());
-            insertCityData(address, connectionPool);
-
-            int rowsAffected = ps.executeUpdate();
-
-            // Return true if insert was successful.
-            return rowsAffected == 1;
-
-        } catch (SQLException e) {
-            String msg = "Der er sket en fejl. Prøv igen";
-            if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
-                msg = "Addressen findes allerede. Vælg et andet";
+            checkPs.setInt(1, address.getPostalCode());
+            checkPs.setInt(2, address.getHouseNumber());
+            checkPs.setString(3, address.getStreetName());
+            ResultSet rs = checkPs.executeQuery();
+            if (rs.next()) {
+                // Address already exists, return the existing addressID
+                return rs.getInt("addressID");
+            } else {
+                // Address does not exist, insert new address and return the new addressID
+                insertPs.setInt(1, address.getPostalCode());
+                insertPs.setInt(2, address.getHouseNumber());
+                insertPs.setString(3, address.getStreetName());
+                ResultSet rsInsert = insertPs.executeQuery();
+                if (rsInsert.next()) {
+                    return rsInsert.getInt("addressID");
+                }
             }
-            throw new DatabaseException(msg, e.getMessage());
+        } catch (SQLException e) {
+            throw new DatabaseException("An error occurred while inserting the address.", e.getMessage());
         }
+        return -1; // Return -1 if address could not be inserted or retrieved
     }
 
     public static boolean updateAddress(Address address, ConnectionPool connectionPool) throws DatabaseException {

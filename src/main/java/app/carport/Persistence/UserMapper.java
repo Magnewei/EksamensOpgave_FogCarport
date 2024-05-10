@@ -42,19 +42,22 @@ public class UserMapper {
         return null;
     }
 
-    public static void createUser(String Email, String password, int phoneNumber, Address address, String firstName, String lastName, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into users (email, password, role, phonenumber, firstname, lastname) values (?,?,?,?,?,?)";
+
+
+    public static void createUser(User user, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into users (email, password, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\") values (?,?,?,?,?,?,?)";
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
         ) {
-            ps.setString(1, Email);
-            ps.setString(2, password);
-            ps.setBoolean(3, false);  // Every user created should be a non-admin.
-            ps.setInt(4, phoneNumber);
-            ps.setString(5, firstName);
-            ps.setString(6, lastName);
-            AddressMapper.insertAddress(address, connectionPool);
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPassword());
+            ps.setBoolean(3, user.isAdmin());  // Every user created should be a non-admin.
+            ps.setInt(4, user.getPhoneNumber());
+            ps.setString(5, user.getFirstName());
+            ps.setString(6, user.getLastName());
+            int addressId = AddressMapper.insertAddress(user.getAddress(), connectionPool);
+            ps.setInt(7, addressId);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
