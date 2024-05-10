@@ -21,20 +21,21 @@ public class Carport {
     private double length;
     private double width;
     private boolean hasShed;
+    private boolean withRoof;
     private Map<Material,Integer> materialList;
     private double totalPrice;
 
-    public Carport(double length, double width, boolean hasShed){
+    public Carport(double length, double width, boolean withRoof){
         this.length = length;
         this.width = width;
-        this.hasShed = hasShed;
+        this.withRoof = withRoof;
     }
 
-    public Carport(int carportID, double length, double width, boolean hasShed, Map<Material,Integer> materialList){
+    public Carport(int carportID, double length, double width, boolean withRoof, Map<Material,Integer> materialList){
      this.carportID = carportID;
      this.length = length;
      this.width = width;
-     this.hasShed = hasShed;
+     this.withRoof = withRoof;
      this.materialList = materialList;
     }
 
@@ -52,6 +53,10 @@ public class Carport {
 
     public boolean hasShed(){
         return hasShed;
+    }
+
+    public boolean withRoof(){
+        return withRoof;
     }
 
     public Map<Material,Integer> getMaterialList(){
@@ -179,10 +184,12 @@ public class Carport {
         int spærAmount = ((int) ((length-(59.5/2))/(55+4.5)) + 1);
         materialList.put(getShortestWoodThatFits(spærMaterials, width), spærAmount);
 
-        //Der skal også bruges tagplader. Tagpladerne lægges på tværs, og findes i de samme længder, som der er bredder tilgængelige.
+        //Der skal også bruges tagplader hvis kunden vælger det. Tagpladerne lægges på tværs, og findes i de samme længder, som der er bredder tilgængelige.
         //Tagpladerne er 109 cm brede, så vi sikrer at kunden får nok tagplader med, og så må kunden save til så det passer,
-        materialList.put(getShortestTagpladeThatFits(tagplader, length), (int) (width/109)+1);
-
+        //Tagpladerne skal også overlappe lidt, så vi regner ud fra en længde der er lidt kortere end den reelle, så de kan overlappe.
+        if(withRoof) {
+            materialList.put(getShortestTagpladeThatFits(tagplader, length), (int) (width / 100) + 1);
+        }
 
 
         //Det var alt træet, så mangler der skruer, beslag og lign.

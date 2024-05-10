@@ -26,7 +26,7 @@ public class CarportMapper {
         int carportID = 0;
         double length = 0;
         double width = 0;
-        boolean hasShed = false;
+        boolean withRoof = false;
         Map<Material,Integer> materialList = new HashMap<>();
 
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlGetCarportData);) {
@@ -36,7 +36,7 @@ public class CarportMapper {
                 carportID = rs.getInt("carportID"); //
                 length = rs.getDouble("length");
                 width = rs.getDouble("width");
-                hasShed = rs.getBoolean("hasShed");
+                withRoof = rs.getBoolean("withRoof");
             }
         }catch (SQLException e) {
             throw new DatabaseException("Get carport data fejl", e.getMessage());
@@ -55,7 +55,7 @@ public class CarportMapper {
             throw new DatabaseException("Get user fejl", e.getMessage());
         }
 
-        return new Carport(carportID,length,width,hasShed,materialList);
+        return new Carport(carportID,length,width,withRoof,materialList);
 
     }
 }
