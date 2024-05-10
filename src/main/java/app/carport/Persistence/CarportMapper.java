@@ -52,7 +52,7 @@ public class CarportMapper {
                 materialList.put(MaterialMapper.getMaterialById(materialId,connectionPool),quantity);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Get user fejl", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get the carport from the given carportID.", e.getMessage());
         }
 
         return new Carport(carportID,length,width,withRoof,materialList);

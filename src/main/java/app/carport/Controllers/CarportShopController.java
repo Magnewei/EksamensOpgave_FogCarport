@@ -89,7 +89,7 @@
                 ctx.sessionAttribute("hasShed",hasShed);
                 ctx.sessionAttribute("Carport",Carport);
 
-            } catch(IllegalArgumentException e){
+            } catch(NumberFormatException e){
                 ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
             }
         }
@@ -98,7 +98,6 @@
             try {
                 ctx.attribute("LengthList", MaterialMapper.getAllLength(connectionPool));
                 ctx.attribute("WidthList", MaterialMapper.getAllWidth(connectionPool));
-                //ctx.attribute("NameList", MaterialMapper.getAllName(connectionPool));
                 ctx.render("bestilling1.html");
             } catch (DatabaseException e) {
                 ctx.attribute("message", e.getCause());

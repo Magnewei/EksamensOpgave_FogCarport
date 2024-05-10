@@ -8,6 +8,7 @@ import app.carport.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.io.IOException;
 
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -44,7 +45,7 @@ public static void createUser(Context ctx, boolean isadmin, ConnectionPool conne
             ctx.attribute("message", "Brugernavnet eksisterer allerede. Vælg venligst et andet brugernavn.");
             ctx.render("createUser.html");
         }
-    } catch (DatabaseException e) {
+    } catch (DatabaseException | NumberFormatException e) {
         ctx.attribute("message", "Der opstod en fejl under oprettelsen. Prøv venligst igen.");
         ctx.render("index.html");
     }
@@ -65,7 +66,6 @@ public static void createUser(Context ctx, boolean isadmin, ConnectionPool conne
             ctx.render("index.html");
 
         } catch (DatabaseException e) {
-            //hvis nej send tilbage til login side med fejl
             ctx.attribute("message", "Forkert login, Prøv venligst igen.");
             ctx.render("login.html");
         }
@@ -75,16 +75,14 @@ public static void createUser(Context ctx, boolean isadmin, ConnectionPool conne
             User user = ctx.sessionAttribute("currentuser");
             ctx.render("ordrer.html");
 
-        } catch (RuntimeException e) {
+        } catch (NullPointerException e) {
             ctx.attribute("message", "An error occurred while fetching the user data.");
-            ctx.render("login.html"); // Render an error page
+            ctx.render("login.html");
         }
     }
     public static void updateUser(Context ctx, ConnectionPool connectionPool) {
-
         try {
             User currentUser = ctx.sessionAttribute("currentUser");
-
             currentUser.setFirstName(ctx.formParam("firstName"));
             currentUser.setLastName(ctx.formParam("lastName"));
             currentUser.setEmail(ctx.formParam("email"));
@@ -106,10 +104,8 @@ public static void createUser(Context ctx, boolean isadmin, ConnectionPool conne
             ctx.render("ordrer.html");
         }
     }
-    public static void goTocreateUser(Context ctx) {
 
+    public static void goTocreateUser(Context ctx) {
         ctx.render("createUser.html");
     }
-
-
 }
