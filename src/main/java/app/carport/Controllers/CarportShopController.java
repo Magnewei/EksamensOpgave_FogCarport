@@ -30,12 +30,12 @@
             ctx.render("bestilling2.html");
             Double length = Double.valueOf(ctx.formParam("Længdevalue"));
             Double width = Double.valueOf(ctx.formParam("Breddevalue"));
-            boolean hasShed = Boolean.valueOf(ctx.formParam("hasShed"));
+            boolean withRoof = Boolean.valueOf(ctx.formParam("withRoof"));
             ctx.sessionAttribute("Carportlength",length);
             ctx.sessionAttribute("Carportwidth",width);
             try {
-                Carport carport = new Carport(length,width,hasShed);
-                ctx.sessionAttribute("hasShed",hasShed);
+                Carport carport = new Carport(length,width,withRoof);
+                ctx.sessionAttribute("withRoof",withRoof);
                 ctx.sessionAttribute("Carport",carport);
                 CarportSVG svg = new CarportSVG(width,length);
                 ctx.sessionAttribute("svg",svg.toString());
