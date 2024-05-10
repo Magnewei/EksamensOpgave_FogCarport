@@ -2,7 +2,7 @@
 :root {
     --primary-color: #003d76;
     --secondary-color: #fff;
-    --accent-color: #1362ab;
+    --accent-color: #0d5393;
     --accent-dark: rgb(0, 41, 80);
     --accent-light: #0161b9;
 }
@@ -23,7 +23,8 @@ label {
     display: block; /* Ensures each label appears on its own line */
     font-weight: bold; /* Makes the label text bold */
     color: var(--secondary-color); /* Sets the color of the label text */
-    margin: 5px;
+    margin: 2px;
+    text-align: center;
 }
 
 /* Header styles */
@@ -47,7 +48,7 @@ label {
     position: relative; /* Set position to relative for absolute positioning */
 }
 
-.navbar a.logo-link {
+.navbar button.logo-link {
     position: absolute;
     top: 50%;
     left: 10px; /* Adjust left position as needed */
@@ -57,7 +58,10 @@ label {
     background-image: url('Media/FogLogo.png'); /* Specify the path to your image */
     background-size: cover; /* Adjusts the size of the background image */
     display: block; /* Make the anchor element a block-level element */
+    border: none; /* Remove the border */
+    padding: 0; /* Remove the padding */
 }
+
 
 .navbar ul {
     list-style-type: none;
@@ -76,6 +80,21 @@ label {
     color: var(--secondary-color);
     font-size: 18px;
 }
+.navbar form button {
+    background: none; /* Remove the background */
+    color: var(--secondary-color); /* Set the text color */
+    border: none; /* Remove the border */
+    padding: 0; /* Remove the padding */
+    font: inherit; /* Inherit the font from the parent element */
+    cursor: pointer; /* Change the cursor when hovering over the button */
+    outline: inherit; /* Inherit the outline from the parent element */
+    text-align: left; /* Align the text to the left */
+}
+
+.navbar form button:hover {
+    color: var(--accent-color); /* Change the text color when hovering over the button */
+}
+
 
 /* Main content styles */
 .main-content {
@@ -95,6 +114,8 @@ textarea {
     border-radius: 5px;
     resize: none;
 }
+
+
 
 /* Button styles */
 .btn {
@@ -203,6 +224,11 @@ form textarea {
     border: 2px solid var(--accent-color); /* Add a border */
     margin-bottom: 20px; /* Add space between boxes */
 }
+.Bestilling-box form {
+    display: flex;
+    flex-wrap: wrap; /* Allows the fieldsets to wrap onto the next line if there isn't enough space */
+    justify-content: space-between; /* Adds space between the fieldsets */
+}
     .Bestilling-box2 {
         background-color: var( --accent-dark);
         display: flex; /* Use flexbox layout */
@@ -226,7 +252,9 @@ form textarea {
     border: 2px solid var(--secondary-color); /* Add a border */
     margin-bottom: 20px; /* Add space between boxes */
     width: calc(50% - 20px);
-    max-width: 700px;
+    height: calc(50% - 20px);
+    max-height: 300px;
+    max-width: 500px;
     text-align: center;
 }
 .Billede-box:not(:last-child) {
@@ -296,4 +324,50 @@ form textarea {
     height: 100px;
     resize: none;
 }
+/* Table styles */
+table {
+    width: 100%; /* Ensure the table fills its container */
+    border-collapse: collapse; /* Collapse borders into a single border */
+    margin-bottom: 20px; /* Add space between tables */
+}
 
+/* Table header styles */
+th {
+    background-color: var(--primary-color); /* Set background color */
+    color: var(--secondary-color); /* Set text color */
+    padding: 10px; /* Add padding */
+    text-align: left; /* Align text to the left */
+}
+
+/* Table cell styles */
+td {
+    padding: 10px; /* Add padding */
+}
+
+/* Alternate row background color */
+tr:nth-child(even) {
+    background-color: var(--accent-light); /* Set alternate row background color */
+}
+
+/* Hover effect on rows */
+tr:hover {
+    background-color: var(--accent-dark); /* Set hover background color */
+    color: var(--secondary-color); /* Set hover text color */
+}
+
+fieldset {
+    border: 1px solid var(--secondary-color); /* Set border color */
+    border-radius: 5px; /* Add rounded corners */
+    padding: 10px; /* Add some padding */
+    margin-bottom: 20px; /* Add some space below the fieldset */
+    background-color: var(--accent-color); /* Set a background color */
+}
+input[type="text"] {
+    width: 300px; /* Adjust the width as needed */
+    padding: 10px;
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 5px;
+    background-color: white; /* Set background color */
+    font-size: 16px; /* Set font size */
+    color: var(--primary-color); /* Set text color */
+}

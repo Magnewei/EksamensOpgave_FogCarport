@@ -5,6 +5,33 @@
     <title>Title</title>
 </head>
 <body>
+<header class="navbar">
+    <form method="post">
 
+            <button type="submit" formaction="/goToIndex" class="logo-link"></button>
+              <ul>
+            <li>
+                <button type="submit" th:if="${session.currentUser != null}" formaction="/logout" name="button">Logout</button>
+                <button type="submit" th:if="${session.currentUser == null}" formaction="/goToLogin" name="button">Login</button>
+            </li>
+
+            <li>
+                <button type="submit" formaction="/goToOrdrer" name="button">Ordrer</button>
+            </li>
+
+            <li>
+                  <button th:if="${session.currentUser != null} ? ${session.currentUser.isAdmin == true}"
+                    type="submit" formaction="/loadadmin" name="button">Admin
+            </button>
+                  </li>
+
+        </ul>
+    </form>
+</header>
+<footer class="footer">
+    <div th:if="${session.currentUser !=null}">
+        <span th:text="${session.currentUser.email}"></span> |
+    </div>
+</footer>
 </body>
 </html>

@@ -8,14 +8,8 @@
 
 </head>
 <body>
-<div class="navbar">
-    <a href="index.html" class="logo-link"></a>
-    <ul>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="ordrer.html">Ordrer</a></li>
-        <li><a href="admin.html">Admin</a></li>
-    </ul>
-</div>
+<div th:replace="~{fragments :: header}"></div>
+
 <div class="main-content">
     <form method="post">
     <div class="Bestilling-box">
@@ -39,8 +33,8 @@
             </option>
 
         </select>
-            <label>Skur til</label>
-            <select class="form-control" th:name="hasShed">
+            <label>Tagplader til</label>
+            <select class="form-control" th:name="withRoof">
                 <option th:value="0" >Nej</option>
                 <option th:value="1" >Ja</option>
             </select>
@@ -54,9 +48,7 @@
     </form>
 </div>
 
-<div class="footer">
-    <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
-</div>
+<div th:replace="~{fragments :: footer}"></div>
 
 
 </body>

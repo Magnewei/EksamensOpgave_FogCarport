@@ -7,34 +7,22 @@
     <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
-
-<div class="navbar">
-
-    <a href="index.html" class="logo-link"></a>
-    <ul>
-        <li><a href="index.html">Bestil</a></li>
-        <li><a href="ordrer.html">Ordrer</a></li>
-        <li><a href="admin.html">Admin</a></li>
-    </ul>
-</div>
+<div th:replace="~{fragments :: header}"></div>
 
 <div class="main-content">
     <div class="login-box">
     <form class="login-form"  method="post">
-        <input type="text" name="username" placeholder="Email" required>
+        <input type="text" name="username" placeholder="Email" >
         <br>
-        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="password" placeholder="Password" >
         <br>
-
         <button type="submit" formaction="/login" class="btn">Login</button>
-        <button type="submit" formaction="/createUser" class="btn">Opret bruger</button>
-
+        <button type="submit" formaction="/goTocreateUser" class="btn">Opret bruger</button>
     </form>
     </div>
 </div>
-<div class="footer">
-    <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
-</div>
+
+<div th:replace="~{fragments :: footer}"></div>
 
 </body>
 </html>

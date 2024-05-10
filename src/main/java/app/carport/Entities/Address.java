@@ -2,10 +2,10 @@ package app.carport.Entities;
 
 public class Address {
     private final int addressID;
-    private final int postalCode;
-    private final int houseNumber;
-    private final String cityName;
-    private final String streetName;
+    private  int postalCode;
+    private  int houseNumber;
+    private  String cityName;
+    private  String streetName;
 
     public Address(int addressID, int postalCode, int houseNumber,String cityName, String streetName) {
         this.addressID = addressID;
@@ -33,5 +33,21 @@ public class Address {
 
     public int getHouseNumber() {
         return houseNumber;
+    }
+
+    public void setPostalCode(int postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public void setHouseNumber(int houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 }
