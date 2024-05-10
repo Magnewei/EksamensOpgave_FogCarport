@@ -53,11 +53,14 @@
             </tr>
             </thead>
             <tbody>
+            <div th:if="${session.currentUser.order !=null}">
             <tr>
+
                 <td th:text="${session.currentUser.order.orderId}"></td>
                 <td th:text="${session.currentUser.order.totalPrice}"></td>
                 <td th:text="${session.currentUser.order.status}"></td>
             </tr>
+            </div>
         </table>
 
     </div>
