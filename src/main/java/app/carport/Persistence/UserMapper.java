@@ -42,35 +42,7 @@ public class UserMapper {
         return null;
     }
 
-/*
-    public static void createUser(String Email, String password, int phoneNumber, Address address, String firstName, String lastName, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into users (email, password, role, phonenumber, firstname, lastname) values (?,?,?,?,?,?)";
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
-        ) {
-            ps.setString(1, Email);
-            ps.setString(2, password);
-            ps.setBoolean(3, false);  // Every user created should be a non-admin.
-            ps.setInt(4, phoneNumber);
-            ps.setString(5, firstName);
-            ps.setString(6, lastName);
-            AddressMapper.insertAddress(address, connectionPool);
 
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
-                throw new DatabaseException("Fejl ved oprettelse af ny bruger");
-            }
-        } catch (SQLException e) {
-            String msg = "Der er sket en fejl. Prøv igen";
-            if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
-                msg = "Brugernavnet findes allerede. Vælg et andet";
-            }
-            throw new DatabaseException(msg, e.getMessage());
-        }
-    }
-
- */
 
     public static void createUser(User user, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into users (email, password, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\") values (?,?,?,?,?,?,?)";

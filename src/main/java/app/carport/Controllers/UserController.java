@@ -19,27 +19,7 @@ public class UserController {
         app.post("goTocreateUser", ctx -> goTocreateUser(ctx));
 
     }
-/*
-    public static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) {
-        String username = ctx.formParam("username");
-        String password = ctx.formParam("password");
-        String role = isadmin ? "admin" : "bruger";
 
-        try {
-            if (!UserMapper.checkIfUserExistsByName(username, connectionPool)) {
-                UserMapper.createUser(username, password, role, connectionPool);
-                ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + username + ". Nu skal du logge på");
-                ctx.render("login.html");
-            } else {
-                ctx.attribute("message", "Brugernavnet eksisterer allerede. Vælg venligst et andet brugernavn.");
-                ctx.render("createUser.html");
-            }
-        } catch (DatabaseException e) {
-            ctx.attribute("message", "Der opstod en fejl under oprettelsen. Prøv venligst igen.");
-            ctx.render("index.html");
-        }
-    }
- */
 public static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) {
     String firstName = ctx.formParam("firstName");
     String lastName = ctx.formParam("lastName");
