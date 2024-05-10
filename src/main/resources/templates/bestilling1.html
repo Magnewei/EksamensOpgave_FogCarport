@@ -33,7 +33,7 @@
             </option>
 
         </select>
-            <label>Skur til</label>
+            <label>Tagplader til</label>
             <select class="form-control" th:name="withRoof">
                 <option th:value="0" >Nej</option>
                 <option th:value="1" >Ja</option>
@@ -48,9 +48,7 @@
     </form>
 </div>
 
-<div class="footer">
-    <p>&copy; 2024 Sample Website. All Rights Reserved.</p>
-</div>
+<div th:replace="~{fragments :: footer}"></div>
 
 
 </body>

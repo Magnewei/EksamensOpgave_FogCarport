@@ -6,8 +6,6 @@
     import app.carport.Persistence.ConnectionPool;
     import app.carport.Persistence.MaterialMapper;
     import app.carport.SVG.CarportSVG;
-    import app.carport.SVG.SVGDrawer;
-    import com.sendgrid.helpers.mail.Mail;
     import io.javalin.Javalin;
     import io.javalin.http.Context;
 
@@ -22,7 +20,7 @@
         }
 
         public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
-            reRenderCarportShop(ctx, connectionPool);
+            renderCarportShop(ctx, connectionPool);
         }
 
         public static void orderButtonTwo(ConnectionPool connectionPool, Context ctx) {
@@ -96,8 +94,7 @@
             }
         }
 
-
-        public static void reRenderCarportShop(Context ctx, ConnectionPool connectionPool) {
+        public static void renderCarportShop(Context ctx, ConnectionPool connectionPool) {
             try {
                 ctx.attribute("LengthList", MaterialMapper.getAllLength(connectionPool));
                 ctx.attribute("WidthList", MaterialMapper.getAllWidth(connectionPool));
