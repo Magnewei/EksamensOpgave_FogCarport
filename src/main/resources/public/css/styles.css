@@ -240,6 +240,17 @@ form textarea {
         border: 2px solid var(--primary-color); /* Add a border */
         margin-bottom: 20px; /* Add space between boxes */
 }
+.Bestilling-box3 {
+    background-color: var(--primary-color);
+    display: flex; /* Use flexbox layout */
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 5px;
+    border: 2px solid var(--accent-color); /* Add a border */
+    margin-bottom: 5px; /* Add space between boxes */
+    margin-top: 10px;
+}
 .Billede-box {
     background-image: url('Media/Boxb.png');
     background-size: cover;

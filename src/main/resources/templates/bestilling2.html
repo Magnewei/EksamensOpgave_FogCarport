@@ -9,11 +9,8 @@
 <body>
 <div th:replace="~{fragments :: header}"></div>
 
-<div class="main-content">
 
-    <div>
-        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
-    </div>
+<div class="main-content">
 
     <form method="post">
         <div class="Bestilling-box">
