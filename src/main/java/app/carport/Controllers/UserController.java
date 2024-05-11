@@ -81,6 +81,11 @@ public class UserController {
         String password = ctx.formParam("password");
 
         try {
+            if (password== null || password.isEmpty()) {
+                ctx.attribute("message", "Password is required.");
+                ctx.render("login.html");
+                return;
+            }
             User user = UserMapper.login(mail, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
             ctx.render("index.html");

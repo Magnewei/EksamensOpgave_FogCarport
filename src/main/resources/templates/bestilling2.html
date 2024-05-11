@@ -23,6 +23,7 @@
             </div>
             <div class="infoform">
                 <input type="text" name="streetname" required th:value="${session.currentUser != null ? session.currentUser.address.streetName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Street Name'}">
+                <input type="text" name="postalCode" required th:value="${session.currentUser != null ? session.currentUser.address.postalCode : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'postalCode'}">
                 <input type="text" name="streetnumber" required th:value="${session.currentUser != null ? session.currentUser.address.houseNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'House Number'}">
             </div>
             <div class="infoform">
@@ -39,7 +40,9 @@
             </div>
 
             </fieldset>
-            <button type="submit" class="btn" formaction="/Order">Bestil </button>
+            <button type="submit" class="btn" th:if="${session.currentUser == null}" formaction="/OrderNoUser" name="button"> bestil </button>
+            <button type="submit" class="btn" th:if="${session.currentUser != null}" formaction="/Order" name="button"> bestil </button>
+
         </div>
 
     </form>
