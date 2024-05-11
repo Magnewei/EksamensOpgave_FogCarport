@@ -48,7 +48,6 @@ public class CarportShopController {
     public static void orderButtonThree(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
         renderNames(ctx);
 
-        checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastname"), ctx.formParam("streetname"), ctx.formParam("phonenumber"));
         User user = ctx.sessionAttribute("currentUser");
         Carport carport = ctx.sessionAttribute("Carport");
 
@@ -65,16 +64,11 @@ public class CarportShopController {
     public static void orderButtonThreeNouser(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
         renderNames(ctx);
 
-        checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastname"), ctx.formParam("streetname"), ctx.formParam("phonenumber"));
         User user = ctx.sessionAttribute("currentUser");
         Carport carport = ctx.sessionAttribute("Carport");
         user.setUserID(UserMapper.getLastUserId(connectionPool) + 1);
         UserMapper.createTempUser(user, connectionPool);
 
-        if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastname"), ctx.formParam("streetname"), ctx.formParam("phonenumber"))) {
-            ctx.render("bestilling2.html");
-            return;
-        }
 
         int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
         boolean NewOrder = OrderMapper.insertNewOrder(user, carportId, connectionPool);
@@ -84,6 +78,11 @@ public class CarportShopController {
 
     public static void renderNames(Context ctx) throws DatabaseException {
         User user;
+        if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastname"), ctx.formParam("streetname"), ctx.formParam("phonenumber"))) {
+            ctx.render("bestilling2.html");
+            return;
+        }
+
         if (ctx.sessionAttribute("currentUser") == null) {
             String name = ctx.formParam("name");
             String lastname = ctx.formParam("lastname");

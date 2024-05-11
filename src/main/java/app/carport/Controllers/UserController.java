@@ -23,7 +23,6 @@ public class UserController {
     }
 
 
-
     public static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) {
         try {
         String firstName = ctx.formParam("firstName");
@@ -94,6 +93,8 @@ public class UserController {
             ctx.render("login.html");
         }
     }
+
+
     public static void renderUserSite(Context ctx, ConnectionPool connectionPool) {
             User user = ctx.sessionAttribute("currentUser");
             ctx.render("userSite.html");
