@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class MailServer {
     private final static String API_KEY = System.getenv("SENDGRID_API_KEY");
-    private static final String email = "fogprojekt@icloud.com";
+    private static final String email = "fogprojekt@icloud.com"; // Mail address which is used for sending to the customer.
 
     public static boolean mailOnOrderDone(User user) {
         int responseCode = 0;

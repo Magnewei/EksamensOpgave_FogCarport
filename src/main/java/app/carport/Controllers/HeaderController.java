@@ -16,20 +16,20 @@ public class HeaderController {
     }
 
     private static void goToAdmin(ConnectionPool connectionPool, Context ctx) {
-            AdminPanelController.renderAdmin(connectionPool, ctx);
+        AdminPanelController.renderAdmin(connectionPool, ctx);
     }
 
     public static void goToLogin(Context ctx) {
-            ctx.render("login.html");
+        ctx.render("login.html");
     }
 
     public static void goToUserSite(Context ctx, ConnectionPool connectionPool) {
-            try {
-                UserController.renderUserSite(ctx, connectionPool);
-            } catch (Exception e) {
-                ctx.attribute("message", "De skal være logget ind for at se dine ordrer");
-                ctx.render("login.html");
-            }
+        try {
+            UserController.renderUserSite(ctx, connectionPool);
+        } catch (Exception e) {
+            ctx.attribute("message", "De skal være logget ind for at se dine ordrer");
+            ctx.render("login.html");
+        }
     }
 
     public static void goToIndex(Context ctx) {
