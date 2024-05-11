@@ -16,7 +16,7 @@ public class UserController {
         app.post("login", ctx -> login(ctx, connectionPool));
         app.get("logout", ctx -> logout(ctx));
         app.post("createUser", ctx -> createUser(ctx, false, connectionPool));
-        app.get("/getUserCompleteData", ctx -> renderOrder(ctx, connectionPool));
+        app.get("getUserSite", ctx -> renderUserSite(ctx, connectionPool));
         app.post("updateUser", ctx -> updateUser(ctx, connectionPool));
         app.post("goTocreateUser", ctx -> goTocreateUser(ctx));
 
@@ -91,15 +91,10 @@ public class UserController {
             ctx.render("login.html");
         }
     }
-    public static void renderOrder(Context ctx, ConnectionPool connectionPool) {
-        try {
-            User user = ctx.sessionAttribute("currentuser");
+    public static void renderUserSite(Context ctx, ConnectionPool connectionPool) {
+            User user = ctx.sessionAttribute("currentUser");
             ctx.render("userSite.html");
 
-        } catch (RuntimeException e) {
-            ctx.attribute("message", "An error occurred while fetching the user data.");
-            ctx.render("login.html"); // Render an error page
-        }
     }
     public static void updateUser(Context ctx, ConnectionPool connectionPool) {
 
