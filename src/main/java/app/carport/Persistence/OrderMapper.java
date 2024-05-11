@@ -75,12 +75,12 @@ public class OrderMapper {
         return orderNumber;
     }
 
-    public static boolean insertNewOrder(User user, String status, int carportId, ConnectionPool connectionPool) throws DatabaseException {
-        String sqlMakeOrder = "INSERT INTO orders (\"status\",\"userID\",\"carportID\") VALUES (?,?,?)";
+    public static boolean insertNewOrder(User user, int carportId, ConnectionPool connectionPool) throws DatabaseException {
+        String sqlMakeOrder = "INSERT INTO orders (\"userID\",\"carportID\") VALUES (?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlMakeOrder)) {
-            ps.setString(1, status);
-            ps.setInt(2, user.getUserID());
-            ps.setInt(3, carportId);
+
+            ps.setInt(1, user.getUserID());
+            ps.setInt(2, carportId);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
 

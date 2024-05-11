@@ -10,9 +10,9 @@ public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("loadadmin", ctx -> goToAdmin(connectionPool, ctx));
         app.post("goToLogin", ctx -> goToLogin(ctx));
-        app.post("goToOrdrer", ctx -> goToOrder(ctx, connectionPool));
+        app.post("goToUserSite", ctx -> goToUserSite(ctx, connectionPool));
         app.post("goToIndex", ctx -> goToIndex(ctx));
-        app.post("/logout", ctx -> logout(ctx));
+        app.post("logout", ctx -> logout(ctx));
     }
 
     private static void goToAdmin(ConnectionPool connectionPool, Context ctx) {
@@ -23,8 +23,13 @@ public class HeaderController {
             ctx.render("login.html");
     }
 
-    public static void goToOrder(Context ctx, ConnectionPool connectionPool) {
-            UserController.renderOrder(ctx, connectionPool);
+    public static void goToUserSite(Context ctx, ConnectionPool connectionPool) {
+            try {
+                UserController.renderUserSite(ctx, connectionPool);
+            } catch (Exception e) {
+                ctx.attribute("message", "De skal være logget ind for at se dine ordrer");
+                ctx.render("login.html");
+            }
     }
 
     public static void goToIndex(Context ctx) {

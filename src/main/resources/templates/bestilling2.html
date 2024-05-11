@@ -9,29 +9,42 @@
 <body>
 <div th:replace="~{fragments :: header}"></div>
 
+
 <div class="main-content">
+
     <form method="post">
-    <div class="Bestilling-box">
-    <div class="infoform">
-        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
-        <input type="text" name="name" placeholder="Navn" required th:value="${name}">
-        <input type="text" name="lastname" placeholder="Efternavn" required th:value="${lastname}">
-    </div>
-    <div class="infoform">
-        <input type="text" name="streetname" placeholder="Vejnavn" required th:value="${streetname}">
-        <input type="text" name="streetnumber" placeholder="Nummer" required th:value="${number}">
-    </div>
-    <div class="infoform">
-        <input type="email" name="mail" placeholder="Email" required th:value="${email}">
-        <input type="tel" name="phonenumber" placeholder="Telefonnummer" required th:value="${phonenumber}">
-    </div>
-    <div class="infoform">
-        <textarea id="additional-comments" name="additional-comments" placeholder="TOS" readonly></textarea>
-        <label for="agree">Jeg accepterer betingelserne</label>
-        <input type="checkbox" id="agree" name="agree" required>
-    </div>
-        <button type="submit" formaction="/Order">Bestil</button>
-    </div>
+        <div class="Bestilling-box">
+            <label> Dine Informationer </label>
+            <fieldset>
+            <div class="infoform">
+                <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+                <input type="text" name="name" required th:value="${session.currentUser != null ? session.currentUser.firstName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'First Name'}">
+                <input type="text" name="lastname" required th:value="${session.currentUser != null ? session.currentUser.lastName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Last Name'}">
+            </div>
+            <div class="infoform">
+                <input type="text" name="streetname" required th:value="${session.currentUser != null ? session.currentUser.address.streetName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Street Name'}">
+                <input type="text" name="postalCode" required th:value="${session.currentUser != null ? session.currentUser.address.postalCode : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'postalCode'}">
+                <input type="text" name="streetnumber" required th:value="${session.currentUser != null ? session.currentUser.address.houseNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'House Number'}">
+            </div>
+            <div class="infoform">
+                <input type="email" name="mail" required th:value="${session.currentUser != null ? session.currentUser.email : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Email'}">
+                <input type="tel" name="phonenumber" required th:value="${session.currentUser != null ? session.currentUser.phoneNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Phone Number'}">
+            </div>
+            </fieldset>
+
+            <fieldset>
+            <div class="infoform">
+                <textarea id="additional-comments" name="additional-comments" placeholder="Magnus Er HIM!" readonly></textarea>
+                <label for="agree">Jeg accepterer betingelserne</label>
+                <input type="checkbox" id="agree" name="agree" required>
+            </div>
+
+            </fieldset>
+            <button type="submit" class="btn" th:if="${session.currentUser == null}" formaction="/OrderNoUser" name="button"> bestil </button>
+            <button type="submit" class="btn" th:if="${session.currentUser != null}" formaction="/Order" name="button"> bestil </button>
+
+        </div>
+
     </form>
 </div>
 

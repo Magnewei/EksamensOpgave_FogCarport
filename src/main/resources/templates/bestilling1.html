@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Website - Home</title>
-    <link rel="stylesheet" href="../public/css/bestilling1.css" th:href="@{/css/bestilling1.css}">
+    <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}">
 
 </head>
 <body>
 <div th:replace="~{fragments :: header}"></div>
 
+
 <div class="main-content">
+
     <form method="post">
     <div class="Bestilling-box">
         <div class="dropdowns">
-
+<fieldset>
             <label>Bredde</label>
         <select id="Bredde" name="Breddevalue">
 
@@ -39,11 +41,13 @@
                 <option th:value="1" >Ja</option>
             </select>
 
-        </select>
+            </fieldset>
         </div>
+        <fieldset>
         <label for="message">Extra information</label>
     <textarea id="message" name="message" ></textarea>
-        <button type="submit" formaction="/Continue">Fortsæt</button>
+        </fieldset>
+        <button type="submit" formaction="/Continue" class="btn"> Fortsæt </button>
     </div>
     </form>
 </div>

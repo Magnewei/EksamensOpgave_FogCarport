@@ -62,6 +62,27 @@ public class UserMapper {
             throw new DatabaseException(msg, e.getMessage());
         }
     }
+    public static boolean createTempUser(User user, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into users (email, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\") values (?,?,?,?,?,?)";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, user.getEmail());
+            ps.setBoolean(2, user.isAdmin());  // Every user created should be a non-admin.
+            ps.setInt(3, user.getPhoneNumber());
+            ps.setString(4, user.getFirstName());
+            ps.setString(5, user.getLastName());
+            int addressId = AddressMapper.insertAddress(user.getAddress(), connectionPool);
+            ps.setInt(6, addressId);
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            String msg = "An error occured. Try again.";
+            if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
+                msg = "The username already exists. Please choose another one.";
+            }
+            throw new DatabaseException(msg, e.getMessage());
+        }
+    }
 
     public static boolean deleteUser(int userID, ConnectionPool connectionPool) throws DatabaseException {
         String deleteOrderLinesSQL = "DELETE FROM orderline WHERE \"orderID\" IN (SELECT \"orderID\" FROM orders WHERE \"userID\" = ?)";
@@ -194,6 +215,18 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DatabaseException("Error. Couldn't update user from userID.", e.getMessage());
         }
+    }
+    public static int getLastUserId(ConnectionPool connectionPool) throws DatabaseException {
+        int orderNumber = 0;
+        String sql = "SELECT \"userID\" " + "FROM users " + "ORDER BY \"userID\" DESC " + "LIMIT 1;";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery();) {
+            if (rs.next()) {
+                orderNumber = rs.getInt("userID");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error retrieving the latest user ID", e.getMessage());
+        }
+        return orderNumber;
     }
 
 }

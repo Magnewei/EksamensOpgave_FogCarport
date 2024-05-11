@@ -1,7 +1,11 @@
 package app.carport.Entities;
 
 public class User {
-    private final int userID;
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    private int userID;
 
     private boolean isAdmin;
     private String firstName;
@@ -55,6 +59,15 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.order = order;
+    }
+
+    public User(String name, String lastname, String streetname, String streetnumber, String phonenumber, String mail) {
+        this.userID = 0;
+        this.email = mail;
+        this.firstName = name;
+        this.lastName = lastname;
+        this.address = new Address(streetname, Integer.parseInt(streetnumber), 0);
+        this.phoneNumber = Integer.parseInt(phonenumber);
     }
 
     public int getphoneNumber() {return phoneNumber;}

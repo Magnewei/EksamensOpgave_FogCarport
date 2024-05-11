@@ -21,6 +21,11 @@ public class Carport {
     private double length;
     private double width;
     private boolean hasShed;
+
+    public boolean isWithRoof() {
+        return withRoof;
+    }
+
     private boolean withRoof;
     private Map<Material,Integer> materialList;
     private double totalPrice;
@@ -30,7 +35,12 @@ public class Carport {
         this.width = width;
         this.withRoof = withRoof;
     }
-
+    public Carport(double length, double width, boolean withRoof, int carportID){
+        this.length = length;
+        this.width = width;
+        this.withRoof = withRoof;
+        this.carportID= carportID;
+    }
     public Carport(int carportID, double length, double width, boolean withRoof, Map<Material,Integer> materialList){
      this.carportID = carportID;
      this.length = length;

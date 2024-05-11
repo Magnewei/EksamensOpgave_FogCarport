@@ -1,9 +1,6 @@
 package app.carport.Persistence;
 
-import app.carport.Entities.Carport;
-import app.carport.Entities.Material;
-import app.carport.Entities.Order;
-import app.carport.Entities.User;
+import app.carport.Entities.*;
 import app.carport.Exceptions.DatabaseException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -57,5 +54,21 @@ public class CarportMapper {
 
         return new Carport(carportID,length,width,withRoof,materialList);
 
+    }
+    public static int getCarportByWidthAndLength(double width,double length, boolean withRoof, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM carport WHERE \"width\" = ? AND \"length\" = ? AND \"withRoof\"=?;";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setDouble(1, width);
+            ps.setDouble(2, length);
+            ps.setBoolean(3, withRoof);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int carportId = rs.getInt("carportID");
+                return carportId;
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error. Couldn't retrieve the adress data from the given addressID.", e.getMessage());
+        }
+        return 0;
     }
 }

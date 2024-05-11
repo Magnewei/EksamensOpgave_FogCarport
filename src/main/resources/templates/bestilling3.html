@@ -8,25 +8,30 @@
 </head>
 <body>
 <div th:replace="~{fragments :: header}"></div>
-<form method="post" action="order">
+
 <div class="main-content">
+
+    <form method="post" action="order">
     <div class="Bestilling-box2">
         <div class="Bestilling-box">
-        <p> Du har Bestilt en Carport med følgende mål </p>
-        </div>
-        <p>
-         Længde: <span type="text" name="Carportheight" required th:text="${session.Carport.length}">
-        </p>
-        <p>
-            Bredde: <span type="text" name="Carportwidth" required th:text="${session.Carport.width}">
-        </p>
+        <label> Du har Bestilt en Carport med følgende mål </label>
 
-        <p>
-            Skur til : <span type="text" name="Carportwidth" required th:text="${session.Carport.hasShed}">
-        </p>
+            <ul>
+                <li>Længde: <span type="text" name="Carportheight" required th:text="${session.Carport.length}"></span></li>
+                <li>Bredde: <span type="text" name="Carportwidth" required th:text="${session.Carport.width}"></span></li>
+                <li>Skur til : <span type="text" name="Carportwidth" required th:text="${session.Carport.hasShed}"></span></li>
+            </ul>
+
+        </div>
     </div>
+    <div class="Bestilling-box">
+        <div class="carport-svg-topview">
+            <div th:utext="${session.svg}"></div>
+        </div>
     </div>
-</form>
+    </form>
+    </div>
+
 <div class="carport-svg-topview">
     <div th:utext="${session.svg}"></div>
 </div>
