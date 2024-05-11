@@ -7,49 +7,69 @@ import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import java.io.IOException;
 
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("login", ctx -> login(ctx, connectionPool));
         app.get("logout", ctx -> logout(ctx));
         app.post("createUser", ctx -> createUser(ctx, false, connectionPool));
-        app.get("/getUserCompleteData", ctx -> renderOrder(ctx, connectionPool));
+        app.get("getUserSite", ctx -> renderUserSite(ctx, connectionPool));
         app.post("updateUser", ctx -> updateUser(ctx, connectionPool));
         app.post("goTocreateUser", ctx -> goTocreateUser(ctx));
 
     }
 
-public static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) {
-    String firstName = ctx.formParam("firstName");
-    String lastName = ctx.formParam("lastName");
-    String email = ctx.formParam("username");
-    String password = ctx.formParam("password");
-    int phoneNumber = Integer.parseInt(ctx.formParam("phoneNumber"));
-    String streetName = ctx.formParam("streetName");
-    int houseNumber = Integer.parseInt(ctx.formParam("houseNumber"));
-    String cityName = ctx.formParam("cityName");
-    int postalCode = Integer.parseInt(ctx.formParam("postalCode"));
 
-    Address address = new Address(0, postalCode, houseNumber, cityName, streetName);
 
-    User user = new User(0, email, password, isadmin, firstName, lastName, address, phoneNumber);
+    public static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) {
+        String firstName = ctx.formParam("firstName");
+        String lastName = ctx.formParam("lastName");
+        String email = ctx.formParam("username");
+        String password = ctx.formParam("password");
+        int phoneNumber = Integer.parseInt(ctx.formParam("phoneNumber"));
+        String streetName = ctx.formParam("streetName");
+        int houseNumber = Integer.parseInt(ctx.formParam("houseNumber"));
+        String cityName = ctx.formParam("cityName");
+        int postalCode = Integer.parseInt(ctx.formParam("postalCode"));
 
-    try {
-        if (!UserMapper.checkIfUserExistsByName(email, connectionPool)) {
-            UserMapper.createUser(user, connectionPool);
-            ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + email + ". Nu skal du logge på");
-            ctx.render("login.html");
-        } else {
-            ctx.attribute("message", "Brugernavnet eksisterer allerede. Vælg venligst et andet brugernavn.");
+        // Regular expression pattern for password validation
+        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=.*[a-zA-Z\\d@#$%^&+=!])[A-Za-z\\d@#$%^&+=!]{8,}$";
+
+        // Compile the regular expression pattern
+        Pattern pattern = Pattern.compile(passwordRegex);
+
+        // Create a matcher with the input password
+        Matcher matcher = pattern.matcher(password);
+
+        // Perform password validation
+        if (!matcher.matches()) {
+            ctx.attribute("message", "Password must contain at least one letter, one digit, and be at least 8 characters long.");
             ctx.render("createUser.html");
+            return; // Exit the method if password validation fails
         }
-    } catch (DatabaseException | NumberFormatException e) {
-        ctx.attribute("message", "Der opstod en fejl under oprettelsen. Prøv venligst igen.");
-        ctx.render("index.html");
+
+        Address address = new Address(0, postalCode, houseNumber, cityName, streetName);
+
+        User user = new User(0, email, password, isadmin, firstName, lastName, address, phoneNumber);
+
+        try {
+            if (!UserMapper.checkIfUserExistsByName(email, connectionPool)) {
+                UserMapper.createUser(user, connectionPool);
+                ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + email + ". Nu skal du logge på");
+                ctx.render("login.html");
+            } else {
+                ctx.attribute("message", "Brugernavnet eksisterer allerede. Vælg venligst et andet brugernavn.");
+                ctx.render("createUser.html");
+            }
+        } catch (DatabaseException e) {
+            ctx.attribute("message", "Der opstod en fejl under oprettelsen. Prøv venligst igen.");
+            ctx.render("index.html");
+        }
     }
-}
+
 
     public static void logout(Context ctx) {
         ctx.req().getSession().invalidate();
@@ -66,23 +86,21 @@ public static void createUser(Context ctx, boolean isadmin, ConnectionPool conne
             ctx.render("index.html");
 
         } catch (DatabaseException e) {
+            //hvis nej send tilbage til login side med fejl
             ctx.attribute("message", "Forkert login, Prøv venligst igen.");
             ctx.render("login.html");
         }
     }
-    public static void renderOrder(Context ctx, ConnectionPool connectionPool) {
-        try {
-            User user = ctx.sessionAttribute("currentuser");
-            ctx.render("ordrer.html");
+    public static void renderUserSite(Context ctx, ConnectionPool connectionPool) {
+            User user = ctx.sessionAttribute("currentUser");
+            ctx.render("userSite.html");
 
-        } catch (NullPointerException e) {
-            ctx.attribute("message", "An error occurred while fetching the user data.");
-            ctx.render("login.html");
-        }
     }
     public static void updateUser(Context ctx, ConnectionPool connectionPool) {
+
         try {
             User currentUser = ctx.sessionAttribute("currentUser");
+
             currentUser.setFirstName(ctx.formParam("firstName"));
             currentUser.setLastName(ctx.formParam("lastName"));
             currentUser.setEmail(ctx.formParam("email"));
@@ -98,14 +116,16 @@ public static void createUser(Context ctx, boolean isadmin, ConnectionPool conne
             ctx.sessionAttribute("currentUser", currentUser);
 
             // Redirect to a success page
-            ctx.render("ordrer.html");
+            ctx.render("userSite.html");
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", "An error occurred while updating the user information.");
-            ctx.render("ordrer.html");
+            ctx.render("userSite.html");
         }
     }
-
     public static void goTocreateUser(Context ctx) {
+
         ctx.render("createUser.html");
     }
+
+
 }
