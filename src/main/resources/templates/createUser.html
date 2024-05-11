@@ -8,11 +8,14 @@
 </head>
 <body>
 <div th:replace="~{fragments :: header}"></div>
-<div>
-    <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
-</div>
+
 
 <div class="main-content">
+
+    <div>
+        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+    </div>
+
     <div class="login-box">
         <form method="post" action="/createUser">
             <input type="text" name="firstName" placeholder="First Name" required>
