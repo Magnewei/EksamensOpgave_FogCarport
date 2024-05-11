@@ -25,6 +25,7 @@ public class UserController {
 
 
     public static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) {
+        try {
         String firstName = ctx.formParam("firstName");
         String lastName = ctx.formParam("lastName");
         String email = ctx.formParam("username");
@@ -38,24 +39,21 @@ public class UserController {
         // Regular expression pattern for password validation
         String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=.*[a-zA-Z\\d@#$%^&+=!])[A-Za-z\\d@#$%^&+=!]{8,}$";
 
-        // Compile the regular expression pattern
+        // Compile the regular expression pattern & create a matcher with the input password
         Pattern pattern = Pattern.compile(passwordRegex);
-
-        // Create a matcher with the input password
         Matcher matcher = pattern.matcher(password);
 
         // Perform password validation
         if (!matcher.matches()) {
-            ctx.attribute("message", "Password must contain at least one letter, one digit, and be at least 8 characters long.");
+            ctx.attribute("message", "Password must contain at least one capitalized and lowercase letter, one digit, one symbol and be at least 8 characters long.");
             ctx.render("createUser.html");
             return; // Exit the method if password validation fails
         }
 
         Address address = new Address(0, postalCode, houseNumber, cityName, streetName);
-
         User user = new User(0, email, password, isadmin, firstName, lastName, address, phoneNumber);
 
-        try {
+
             if (!UserMapper.checkIfUserExistsByName(email, connectionPool)) {
                 UserMapper.createUser(user, connectionPool);
                 ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + email + ". Nu skal du logge på");
@@ -99,13 +97,11 @@ public class UserController {
     public static void renderUserSite(Context ctx, ConnectionPool connectionPool) {
             User user = ctx.sessionAttribute("currentUser");
             ctx.render("userSite.html");
-
     }
-    public static void updateUser(Context ctx, ConnectionPool connectionPool) {
 
+    public static void updateUser(Context ctx, ConnectionPool connectionPool) {
         try {
             User currentUser = ctx.sessionAttribute("currentUser");
-
             currentUser.setFirstName(ctx.formParam("firstName"));
             currentUser.setLastName(ctx.formParam("lastName"));
             currentUser.setEmail(ctx.formParam("email"));

@@ -1,12 +1,7 @@
 package app.carport.Entities;
 
 public class User {
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
     private int userID;
-
     private boolean isAdmin;
     private String firstName;
     private String lastName;
@@ -60,7 +55,6 @@ public class User {
         this.lastName = lastName;
         this.order = order;
     }
-
     public User(String name, String lastname, String streetname, String streetnumber, String phonenumber, String mail) {
         this.userID = 0;
         this.email = mail;
@@ -122,6 +116,9 @@ public class User {
         this.password = password;
     }
 
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
