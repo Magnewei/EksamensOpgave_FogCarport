@@ -177,7 +177,7 @@ public class OrderMapper {
     }
 
     public static boolean checkIfUserHasOrder(int userID, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT COUNT(*) AS count FROM orders WHERE userID = ?";
+        String sql = "SELECT COUNT(*) AS count FROM orders WHERE \"userID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userID);
             ResultSet rs = ps.executeQuery();
