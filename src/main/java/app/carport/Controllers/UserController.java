@@ -35,20 +35,10 @@ public class UserController {
         String cityName = ctx.formParam("cityName");
         int postalCode = Integer.parseInt(ctx.formParam("postalCode"));
 
-        // Regular expression pattern for password validation
-        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=.*[a-zA-Z\\d@#$%^&+=!])[A-Za-z\\d@#$%^&+=!]{8,}$";
-
-        // Compile the regular expression pattern
-        Pattern pattern = Pattern.compile(passwordRegex);
-
-        // Create a matcher with the input password
-        Matcher matcher = pattern.matcher(password);
-
-        // Perform password validation
-        if (!matcher.matches()) {
+        if (!checkPassword(ctx, ctx.formParam("password"))) {
             ctx.attribute("message", "Password must contain at least one letter, one digit, and be at least 8 characters long.");
             ctx.render("createUser.html");
-            return; // Exit the method if password validation fails
+            return;
         }
 
         Address address = new Address(0, postalCode, houseNumber, cityName, streetName);
@@ -69,6 +59,37 @@ public class UserController {
             ctx.render("index.html");
         }
     }
+
+    public static boolean checkPassword(Context ctx, String password) {
+        if (password.length() < 16) {
+            ctx.attribute("message", "Password must be at least 8 characters long.");
+            return false;
+        }
+
+        if (!password.matches(".*[a-z].*")) {
+            ctx.attribute("message", "Password must contain at least one lowercase letter.");
+            return false;
+        }
+
+        if (!password.matches(".*[A-Z].*")) {
+            ctx.attribute("message", "Password must contain at least one uppercase letter.");
+            return false;
+        }
+
+        if (!password.matches(".*\\d.*")) {
+            ctx.attribute("message", "Password must contain at least one digit.");
+            return false;
+        }
+
+        if (!password.matches(".*[@#$%^&+=!].*")) {
+            ctx.attribute("message", "Password must contain at least one special character (@, #, $, %, ^, &, +, =, !).");
+            return false;
+        }
+
+        return true;
+        // man kunne argumentere for denne skulle placeres i user mappe.
+    }
+
 
 
     public static void logout(Context ctx) {

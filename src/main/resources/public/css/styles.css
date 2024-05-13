@@ -18,6 +18,8 @@
 body {
     font-family: Arial, sans-serif;
     color: var(--secondary-color);
+    display: flex;
+    flex-direction: column; /* or row, depending on your layout */
 }
 
 label {
@@ -99,7 +101,7 @@ label {
 
 /* Main content styles */
 .main-content {
-    background-image: url('Media/Bck1.png');
+    background-image: url('Media/Bck1.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -252,7 +254,7 @@ form textarea {
     margin-top: 10px;
 }
 .Billede-box {
-    background-image: url('Media/Boxb.png');
+    background-image: url('Media/Bck2.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -261,13 +263,15 @@ form textarea {
     align-items: center;
     padding: 15px;
     border-radius: 4px;
-    border: 2px solid var(--secondary-color); /* Add a border */
+    border: 2px solid var(--primary-color); /* Add a border */
     margin-bottom: 20px; /* Add space between boxes */
-    width: calc(50% - 20px);
-    height: calc(50% - 20px);
     max-height: 300px;
     max-width: 500px;
     text-align: center;
+    grid-column: span 1;
+    grid-row: span 1;
+    height: 100%; /* Make each box take up the full height of its grid cell */
+    width: 100%; /* Make each box take up the fu
 }
 .Billede-box:not(:last-child) {
     margin-right: 20px; /* Add space between boxes */
@@ -394,3 +398,36 @@ input[type="password"] {
     font-size: 16px; /* Set font size */
     color: var(--primary-color); /* Set text color */
 }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Adjust to the number of columns you want */
+    grid-template-rows: repeat(3, 1fr); /* Adjust to the number of rows you want */
+    gap: 5px; /* Adjust to the gap size you want */
+
+}
+
+.list {
+    max-width: 800px; /* Preferred width */
+    min-width: 500px; /* Minimum width */
+    max-height: 500px; /* Preferred height */
+    min-height: 200px; /* Minimum height */
+    overflow: auto; /* Add scrollbars if content overflows */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15); /* Subtle 3D effect */
+    padding: 20px; /* Space inside the list */
+    background-color: var(--primary-color); /* Lighter background color */
+    margin: 20px; /* Space around the list */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+@media screen and (max-width: 600px) {
+    .list {
+        max-width: 500px; /* Adjust the maximum width */
+        min-width: 300px; /* Adjust the minimum width */
+        max-height: 400px; /* Adjust the maximum height */
+        min-height: 150px; /* Adjust the minimum height */
+    }
+}
+

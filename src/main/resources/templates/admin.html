@@ -15,7 +15,7 @@
 <div class="main-content">
 
     <div class="Inventar-liste">
-        <div class="Bestilling-box">
+        <div class="Bestilling-box list">
         <label> Stocklist </label>
         <table>
             <thead>
@@ -49,7 +49,8 @@
     </div>
     <div class="Add-material">
         <div class="Bestilling-box">
-            <label> Add Material </label>
+            <h2> Add Material </h2><br>
+            <fieldset>
             <form method="post" action="/addmaterial">
                 <label for="name">Name:</label><br>
                 <input type="text" id="name" name="name"><br>
@@ -61,13 +62,14 @@
                 <input type="text" id="unit" name="unit"><br>
                 <label for="quantityInStock">Quantity in Stock:</label><br>
                 <input type="text" id="quantityInStock" name="quantityInStock"><br>
-                <button type="submit">Add Material</button>
+                <button type="submit" class="btn" >Add Material"</button>
             </form>
+            </fieldset>
         </div>
     </div>
 
     <div class="Ordre-liste">
-        <div class="Bestilling-box">
+        <div class="Bestilling-box list">
         <label> Ordrer </label>
         <table>
             <thead>
