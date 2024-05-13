@@ -23,8 +23,8 @@ public class UserController {
     }
 
 
-
     public static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) {
+        try {
         String firstName = ctx.formParam("firstName");
         String lastName = ctx.formParam("lastName");
         String email = ctx.formParam("username");
@@ -35,6 +35,7 @@ public class UserController {
         String cityName = ctx.formParam("cityName");
         int postalCode = Integer.parseInt(ctx.formParam("postalCode"));
 
+
         if (!checkPassword(ctx, ctx.formParam("password"))) {
             ctx.attribute("message", "Password must contain at least one letter, one digit, and be at least 8 characters long.");
             ctx.render("createUser.html");
@@ -42,10 +43,9 @@ public class UserController {
         }
 
         Address address = new Address(0, postalCode, houseNumber, cityName, streetName);
-
         User user = new User(0, email, password, isadmin, firstName, lastName, address, phoneNumber);
 
-        try {
+
             if (!UserMapper.checkIfUserExistsByName(email, connectionPool)) {
                 UserMapper.createUser(user, connectionPool);
                 ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + email + ". Nu skal du logge på");
@@ -117,16 +117,16 @@ public class UserController {
             ctx.render("login.html");
         }
     }
+
+
     public static void renderUserSite(Context ctx, ConnectionPool connectionPool) {
             User user = ctx.sessionAttribute("currentUser");
             ctx.render("userSite.html");
-
     }
-    public static void updateUser(Context ctx, ConnectionPool connectionPool) {
 
+    public static void updateUser(Context ctx, ConnectionPool connectionPool) {
         try {
             User currentUser = ctx.sessionAttribute("currentUser");
-
             currentUser.setFirstName(ctx.formParam("firstName"));
             currentUser.setLastName(ctx.formParam("lastName"));
             currentUser.setEmail(ctx.formParam("email"));

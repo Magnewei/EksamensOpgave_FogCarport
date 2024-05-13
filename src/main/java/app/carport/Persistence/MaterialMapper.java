@@ -116,7 +116,7 @@ public class MaterialMapper {
     }
 
 
-
+//TODO SKAL DEN SLETTES?
   /* public static List<String> getAllName(ConnectionPool connectionPool) throws DatabaseException {
         List<String> NameList = new ArrayList<>();
         String sql = "SELECT DISTINCT name FROM material;";
