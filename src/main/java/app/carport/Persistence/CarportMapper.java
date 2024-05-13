@@ -19,42 +19,23 @@ import java.util.Map;
 public class CarportMapper {
     public static Carport getCarportByCarportId(int carportId, ConnectionPool connectionPool) throws DatabaseException {
         String sqlGetCarportData = "SELECT * FROM carport WHERE \"carportID\" = ?";
-        String sqlGetMaterials = "SELECT * FROM \"materialUsage\" WHERE \"carportID\" = ?";
-        int carportID = 0;
-        double length = 0;
-        double width = 0;
-        boolean withRoof = false;
-        Map<Material,Integer> materialList = new HashMap<>();
 
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlGetCarportData);) {
             ps.setInt(1, carportId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                carportID = rs.getInt("carportID"); //
-                length = rs.getDouble("length");
-                width = rs.getDouble("width");
-                withRoof = rs.getBoolean("withRoof");
+                double length = rs.getDouble("length");
+                double width = rs.getDouble("width");
+                boolean withRoof = rs.getBoolean("withRoof");
+                return new Carport(length,width,withRoof);
             }
         }catch (SQLException e) {
             throw new DatabaseException("Get carport data fejl", e.getMessage());
         }
-
-        try(Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlGetMaterials);){
-            ps.setInt(1, carportId);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int materialId = rs.getInt("materialID");
-                int quantity = rs.getInt("quantity");
-                materialList.put(MaterialMapper.getMaterialById(materialId,connectionPool),quantity);
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't get the carport from the given carportID.", e.getMessage());
-        }
-
-        return new Carport(carportID,length,width,withRoof,materialList);
-
+        return null;
     }
+
+
     public static int getCarportByWidthAndLength(double width,double length, boolean withRoof, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM carport WHERE \"width\" = ? AND \"length\" = ? AND \"withRoof\"=?;";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -70,5 +51,20 @@ public class CarportMapper {
             throw new DatabaseException("Error. Couldn't retrieve the adress data from the given addressID.", e.getMessage());
         }
         return 0;
+    }
+
+    public static void addMaterialsToDb(Carport carport, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "INSERT INTO \"materialUsage\" (\"carportID\", \"materialID\", \"quantity\") VALUES (?,?,?)";
+        int carportId = getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            for (Map.Entry<Material, Integer> entry : carport.getMaterialList().entrySet()) {
+                ps.setInt(1, carportId);
+                ps.setInt(2, entry.getKey().getMaterialID());
+                ps.setInt(3, entry.getValue());
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

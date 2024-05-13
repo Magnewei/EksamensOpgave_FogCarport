@@ -64,6 +64,13 @@ public class User {
         this.phoneNumber = Integer.parseInt(phonenumber);
     }
 
+    public User(int userId, String email, String firstName, String lastName) {
+        this.userID = userId;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public int getphoneNumber() {return phoneNumber;}
     public void setPhoneNumber(int phoneNumber) {this.phoneNumber = phoneNumber;}
 

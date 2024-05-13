@@ -35,12 +35,14 @@ public class CarportShopController {
         try {
 
             Carport carport = new Carport(length, width, withRoof);
+            carport.calculateMaterialList(connectionPool);
+            CarportMapper.addMaterialsToDb(carport, connectionPool);
             ctx.sessionAttribute("withRoof", withRoof);
             ctx.sessionAttribute("Carport", carport);
             CarportSVG svg = new CarportSVG(width, length);
             ctx.sessionAttribute("svg", svg.toString());
 
-        } catch (Error e) {
+        } catch (Error | DatabaseException e) {
             ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
         }
     }
