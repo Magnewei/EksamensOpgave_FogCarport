@@ -218,6 +218,7 @@ public class Carport {
         //Og en pakke skruer til sterntræet
         materialList.put(MaterialMapper.getMaterialById(1, connectionPool), 1);
 
+        this.materialList = materialList;
         return materialList;
 
     }
