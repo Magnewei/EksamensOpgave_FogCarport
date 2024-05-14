@@ -11,11 +11,17 @@ import java.sql.SQLException;
 import java.util.Map;
 
 /**
- * Purpose:
- *
- * @Author: Anton Friis Stengaard
+ * Handles database operations for carport entities within the application.
  */
 public class CarportMapper {
+
+    /**
+     * Retrieves a Carport by its unique ID from the database.
+     * @param carportId The ID of the carport to retrieve.
+     * @param connectionPool Connection pool for database connections.
+     * @return Carport object if found, otherwise returns null.
+     * @throws DatabaseException If there is a problem executing the query.
+     */
     public static Carport getCarportByCarportId(int carportId, ConnectionPool connectionPool) throws DatabaseException {
         String sqlGetCarportData = "SELECT * FROM carport WHERE \"carportID\" = ?";
 
@@ -34,6 +40,15 @@ public class CarportMapper {
         return null;
     }
 
+    /**
+     * Retrieves a carport ID by matching dimensions and roof presence.
+     * @param width Width of the carport to find.
+     * @param length Length of the carport to find.
+     * @param withRoof Boolean indicating if the carport includes a roof.
+     * @param connectionPool Connection pool for database connections.
+     * @return The ID of the matching carport or 0 if no match is found.
+     * @throws DatabaseException If there is a problem executing the query.
+     */
     public static int getCarportByWidthAndLength(double width, double length, boolean withRoof, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM carport WHERE \"width\" = ? AND \"length\" = ? AND \"withRoof\"=?;";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
