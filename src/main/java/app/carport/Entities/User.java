@@ -35,7 +35,6 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-
     public User(int userID, boolean isAdmin, String firstName, String lastName, Address address, Order order, String email, String password, int phoneNumber) {
         this.userID = userID;
         this.isAdmin = isAdmin;
@@ -55,6 +54,7 @@ public class User {
         this.lastName = lastName;
         this.order = order;
     }
+
     public User(String name, String lastname, String streetname, String streetnumber, String phonenumber, String mail) {
         this.userID = 0;
         this.email = mail;
@@ -71,8 +71,13 @@ public class User {
         this.lastName = lastName;
     }
 
-    public int getphoneNumber() {return phoneNumber;}
-    public void setPhoneNumber(int phoneNumber) {this.phoneNumber = phoneNumber;}
+    public int getphoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
 
     public int getUserID() {

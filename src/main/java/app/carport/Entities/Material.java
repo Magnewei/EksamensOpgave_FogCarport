@@ -6,12 +6,12 @@ package app.carport.Entities;
  * @Author: Anton Friis Stengaard
  */
 public class Material {
-    private int materialID;
-    private double price;
-    private String name;
-    private String unit;
-    private double length;
-    private int quantityInStock;
+    private final int materialID;
+    private final double price;
+    private final String name;
+    private final String unit;
+    private final double length;
+    private final int quantityInStock;
 
     public Material(int materialID, String name, double price, double length, String unit, int quantityInStock) {
         this.materialID = materialID;
