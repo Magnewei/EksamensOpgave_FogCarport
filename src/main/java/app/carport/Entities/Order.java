@@ -36,6 +36,12 @@ public class Order {
         this.status = status;
     }
 
+    public Order(int orderId, String status, int totalPrice) {
+        this.orderId = orderId;
+        this.status = status;
+        this.totalPrice = totalPrice;
+    }
+
     public int getOrderId() {
         return orderId;
     }

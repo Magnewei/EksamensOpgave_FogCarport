@@ -4,6 +4,7 @@ import app.carport.Entities.Address;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.ConnectionPool;
+import app.carport.Persistence.OrderMapper;
 import app.carport.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -114,7 +115,14 @@ public class UserController {
     }
 
     public static void renderUserSite(Context ctx, ConnectionPool connectionPool) {
-        ctx.render("userSite.html");
+        try {
+            User user = ctx.sessionAttribute("currentUser");
+            ctx.attribute("orderList", OrderMapper.getOrdersByUserId(user.getUserID(), connectionPool));
+            ctx.render("userSite.html");
+        } catch (DatabaseException e) {
+            ctx.attribute("message", "Error. Couldn't load the users orders.");
+            ctx.render("index.html");
+        }
     }
 
     public static void updateUser(Context ctx, ConnectionPool connectionPool) {

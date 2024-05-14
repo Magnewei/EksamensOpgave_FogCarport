@@ -162,27 +162,26 @@ public class OrderMapper {
         }
     }
 
-    public static Order getOrderByUserId(int userID, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM orders INNER JOIN carport ON orders.\"carportID\" = carport.\"carportID\" WHERE \"userID\" = ? ORDER BY \"orderID\" DESC LIMIT 1";
+    public static List<Order> getOrdersByUserId(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT \"orderID\",\"status\",\"price\" FROM orders * WHERE \"userID\" = ?;";
+        List<Order> orders = new ArrayList<>();
 
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setInt(1, userID);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+
+            while (rs.next()) {
                 int orderID = rs.getInt("orderID");
                 String status = rs.getString("status");
+                int price = rs.getInt("price");
 
-                double length = rs.getDouble("length");
-                double width = rs.getDouble("width");
-                boolean withRoof = rs.getBoolean("withRoof");
-
-                Carport carport = new Carport(length, width, withRoof);
-                return new Order(orderID, status, carport);
+                orders.add(new Order(orderID, status, price));
             }
+
         } catch (SQLException e) {
             throw new DatabaseException("Error. Couldn't get order from userID.", e.getMessage());
         }
-        return null;
+        return orders;
     }
 
     public static Order getReducedOrderByUserId(int userID, ConnectionPool connectionPool) throws DatabaseException {

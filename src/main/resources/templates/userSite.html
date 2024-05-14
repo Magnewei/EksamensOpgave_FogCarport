@@ -59,13 +59,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:if="${session.currentUser.order !=null}">
-
-                <td th:text="${session.currentUser.order.orderId}"></td>
-                <td th:text="${session.currentUser.order.totalPrice}"></td>
-                <td th:text="${session.currentUser.order.status}"></td>
-            </tr>
-
+            <tr th:each="order : ${orderList}">
+                <td th:text="${order.orderID}"></td>
+                <td th:text="${order.status}"></td>
+                <td th:text="${order.totalPrice}"></td>
+                <td>
             </tbody>
         </table>
         </div>
