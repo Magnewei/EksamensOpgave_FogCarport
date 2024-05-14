@@ -1,6 +1,5 @@
 package app.carport.MailServer;
 
-import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -15,6 +14,11 @@ public class MailServer {
     private final static String API_KEY = System.getenv("SENDGRID_API_KEY");
     private static final String email = "fogprojekt@icloud.com"; // Mail address which is used for sending to the customer.
 
+    /**
+     * Sends an email notification when an order is completed.
+     * @param user User to whom the email will be sent.
+     * @return true if the email was sent successfully, false otherwise.
+     */
     public static boolean mailOnOrderDone(User user) {
         int responseCode = 0;
 
@@ -56,89 +60,11 @@ public class MailServer {
         return responseCode == 202;
     }
 
-    public static boolean mailOnOrderDone(String buyerEmail, String buyerName , int orderID) {
-        int responseCode = 0;
-
-        // Get api key
-        SendGrid sg = new SendGrid(API_KEY);
-
-        // Email that we're sending our company mail from:
-        Email from = new Email(email);
-        from.setName("Johannes Fog Byggemarked");
-        Mail mail = new Mail();
-        mail.setFrom(from);
-        Personalization personalization = new Personalization();
-
-        // Instantiate customer details into a mail.
-        personalization.addTo(new Email(buyerEmail));
-        personalization.addDynamicTemplateData("name", buyerName);
-        personalization.addDynamicTemplateData("orderID", orderID);
-        mail.addPersonalization(personalization);
-        mail.addCategory("carportapp");
-
-        // Send mail
-        Request request = new Request();
-        try {
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-
-            // TemplateID is corresponding with the template created on SendGrid
-            mail.templateId = "d-20b61e76c5374d138d3636e8c9247716";
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-
-            // Get response code for return statement.
-            responseCode = response.getStatusCode();
-
-        } catch (IOException e) {
-            System.out.println("Error sending mail");
-            System.out.println(e.getMessage());
-        }
-        return responseCode == 202;
-    }
-
-    public static boolean mailOnStatusUpdate(String buyerEmail, String buyerName, Order order) {
-        int responseCode = 0;
-
-        // Get api key
-        SendGrid sg = new SendGrid(API_KEY);
-
-        // Email that we're sending our company mail from:
-        Email from = new Email(email);
-        from.setName("Johannes Fog Byggemarked");
-        Mail mail = new Mail();
-        mail.setFrom(from);
-        Personalization personalization = new Personalization();
-
-        // Instantiate customer details into a mail.
-        personalization.addTo(new Email(buyerEmail));
-        personalization.addDynamicTemplateData("name", buyerName);
-        personalization.addDynamicTemplateData("orderID", order.getOrderId());
-        personalization.addDynamicTemplateData("orderStatus", order.getStatus());
-        mail.addPersonalization(personalization);
-        mail.addCategory("carportapp");
-
-        // Send mail
-        Request request = new Request();
-        try {
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-
-            // TemplateID is corresponding with the template created on SendGrid
-            mail.templateId = "d-953b6496a4194c4cb16cf9c8aa718805";
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-
-            // Get response code for return statement.
-            responseCode = response.getStatusCode();
-
-        } catch (IOException e) {
-            System.out.println("Error sending mail");
-            System.out.println(e.getMessage());
-        }
-        return responseCode == 202;
-    }
-
+    /**
+     * Sends an email notification when an order's status is updated.
+     * @param user User to whom the email will be sent. This method currently has static data for demonstration.
+     * @return true if the email was sent successfully, false otherwise.
+     */
     public static boolean mailOnStatusUpdate(User user) {
         int responseCode = 0;
 
@@ -181,6 +107,11 @@ public class MailServer {
         return responseCode == 202;
     }
 
+    /**
+     * Sends an email notification when a user's information is changed.
+     * @param user User to whom the email will be sent.
+     * @return true if the email was sent successfully, false otherwise.
+     */
     public static boolean mailOnUserChanges(User user) {
         int responseCode = 0;
 
@@ -223,6 +154,11 @@ public class MailServer {
         return responseCode == 202;
     }
 
+    /**
+     * Sends an email notification about an order.
+     * @param user User to whom the email will be sent.
+     * @return true if the email was sent successfully, false otherwise.
+     */
     public static boolean mailOnOrder(User user) {
         int responseCode = 0;
 
@@ -240,47 +176,6 @@ public class MailServer {
         personalization.addTo(new Email(user.getEmail()));
         personalization.addDynamicTemplateData("name", user.getEmail());
         personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId());
-        mail.addPersonalization(personalization);
-        mail.addCategory("carportapp");
-
-        // Send mail
-        Request request = new Request();
-        try {
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-
-            // TemplateID is corresponding with the template created on SendGrid
-            mail.templateId = "d-98455b553a7b4c778081b7d4a29c7ef7";
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-
-            // Get response code for return statement.
-            responseCode = response.getStatusCode();
-
-        } catch (IOException e) {
-            System.out.println("Error sending mail");
-            System.out.println(e.getMessage());
-        }
-        return responseCode == 202;
-    }
-
-    public static boolean mailOnOrder(String buyerEmail, String buyerName, int orderID) {
-        int responseCode = 0;
-
-        // Get api key
-        SendGrid sg = new SendGrid(API_KEY);
-
-        // Email that we're sending our company mail from:
-        Email from = new Email(email);
-        from.setName("Johannes Fog Byggemarked");
-        Mail mail = new Mail();
-        mail.setFrom(from);
-        Personalization personalization = new Personalization();
-
-        // Instantiate customer details into a mail.
-        personalization.addTo(new Email(buyerEmail));
-        personalization.addDynamicTemplateData("name", buyerName);
-        personalization.addDynamicTemplateData("orderID", orderID);
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
