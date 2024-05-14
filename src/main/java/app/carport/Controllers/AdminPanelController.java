@@ -33,7 +33,7 @@ public class AdminPanelController {
             int quantityInStock = Integer.parseInt(ctx.formParam("quantityInStock"));
             MaterialMapper.addMaterial(connectionPool, name, price, length, unit, quantityInStock);
             renderAdmin(connectionPool, ctx);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException |DatabaseException e) {
             renderAdmin(connectionPool, ctx);
         }
     }

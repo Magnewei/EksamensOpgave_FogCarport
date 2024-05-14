@@ -20,7 +20,7 @@ public class CarportShopController {
         app.post("OrderNoUser", ctx -> orderButtonThreeNoUser(connectionPool, ctx));
     }
 
-    public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
+    public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) {
         renderCarportShop(ctx, connectionPool);
     }
 
