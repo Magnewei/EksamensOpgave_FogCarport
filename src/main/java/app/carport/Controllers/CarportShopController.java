@@ -5,7 +5,7 @@ import app.carport.Entities.Material;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.*;
-import app.carport.SVG.CarportSVG;
+import app.carport.Services.CarportSVG;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 

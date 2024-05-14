@@ -1,4 +1,4 @@
-package app.carport.SVG;
+package app.carport.Services;
 
 public class CarportSVG {
     private final SVGDrawer carportSvg;

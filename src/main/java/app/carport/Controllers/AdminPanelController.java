@@ -4,7 +4,7 @@ import app.carport.Entities.Material;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
-import app.carport.MailServer.MailServer;
+import app.carport.Services.MailServer;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.MaterialMapper;
 import app.carport.Persistence.OrderMapper;

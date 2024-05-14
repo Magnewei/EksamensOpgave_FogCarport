@@ -1,4 +1,4 @@
-package app.carport.MailServer;
+package app.carport.Services;
 
 import app.carport.Entities.User;
 import com.sendgrid.Method;
