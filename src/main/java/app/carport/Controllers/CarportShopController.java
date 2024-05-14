@@ -8,6 +8,7 @@ import app.carport.Persistence.*;
 import app.carport.SVG.CarportSVG;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
 import java.util.Locale;
 import java.util.Map;
 
@@ -26,13 +27,13 @@ public class CarportShopController {
 
     public static void orderButtonTwo(ConnectionPool connectionPool, Context ctx) {
         try {
-        Locale.setDefault(new Locale("US"));
-        ctx.render("orderSite2.html");
-        Double length = Double.valueOf(ctx.formParam("lengthValue"));
-        Double width = Double.valueOf(ctx.formParam("widthValue"));
-        boolean withRoof = Boolean.valueOf(ctx.formParam("withRoof"));
-        ctx.sessionAttribute("carportLength", length);
-        ctx.sessionAttribute("carportWidth", width);
+            Locale.setDefault(new Locale("US"));
+            ctx.render("orderSite2.html");
+            Double length = Double.valueOf(ctx.formParam("lengthValue"));
+            Double width = Double.valueOf(ctx.formParam("widthValue"));
+            boolean withRoof = Boolean.valueOf(ctx.formParam("withRoof"));
+            ctx.sessionAttribute("carportLength", length);
+            ctx.sessionAttribute("carportWidth", width);
 
             Carport carport = new Carport(length, width, withRoof);
             Map<Material, Integer> carportMaterials = carport.calculateMaterialList(connectionPool);
@@ -148,8 +149,8 @@ public class CarportShopController {
 
     public static void renderCarportShop(Context ctx, ConnectionPool connectionPool) {
         try {
-            ctx.attribute("LengthList", MaterialMapper.getAllLength(connectionPool));
-            ctx.attribute("WidthList", MaterialMapper.getAllWidth(connectionPool));
+            ctx.attribute("lengthList", MaterialMapper.getAllLength(connectionPool));
+            ctx.attribute("widthList", MaterialMapper.getAllWidth(connectionPool));
             ctx.render("orderSite1.html");
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());

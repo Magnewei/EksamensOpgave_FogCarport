@@ -113,9 +113,7 @@ public class UserController {
         }
     }
 
-
     public static void renderUserSite(Context ctx, ConnectionPool connectionPool) {
-        User user = ctx.sessionAttribute("currentUser");
         ctx.render("userSite.html");
     }
 
@@ -145,9 +143,6 @@ public class UserController {
     }
 
     public static void goTocreateUser(Context ctx) {
-
         ctx.render("createUser.html");
     }
-
-
 }
