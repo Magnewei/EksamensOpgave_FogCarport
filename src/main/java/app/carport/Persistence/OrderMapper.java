@@ -88,6 +88,7 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new DatabaseException("Error retrieving the latest order ID", e.getMessage());
         }
+        return 0;
     }
 
     /**
