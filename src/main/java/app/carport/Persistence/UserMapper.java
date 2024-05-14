@@ -257,6 +257,8 @@ public class UserMapper {
             throw new DatabaseException("Error. Couldn't update user from userID.", e.getMessage());
         }
     }
+
+
     public static int getLastUserId(ConnectionPool connectionPool) throws DatabaseException {
         int orderNumber = 0;
         String sql = "SELECT \"userID\" " + "FROM users " + "ORDER BY \"userID\" DESC " + "LIMIT 1;";

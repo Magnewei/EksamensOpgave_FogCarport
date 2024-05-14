@@ -118,7 +118,6 @@ public class UserController {
         }
     }
 
-
     public static void renderUserSite(Context ctx, ConnectionPool connectionPool) {
             User user = ctx.sessionAttribute("currentUser");
             ctx.render("userSite.html");
