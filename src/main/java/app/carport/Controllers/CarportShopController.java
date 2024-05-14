@@ -1,7 +1,6 @@
 package app.carport.Controllers;
 
 import app.carport.Entities.Carport;
-import app.carport.Entities.Material;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.*;
@@ -10,7 +9,6 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 import java.util.Locale;
-import java.util.Map;
 
 public class CarportShopController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -21,10 +19,23 @@ public class CarportShopController {
         app.post("OrderNoUser", ctx -> orderButtonThree(connectionPool, ctx));
     }
 
+    /**
+     * Processes the initial step in ordering a carport by rendering the carport shop page.
+     *
+     * @param connectionPool the database connection pool
+     * @param ctx            the web context from Javalin
+     * @throws DatabaseException if an error occurs during database access
+     */
     public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
         renderCarportShop(ctx, connectionPool);
     }
 
+    /**
+     * Handles the continuation of the carport order process, capturing user input and updating the session.
+     *
+     * @param connectionPool the database connection pool
+     * @param ctx            the web context from Javalin
+     */
     public static void orderButtonTwo(ConnectionPool connectionPool, Context ctx) {
         try {
             Locale.setDefault(new Locale("US"));
@@ -44,7 +55,13 @@ public class CarportShopController {
         }
     }
 
-    public static void orderButtonThree(ConnectionPool connectionPool, Context ctx)  {
+    /**
+     * Finalizes the carport order, either creating a new user or associating the order with an existing user.
+     *
+     * @param connectionPool the database connection pool
+     * @param ctx            the web context from Javalin
+     */
+    public static void orderButtonThree(ConnectionPool connectionPool, Context ctx) {
         try {
             User user = null;
 
@@ -53,6 +70,7 @@ public class CarportShopController {
                 ctx.render("orderSite2.html");
                 return;
             }
+
 
             if (ctx.formParam("currentUser") == null) {
                 String name = ctx.formParam("name");
@@ -74,11 +92,13 @@ public class CarportShopController {
                 user = ctx.sessionAttribute("currentUser");
             }
 
+
             // Calculates the carport objects total amount of materials. Sets the carportID from width and length.
             Carport carport = ctx.sessionAttribute("carport");
             carport.setCarportID(CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool));
             carport.setMaterialList(connectionPool);
             double price = carport.calculateTotalPrice();
+
 
             // Then inserts the order on either temporary or logged in user, combined with the carport and it's price.
             OrderMapper.insertNewOrder(user, carport.getCarportID(), price, connectionPool);
@@ -87,6 +107,7 @@ public class CarportShopController {
         } catch (DatabaseException e) {
             ctx.attribute("message", "Error while retrieving or inserting data.");
             ctx.render("orderSite2.html");
+
         } catch (NumberFormatException e) {
             ctx.attribute("message", "Dine indtastede oplysninger kunne ikke læses, prøv igen.");
             ctx.render("orderSite2.html");
@@ -94,6 +115,17 @@ public class CarportShopController {
 
     }
 
+
+    /**
+     * Validates the input names and contact details provided by the user.
+     *
+     * @param ctx         the web context
+     * @param name        the first name of the user
+     * @param lastname    the last name of the user
+     * @param streetname  the street name of the user's address
+     * @param phonenumber the phone number of the user
+     * @return true if all inputs are valid, false otherwise
+     */
     public static boolean checkNames(Context ctx, String name, String lastname, String streetname, String phonenumber) {
         if (!name.matches("[a-zA-Z]+")) {
             ctx.attribute("message", "Name must only contain letters");
@@ -112,6 +144,12 @@ public class CarportShopController {
     }
 
 
+    /**
+     * Initiates the creation of a new carport based on the specifications provided by the user.
+     *
+     * @param connectionPool the database connection pool
+     * @param ctx            the web context from Javalin
+     */
     public static void orderCarport(ConnectionPool connectionPool, Context ctx) {
         try {
             double length = Double.valueOf(ctx.formParam("carportlength"));
@@ -128,6 +166,13 @@ public class CarportShopController {
         }
     }
 
+
+    /**
+     * Renders the initial carport shop page, including options for carport dimensions.
+     *
+     * @param ctx            the web context from Javalin
+     * @param connectionPool the database connection pool
+     */
     public static void renderCarportShop(Context ctx, ConnectionPool connectionPool) {
         try {
             ctx.attribute("lengthList", MaterialMapper.getAllLength(connectionPool));
