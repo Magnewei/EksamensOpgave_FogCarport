@@ -25,15 +25,20 @@
         </div>
     </form>
 
-    <div class="Container">
-            <div class="svg-box" th:utext="${session.svg}"></div>
-    </div>
 
-    <div th:utext="${session.svg}"></div>
-    </div>
+            <div  id="svg1" class="ContainerSvg" th:utext="${session.svg}"></div>
+</div>
+
+
+
+
+
 
 
 <div th:replace="~{fragments :: footer}"></div>
 
 </body>
+
 </html>
+
+

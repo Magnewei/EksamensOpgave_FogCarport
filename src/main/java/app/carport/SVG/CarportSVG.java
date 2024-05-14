@@ -8,7 +8,7 @@ public class CarportSVG {
     public CarportSVG(double width, double length) {
         this.width = width;
         this.length = length;
-        carportSvg = new SVGDrawer(0, 0, "0 0 855 690", "75%");
+        carportSvg = new SVGDrawer(0, 0, "0 0 600 400", "100%");
         carportSvg.addRectangle(0, 0, width, length, "stroke-width:1px; stroke:#000000; fill: #ffffff");
         addBeams();
         addRafters();

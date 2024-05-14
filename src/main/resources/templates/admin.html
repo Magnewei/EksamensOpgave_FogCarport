@@ -18,7 +18,7 @@
         <div class="Container">
         <label> Stocklist </label>
             <br>
-            <div class="Container list">
+            <div class="ContainerAdmin list">
         <table>
             <thead>
             <tr>
@@ -54,7 +54,7 @@
     <div class="Container">
         <label> Ordrer </label>
         <br>
-        <div class="Container list">
+<div class="ContainerAdmin list">
         <table>
             <thead>
             <tr>
@@ -64,6 +64,7 @@
                 <th>Status</th>
             </tr>
             </thead>
+
             <tbody>
             <tr th:each="order : ${orderlist}">
                 <td th:text="${order.orderID}"></td>
@@ -73,22 +74,24 @@
                 <td>
                     <form method="post" action="/removeorder">
                         <input type="hidden" name="remove_order" th:value="${order.orderID}">
-                        <button type="submit" class="adbtn" >Delete order</button>
+                        <button type="submit" class="adbtn">Delete order</button>
                     </form>
                     <form method="post" action="/acceptorder">
                         <input type="hidden" name="accept_order" th:value="${order.orderID}">
-                        <button type="submit" class="adbtn" >Accept order</button>
+                        <button type="submit" class="adbtn">Accept order</button>
                     </form>
                     <form method="post" action="/denyorder">
                         <input type="hidden" name="deny_order" th:value="${order.orderID}">
-                        <button type="submit" class="adbtn" >Deny order</button>
+                        <button type="submit" class="adbtn">Deny order</button>
                     </form>
                 </td>
             </tr>
-        </table>
-            </div>
+</tbody>
 
+        </table>
     </div>
+    </div>
+
     <div class="Add-material">
         <div class="Container">
             <h2> Add Material </h2><br>
