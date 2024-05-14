@@ -84,7 +84,7 @@ public class MailServer {
         // Instantiate customer details into a mail.
         personalization.addTo(new Email(user.getEmail()));
         personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName());
-        personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId();
+        personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId());
         personalization.addDynamicTemplateData("orderStatus", user.getOrder().getStatus());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
