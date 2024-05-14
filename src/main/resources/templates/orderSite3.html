@@ -16,24 +16,24 @@
             <label> Du har Bestilt en Carport med følgende mål </label>
             <br>
             <fieldset>
-                <div>Længde: <span type="text"  th:text="${session.carport.length}"></span></div>
+                <div>Længde: <span type="text" th:text="${session.carport.length}"></span></div>
                 <br>
-                <div>Bredde: <span type="text"  th:text="${session.carport.width}"></span></div>
+                <div>Bredde: <span type="text" th:text="${session.carport.width}"></span></div>
                 <br>
-                <div>Skur til : <span type="text"  th:text="${session.carport.hasShed}"></span></div>
+                <div>Skur til : <span type="text" th:text="${session.carport.hasShed}"></span></div>
             </fieldset>
         </div>
     </form>
 
-    <div class="Container">
-            <div class="svg-box" th:utext="${session.svg}"></div>
-    </div>
 
-    <div th:utext="${session.svg}"></div>
-    </div>
+    <div id="svg1" class="ContainerSvg" th:utext="${session.svg}"></div>
+</div>
 
 
 <div th:replace="~{fragments :: footer}"></div>
 
 </body>
+
 </html>
+
+
