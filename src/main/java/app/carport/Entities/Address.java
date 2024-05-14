@@ -2,17 +2,24 @@ package app.carport.Entities;
 
 public class Address {
     private final int addressID;
-    private  int postalCode;
-    private  int houseNumber;
-    private  String cityName;
-    private  String streetName;
+    private int postalCode;
+    private int houseNumber;
+    private String cityName;
+    private String streetName;
 
-    public Address(int addressID, int postalCode, int houseNumber,String cityName, String streetName) {
+    public Address(int addressID, int postalCode, int houseNumber, String cityName, String streetName) {
         this.addressID = addressID;
         this.postalCode = postalCode;
         this.cityName = cityName;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
+    }
+
+    public Address(String streetname, int postalCode, int houseNumber) {
+        this.streetName = streetname;
+        this.postalCode = postalCode;
+        this.houseNumber = houseNumber;
+        this.addressID = 0;
     }
 
     public int getAddressID() {

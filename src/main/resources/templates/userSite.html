@@ -8,11 +8,15 @@
 </head>
 <body>
 <div th:replace="~{fragments :: header}"></div>
+
+
 <div class="main-content">
-    <div class="Bestilling-box">
-        <label> Dine Informationer </label>
+
+    <div class="Container">
         <form method="post" action="/updateUser">
+
             <fieldset>
+                <h2> Dine Informationer </h2>
             <label for="firstName">First Name:</label><br>
             <input type="text" id="firstName" name="firstName" th:value="${session.currentUser.firstName}"><br>
             <label for="lastName">Last Name:</label><br>
@@ -25,8 +29,9 @@
             <input type="text" id="phoneNumber" name="phoneNumber" th:value="${session.currentUser.phoneNumber}"><br>
             </fieldset>
 
-            <label>Address:</label>
+
             <fieldset>
+                <h2> Address </h2>
                 <label for="streetName">Street Name:</label><br>
                 <input type="text" id="streetName" name="streetName" th:value="${session.currentUser.address.streetName}"><br>
                 <label for="houseNumber">House Number:</label><br>
@@ -37,13 +42,14 @@
                 <input type="text" id="cityName" name="cityName" th:value="${session.currentUser.address.cityName}"><br>
             </fieldset>
 
-            <button type="submit" class="btn"> Update Information</button>
-        </form>
-    </div>
+            <button type="submit" class="btn"> Opdater informationer </button>
 
+    </form>
+</div>
 
-    <div class="Bestilling-box">
+    <div class="Container">
         <label> Dine ordre </label>
+        <div class="Container list">
         <table>
             <thead>
             <tr>
@@ -53,15 +59,14 @@
             </tr>
             </thead>
             <tbody>
-            <div th:if="${session.currentUser.order !=null}">
-            <tr>
-
-                <td th:text="${session.currentUser.order.orderId}"></td>
-                <td th:text="${session.currentUser.order.totalPrice}"></td>
-                <td th:text="${session.currentUser.order.status}"></td>
-            </tr>
-            </div>
+            <tr th:each="order : ${orderList}">
+                <td th:text="${order.orderID}"></td>
+                <td th:text="${order.status}"></td>
+                <td th:text="${order.totalPrice}"></td>
+                <td>
+            </tbody>
         </table>
+        </div>
 
     </div>
 </div>

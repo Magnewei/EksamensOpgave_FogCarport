@@ -4,7 +4,7 @@ import app.carport.Entities.Material;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
-import app.carport.MailServer.MailServer;
+import app.carport.Services.MailServer;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.MaterialMapper;
 import app.carport.Persistence.OrderMapper;
@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class AdminPanelController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.post("removerOrder", ctx -> removeOrder(connectionPool, ctx));
+        app.post("removeorder", ctx -> removeOrder(connectionPool, ctx));
         app.post("removematerial", ctx -> removeMaterial(connectionPool, ctx));
         app.post("addmaterial", ctx -> addMaterial(connectionPool, ctx));
         app.post("renderadmin", ctx -> renderAdmin(connectionPool, ctx));
@@ -24,6 +24,12 @@ public class AdminPanelController {
         app.post("denyorder", ctx -> denyOrder(connectionPool, ctx));
     }
 
+    /**
+     * Adds a new material to the inventory database.
+     *
+     * @param connectionPool Connection pool for database connections.
+     * @param ctx            Context for handling the request, contains form parameters.
+     */
     private static void addMaterial(ConnectionPool connectionPool, Context ctx) {
         try {
             String name = ctx.formParam("name");
@@ -33,11 +39,17 @@ public class AdminPanelController {
             int quantityInStock = Integer.parseInt(ctx.formParam("quantityInStock"));
             MaterialMapper.addMaterial(connectionPool, name, price, length, unit, quantityInStock);
             renderAdmin(connectionPool, ctx);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | DatabaseException e) {
             renderAdmin(connectionPool, ctx);
         }
     }
 
+    /**
+     * Denies an order and sends a notification email to the user.
+     *
+     * @param connectionPool Connection pool for database connections.
+     * @param ctx            Context for handling the request, contains form parameters.
+     */
     private static void denyOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             int orderID = Integer.parseInt(ctx.formParam("deny_order"));
@@ -49,10 +61,15 @@ public class AdminPanelController {
             renderAdmin(connectionPool, ctx);
         } catch (NumberFormatException | DatabaseException e) {
             renderAdmin(connectionPool, ctx);
-
         }
     }
 
+    /**
+     * Removes an order from the system.
+     *
+     * @param connectionPool Connection pool for database connections.
+     * @param ctx            Context for handling the request, contains form parameters.
+     */
     private static void removeOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             int orderID = Integer.parseInt(ctx.formParam("remove_order"));
@@ -64,6 +81,12 @@ public class AdminPanelController {
         }
     }
 
+    /**
+     * Accepts an order and sends a notification email to the user.
+     *
+     * @param connectionPool Connection pool for database connections.
+     * @param ctx            Context for handling the request, contains form parameters.
+     */
     private static void acceptOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             int orderID = Integer.parseInt(ctx.formParam("accept_order"));
@@ -78,6 +101,12 @@ public class AdminPanelController {
         }
     }
 
+    /**
+     * Removes a material from the inventory database.
+     *
+     * @param connectionPool Connection pool for database connections.
+     * @param ctx            Context for handling the request, contains form parameters.
+     */
     private static void removeMaterial(ConnectionPool connectionPool, Context ctx) {
         try {
             int materialID = Integer.parseInt(ctx.formParam("remove_material"));
@@ -88,6 +117,12 @@ public class AdminPanelController {
         }
     }
 
+    /**
+     * Renders the admin panel, displaying all orders and materials.
+     *
+     * @param connectionPool Connection pool for database connections.
+     * @param ctx            Context for handling the request.
+     */
     public static void renderAdmin(ConnectionPool connectionPool, Context ctx) {
         try {
             List<Order> orderList = OrderMapper.getAllOrders(connectionPool);

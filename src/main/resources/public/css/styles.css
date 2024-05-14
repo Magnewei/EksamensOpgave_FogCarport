@@ -1,6 +1,7 @@
 /* Color scheme */
 :root {
     --primary-color: #003d76;
+    --third-color: #021221;
     --secondary-color: #fff;
     --accent-color: #0d5393;
     --accent-dark: rgb(0, 41, 80);
@@ -17,6 +18,9 @@
 body {
     font-family: Arial, sans-serif;
     color: var(--secondary-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 label {
@@ -38,8 +42,19 @@ label {
 .header h1 {
     font-size: 36px;
 }
+.h2 {
+    font-size: 36px;
+    text-align: center; /* Center the text */
+    color: var(--secondary-color); /* Set the text color */
+    padding: 20px; /* Add some padding */
+    font-weight: normal; /* Remove bold styling */
+}
+.Container form fieldset h2 {
+    text-align: center;
+}
 
-/* Navigation styles */
+
+
 .navbar {
     background-color: var(--primary-color);
     color: var(--secondary-color);
@@ -98,26 +113,42 @@ label {
 
 /* Main content styles */
 .main-content {
-    background-image: url('Media/Bck1.png');
+    display: flex;
+    background-image: url('Media/Bck1.jpg');
+    height: 100vh;
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
+    background-repeat: repeat;
     align-items: center;
     justify-content: space-around;
-    height: 100vh;
+    padding: 10px 15px 20px 25px;
+
 }
 
 textarea {
     padding: 10px;
-    border: 1px solid #ccc; /* Add a border */
+    border: 1px solid #ccc;
     border-radius: 5px;
-    resize: none;
+    resize: block;
+    width: 100%;
+    max-width: 500px;
+    min-height: 100px;
 }
 
 
 
 /* Button styles */
+.adbtn {
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    color: var(--primary-color);
+    padding: 5px 10px;
+}
+.adbtn:hover {
+    background-color: #a1a39f
+}
+
+
 .btn {
     display: inline-block;
     padding: 10px 20px;
@@ -130,11 +161,12 @@ textarea {
     transition: background-color 0.3s;
     font-size: 16px;
     margin: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
+
 
 /* Button styles */
 .btn1 {
-
     display: flex; /* Use flexbox layout */
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
@@ -161,7 +193,7 @@ textarea {
 }
 
 
-/* Contact form styles */
+
 form {
     margin-top: 20px;
     display: flex;
@@ -179,19 +211,19 @@ form label {
 form input,
 form textarea {
     width: 100%;
-    max-width: 400px; /* Limit the width of text fields */
+    max-width: 500px;
     padding: 10px;
     margin-bottom: 10px;
 }
 
 
-/* Testimonials styles */
-.testimonials {
-    margin-top: 20px;
-}
 
-/* Footer styles */
 .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
     background-color: var(--primary-color);
     color: var(--secondary-color);
     padding: 20px;
@@ -200,6 +232,7 @@ form textarea {
 }
 
 .login-box {
+    display:flex;
     background-color: var( --primary-color);
     padding: 30px;
     border-radius: 15px;
@@ -214,20 +247,35 @@ form textarea {
     left: 0;
     z-index: -1; /* Move the image behind other content */
 }
-.Bestilling-box {
+.Container {
     background-color: var(--primary-color);
     display: flex; /* Use flexbox layout */
     flex-direction: column;
     align-items: center;
-    padding: 30px;
-    border-radius: 5px;
-    border: 2px solid var(--accent-color); /* Add a border */
-    margin-bottom: 20px; /* Add space between boxes */
+    justify-content: center;
+    padding: 2em; /* Adjust as needed */
+    border-radius: 0.5em; /* Adjust as needed */
+    border: 0.2em solid var(--accent-color); /* Adjust as needed */
+    margin-bottom: 2em; /* Adjust as needed */
 }
-.Bestilling-box form {
+
+.Container form {
     display: flex;
+    flex-direction: row; /* Aligns the fieldsets horizontally */
     flex-wrap: wrap; /* Allows the fieldsets to wrap onto the next line if there isn't enough space */
     justify-content: space-between; /* Adds space between the fieldsets */
+}
+
+.Container form fieldset {
+    min-width: 200px; /* Override the default min-width */
+    width: 100%; /* Set the width to 100% */
+    flex: 1; /* This will make the fieldsets grow as needed */
+    margin: 0.5em; /* Adjust as needed */
+    padding: 1em; /* Adjust as needed */
+}
+.Container form fieldset input {
+    width: 100%; /* Make the input fields take up the full width of the fieldset */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
     .Bestilling-box2 {
         background-color: var( --accent-dark);
@@ -239,8 +287,19 @@ form textarea {
         border: 2px solid var(--primary-color); /* Add a border */
         margin-bottom: 20px; /* Add space between boxes */
 }
+.Bestilling-box3 {
+    background-color: var(--primary-color);
+    display: flex; /* Use flexbox layout */
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 5px;
+    border: 2px solid var(--accent-color); /* Add a border */
+    margin-bottom: 5px; /* Add space between boxes */
+    margin-top: 10px;
+}
 .Billede-box {
-    background-image: url('Media/Boxb.png');
+    background-image: url('Media/Bck2.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -249,19 +308,37 @@ form textarea {
     align-items: center;
     padding: 15px;
     border-radius: 4px;
-    border: 2px solid var(--secondary-color); /* Add a border */
+    border: 2px solid var(--primary-color); /* Add a border */
     margin-bottom: 20px; /* Add space between boxes */
-    width: calc(50% - 20px);
-    height: calc(50% - 20px);
     max-height: 300px;
     max-width: 500px;
     text-align: center;
-}
-.Billede-box:not(:last-child) {
-    margin-right: 20px; /* Add space between boxes */
+    grid-column: span 1;
+    grid-row: span 1;
+    height: 100%;
+    width: 100%;
 }
 
-.Bestilling-box {
+.svg-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border-radius: 4px;
+    border: 2px solid var(--primary-color); /* Add a border */
+    margin-bottom: 20px; /* Add space between boxes */
+    max-height: 300px;
+    max-width: 500px;
+    text-align: center;
+    grid-column: span 1;
+    grid-row: span 1;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+.Container {
     background-color: var( --primary-color);
     display: flex; /* Use flexbox layout */
     flex-direction: column;
@@ -269,13 +346,14 @@ form textarea {
     padding: 30px;
     border-radius: 15px;
     border: 2px solid var(--accent-color); /* Add a border */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .dropdowns {
     display: flex; /* Use flexbox layout */
     flex-direction: column;
     align-items: center;
-    margin: 10px; /* Adjust spacing between dropdowns and textarea */
+    margin: 10px;
 }
 .dropdowns select {
     width: 300px; /* Adjust the width of the dropdowns as needed */
@@ -304,7 +382,7 @@ form textarea {
 
 .infoform input,
 .infoform textarea {
-    width: 300px;
+    width: 400px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -320,7 +398,7 @@ form textarea {
 }
 
 .infoform textarea {
-    width: 300px;
+    width: 400px;
     height: 100px;
     resize: none;
 }
@@ -356,11 +434,16 @@ tr:hover {
 }
 
 fieldset {
-    border: 1px solid var(--secondary-color); /* Set border color */
+    border: 1px solid var(--third-color); /* Set border color */
+    display: flex;
+    flex-direction: column;
     border-radius: 5px; /* Add rounded corners */
     padding: 10px; /* Add some padding */
     margin-bottom: 20px; /* Add some space below the fieldset */
     background-color: var(--accent-color); /* Set a background color */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+
 }
 input[type="text"] {
     width: 300px; /* Adjust the width as needed */
@@ -371,3 +454,65 @@ input[type="text"] {
     font-size: 16px; /* Set font size */
     color: var(--primary-color); /* Set text color */
 }
+input[type="password"] {
+    width: 300px; /* Adjust the width as needed */
+    padding: 10px;
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 5px;
+    background-color: white; /* Set background color */
+    font-size: 16px; /* Set font size */
+    color: var(--primary-color); /* Set text color */
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Adjust to the number of columns you want */
+    grid-template-rows: repeat(3, 1fr); /* Adjust to the number of rows you want */
+    gap: 10px; /* Adjust to the gap size you want */
+    padding: 10px 15px 20px 25px;
+
+}
+
+.list {
+    max-width: 700px; /* Preferred width */
+    min-width: 400px; /* Minimum width */
+    max-height: 600px; /* Preferred height */
+    min-height: 200px; /* Minimum height */
+    overflow: auto; /* Add scrollbars if content overflows */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15); /* Subtle 3D effect */
+    padding: 20px; /* Space inside the list */
+    background-color: var(--primary-color); /* Lighter background color */
+    margin: 20px; /* Space around the list */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+.fieldset-textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: block;
+    width: 100%;
+    max-width: 500px;
+    min-height: 100px;
+}
+
+
+
+
+@media screen and (max-width: 600px) {
+    .list {
+        max-width: 500px; /* Adjust the maximum width */
+        min-width: 300px; /* Adjust the minimum width */
+        max-height: 400px; /* Adjust the maximum height */
+        min-height: 150px; /* Adjust the minimum height */
+    }
+}
+@media screen and (max-width: 800px) {
+    .main-content {
+        flex-direction: column;
+    }
+}
+
+

@@ -2,44 +2,49 @@ package app.carport.Persistence;
 
 import app.carport.Entities.Address;
 import app.carport.Exceptions.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Provides database operations for managing addresses within the application.
+ */
 public class AddressMapper {
-    public static int insertAddress(Address address, ConnectionPool connectionPool) throws DatabaseException {
-        String checkSql = "SELECT \"addressID\" FROM address WHERE postalcode = ? AND housenumber = ? AND streetname = ?";
-        String insertSql = "INSERT INTO address (postalcode, housenumber, streetname) VALUES (?, ?, ?) RETURNING \"addressID\"";
 
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement checkPs = connection.prepareStatement(checkSql);
-                PreparedStatement insertPs = connection.prepareStatement(insertSql)
-        ) {
-            checkPs.setInt(1, address.getPostalCode());
-            checkPs.setInt(2, address.getHouseNumber());
-            checkPs.setString(3, address.getStreetName());
-            ResultSet rs = checkPs.executeQuery();
+    /**
+     * Inserts a new address into the database and returns the newly created address with its generated ID.
+     * @param address Address to be inserted.
+     * @param connectionPool Connection pool for database connections.
+     * @return The Address object with updated ID.
+     * @throws DatabaseException If there is a problem executing the insert operation.
+     */
+    public static Address insertAddress(Address address, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "INSERT INTO address (postalcode, housenumber, streetname) VALUES (?,?,?) RETURNING \"addressID\"";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, address.getPostalCode());
+            ps.setInt(2, address.getHouseNumber());
+            ps.setString(3, address.getStreetName());
+
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                // Address already exists, return the existing addressID
-                return rs.getInt("addressID");
-            } else {
-                // Address does not exist, insert new address and return the new addressID
-                insertPs.setInt(1, address.getPostalCode());
-                insertPs.setInt(2, address.getHouseNumber());
-                insertPs.setString(3, address.getStreetName());
-                ResultSet rsInsert = insertPs.executeQuery();
-                if (rsInsert.next()) {
-                    return rsInsert.getInt("addressID");
-                }
+                int addressId = rs.getInt(1);
+                return new Address(addressId, address.getPostalCode(), address.getHouseNumber(), address.getCityName(), address.getStreetName());
             }
         } catch (SQLException e) {
             throw new DatabaseException("An error occurred while inserting the address.", e.getMessage());
         }
-        return -1; // Return -1 if address could not be inserted or retrieved
+        return null;
     }
 
+    /**
+     * Updates an existing address in the database.
+     * @param address Address to be updated.
+     * @param connectionPool Connection pool for database connections.
+     * @return true if the address was updated successfully, false otherwise.
+     * @throws DatabaseException If there is a problem executing the update operation.
+     */
     public static boolean updateAddress(Address address, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE address SET \"streetname\"=?,\"postalcode\"=?,\"housenumber\"=? WHERE \"addressID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -58,8 +63,15 @@ public class AddressMapper {
         }
     }
 
+    /**
+     * Retrieves an address by its ID from the database.
+     * @param addressId The ID of the address to retrieve.
+     * @param connectionPool Connection pool for database connections.
+     * @return The retrieved Address object or null if no address is found.
+     * @throws DatabaseException If there is a problem executing the query.
+     */
     public static Address getAddressByAddressId(int addressId, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM address WHERE \"addressID\" = ?";
+        String sql = "SELECT * FROM address INNER JOIN postalcode ON address.postalcode = postalcode.postalcode WHERE \"addressID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, addressId);
             ResultSet rs = ps.executeQuery();
@@ -67,7 +79,7 @@ public class AddressMapper {
                 int postalCode = rs.getInt("postalcode");
                 int houseNumber = rs.getInt("housenumber");
                 String streetName = rs.getString("streetname");
-                String cityName = getCityNameFromPostcode(postalCode, connectionPool);
+                String cityName = rs.getString("cityname");
                 return new Address(addressId, postalCode, houseNumber, cityName, streetName);
             }
         } catch (SQLException e) {
@@ -76,6 +88,13 @@ public class AddressMapper {
         return null;
     }
 
+    /**
+     * Inserts city data associated with an address into the database.
+     * @param address Address containing the city data to be inserted.
+     * @param connectionPool Connection pool for database connections.
+     * @return true if the city data was inserted successfully, false otherwise.
+     * @throws DatabaseException If there is a problem executing the insert operation.
+     */
     public static boolean insertCityData(Address address, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into postalcode (postalcode, cityname) values (?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -91,6 +110,13 @@ public class AddressMapper {
         }
     }
 
+    /**
+     * Updates city data associated with an address in the database.
+     * @param address Address containing the city data to be updated.
+     * @param connectionPool Connection pool for database connections.
+     * @return true if the city data was updated successfully, false otherwise.
+     * @throws DatabaseException If there is a problem executing the update operation.
+     */
     public static boolean updateCityData(Address address, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE postalcode SET \"postalcode\" = ?, \"cityname\" = ? WHERE \"postalcode\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -106,22 +132,5 @@ public class AddressMapper {
         } catch (SQLException e) {
             throw new DatabaseException("Error. Couldn't update the users city data.", e.getMessage());
         }
-    }
-
-    public static String getCityNameFromPostcode(int postalcode, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT cityname FROM postalcode WHERE \"postalcode\" = ?";
-
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, postalcode);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                String cityname = rs.getString("cityname");
-
-                return cityname;
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't retrieve city name from the given postalcode.", e.getMessage());
-        }
-        return null;
     }
 }

@@ -11,12 +11,12 @@
             <button type="submit" formaction="/goToIndex" class="logo-link"></button>
               <ul>
             <li>
-                <button type="submit" th:if="${session.currentUser != null}" formaction="/logout" name="button">Logout</button>
-                <button type="submit" th:if="${session.currentUser == null}" formaction="/goToLogin" name="button">Login</button>
+                <button type="submit" th:if="${session.currentUser != null && session.currentUser.password != null}" formaction="/logout" name="button" th:text="${session.currentUser.firstName} + ' | Logout'"></button>
+                <button type="submit" th:if="${session.currentUser == null || session.currentUser.password == null}" formaction="/goToLogin" name="button">Login</button>
             </li>
 
             <li>
-                <button type="submit" formaction="/goToOrdrer" name="button">Ordrer</button>
+                <button type="submit" formaction="/goToUserSite" name="button" th:if="${session.currentUser != null}">Ordrer</button>
             </li>
 
             <li>
@@ -25,7 +25,11 @@
             </button>
                   </li>
 
+
         </ul>
+        <div class="Bestilling-box3" th:unless="${#strings.isEmpty(message)}" >
+        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+        </div>
     </form>
 </header>
 <footer class="footer">

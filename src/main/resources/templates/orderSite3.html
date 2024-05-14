@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Website - Home</title>
+    <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="main-content">
+
+    <form method="post" action="orderCarport">
+        <div class="Container">
+            <label> Du har Bestilt en Carport med følgende mål </label>
+            <br>
+            <fieldset>
+                <div>Længde: <span type="text"  th:text="${session.carport.length}"></span></div>
+                <br>
+                <div>Bredde: <span type="text"  th:text="${session.carport.width}"></span></div>
+                <br>
+                <div>Skur til : <span type="text"  th:text="${session.carport.hasShed}"></span></div>
+            </fieldset>
+        </div>
+    </form>
+
+    <div class="Container">
+            <div class="svg-box" th:utext="${session.svg}"></div>
+    </div>
+
+    <div th:utext="${session.svg}"></div>
+    </div>
+
+
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

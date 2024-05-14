@@ -10,14 +10,19 @@
 <div th:replace="~{fragments :: header}"></div>
 
 <div class="main-content">
-    <div class="login-box">
-    <form class="login-form"  method="post">
-        <input type="text" name="username" placeholder="Email" >
-        <br>
-        <input type="password" name="password" placeholder="Password" >
-        <br>
+
+    <div class="Container">
+    <form method="post">
+        <fieldset>
+            <br>
+                <input type="text" name="username" placeholder="Email" >
+            <br>
+                <input type="password" name="password" placeholder="Password" >
+            <br>
+
         <button type="submit" formaction="/login" class="btn">Login</button>
         <button type="submit" formaction="/goTocreateUser" class="btn">Opret bruger</button>
+        </fieldset>
     </form>
     </div>
 </div>
