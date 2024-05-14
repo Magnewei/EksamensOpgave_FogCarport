@@ -23,6 +23,7 @@ public class AddressMapper {
     public static Address insertAddress(Address address, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT INTO address (postalcode, housenumber, streetname) VALUES (?,?,?) RETURNING \"addressID\"";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            System.out.println("postalcode");
             ps.setInt(1, address.getPostalCode());
             ps.setInt(2, address.getHouseNumber());
             ps.setString(3, address.getStreetName());

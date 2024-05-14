@@ -41,7 +41,6 @@ public class UserController {
 
 
             if (!checkPassword(ctx, ctx.formParam("password"))) {
-                ctx.attribute("message", "Password must contain at least one letter, one digit, and be at least 8 characters long.");
                 ctx.render("createUser.html");
                 return;
             }
@@ -72,7 +71,7 @@ public class UserController {
      * @return true if the password meets all criteria, false otherwise.
      */
     public static boolean checkPassword(Context ctx, String password) {
-        if (password.length() < 16) {
+        if (password.length() < 8) {
             ctx.attribute("message", "Password must be at least 8 characters long.");
             return false;
         }
@@ -127,7 +126,14 @@ public class UserController {
                 ctx.render("login.html");
                 return;
             }
+
             User user = UserMapper.login(mail, password, connectionPool);
+
+            if (user == null) {
+                ctx.attribute("message", "Password eller brugernavn var forkert. Prøv igen.");
+                ctx.render("login.html");
+            }
+
             ctx.sessionAttribute("currentUser", user);
             ctx.render("index.html");
 
