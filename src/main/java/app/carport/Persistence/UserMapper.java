@@ -13,7 +13,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Provides database operations for managing user entities within the application.
+ */
 public class UserMapper {
+
+    /**
+     * Attempts to log in a user by verifying their email and password against the database.
+     *
+     * @param email          User's email.
+     * @param password       User's password.
+     * @param connectionPool Connection pool for database connections.
+     * @return User object if credentials are valid, otherwise returns null.
+     * @throws DatabaseException If there is an issue accessing the database.
+     */
     public static User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "select * from users INNER JOIN address ON users.\"addressID\" = address.\"addressID\" INNER JOIN orders ON users.\"userID\" = orders.\"userID\" INNER JOIN postalcode ON address.postalcode = postalcode.postalcode INNER JOIN carport ON orders.\"carportID\" = carport.\"carportID\" WHERE email = ? AND password = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -55,6 +68,14 @@ public class UserMapper {
         return null;
     }
 
+    /**
+     * Creates a new user in the database.
+     *
+     * @param user           User object containing all necessary user information.
+     * @param connectionPool Connection pool for database connections.
+     * @return true if the user is created successfully, false otherwise.
+     * @throws DatabaseException If there is an issue executing the database operation.
+     */
     public static boolean createUser(User user, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into users (email, password, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\") values (?,?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -78,6 +99,14 @@ public class UserMapper {
         }
     }
 
+    /**
+     * Creates a temporary user in the database. This function may not store all user details.
+     *
+     * @param user           User object containing minimal user information.
+     * @param connectionPool Connection pool for database connections.
+     * @return true if the temporary user is created successfully, false otherwise.
+     * @throws DatabaseException If there is an issue executing the database operation.
+     */
     public static boolean createTempUser(User user, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into users (email, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\") values (?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -100,6 +129,14 @@ public class UserMapper {
         }
     }
 
+    /**
+     * Deletes a user by their ID, including all related records such as orders.
+     *
+     * @param userID         The ID of the user to delete.
+     * @param connectionPool Connection pool for database connections.
+     * @return true if the deletion is successful, false otherwise.
+     * @throws DatabaseException If there is an issue executing the database operation.
+     */
     public static boolean deleteUser(int userID, ConnectionPool connectionPool) throws DatabaseException {
         String deleteOrderLinesSQL = "DELETE FROM orderline WHERE \"orderID\" IN (SELECT \"orderID\" FROM orders WHERE \"userID\" = ?)";
         String deleteOrdersSQL = "DELETE FROM orders WHERE \"userID\" = ?";
@@ -126,6 +163,14 @@ public class UserMapper {
         }
     }
 
+    /**
+     * Checks if a user exists in the database based on their email.
+     *
+     * @param email          The email to check against the database.
+     * @param connectionPool Connection pool for database connections.
+     * @return true if the user exists, false otherwise.
+     * @throws DatabaseException If there is an issue executing the database query.
+     */
     public static boolean checkIfUserExistsByName(String email, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -141,6 +186,13 @@ public class UserMapper {
         return false;
     }
 
+    /**
+     * Retrieves all users from the database, including related orders and addresses.
+     *
+     * @param connectionPool Connection pool for database connections.
+     * @return A list of users with their details.
+     * @throws DatabaseException If there is an issue executing the database query.
+     */
     public static List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users INNER JOIN address ON users.\"addressID\" = address.\"addressID\" INNER JOIN orders ON users.\"userID\" = orders.\"userID\" INNER JOIN postalcode ON address.postalcode = postalcode.postalcode INNER JOIN carport ON orders.\"carportID\" = carport.\"carportID\"";
@@ -182,6 +234,14 @@ public class UserMapper {
         return users = !users.isEmpty() ? users : null;
     }
 
+    /**
+     * Retrieves a user by their user ID from the database.
+     *
+     * @param userId         The user ID to search for.
+     * @param connectionPool Connection pool for database connections.
+     * @return User object if found, otherwise null.
+     * @throws DatabaseException If there is an issue accessing the database.
+     */
     public static User getUserByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM users WHERE \"userID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -211,6 +271,14 @@ public class UserMapper {
         return null;
     }
 
+    /**
+     * Retrieves a limited user by their user ID, intended for situations where minimal user data is necessary.
+     *
+     * @param userId         The user ID to search for.
+     * @param connectionPool Connection pool for database connections.
+     * @return User object with limited details if found, otherwise null.
+     * @throws DatabaseException If there is an issue accessing the database.
+     */
     public static User getLimitedUserByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT \"userID\", \"email\", \"firstName\", \"lastName\", \"orderID\",status FROM users INNER JOIN orders ON users.\"userID\" = orders.\"userID\" WHERE users.\"userID\" = ?";
 
@@ -236,7 +304,14 @@ public class UserMapper {
         return null;
     }
 
-
+    /**
+     * Updates a user's information in the database.
+     *
+     * @param user           User object containing updated details.
+     * @param connectionPool Connection pool for database connections.
+     * @return true if the update is successful, false otherwise.
+     * @throws DatabaseException If there is an issue executing the database operation.
+     */
     public static boolean updateUser(User user, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET \"firstName\" = ?, \"lastName\" = ?, email = ?, password = ?, phonenumber = ? WHERE \"userID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -256,6 +331,13 @@ public class UserMapper {
         }
     }
 
+    /**
+     * Retrieves the latest user ID from the database. Typically used to get the most recently created user.
+     *
+     * @param connectionPool Connection pool for database connections.
+     * @return The latest user ID.
+     * @throws DatabaseException If there is an issue retrieving the latest user ID.
+     */
     public static int getLastUserId(ConnectionPool connectionPool) throws DatabaseException {
         int orderNumber = 0;
         String sql = "SELECT \"userID\" " + "FROM users " + "ORDER BY \"userID\" DESC " + "LIMIT 1;";
