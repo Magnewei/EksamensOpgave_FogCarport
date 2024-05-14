@@ -9,7 +9,6 @@ import app.carport.Services.CarportSVG;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
-import javax.xml.crypto.Data;
 import java.util.Locale;
 import java.util.Map;
 
@@ -45,46 +44,56 @@ public class CarportShopController {
         }
     }
 
-    public static void orderButtonThree(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
-       User user =null;
-        try{
+    public static void orderButtonThree(ConnectionPool connectionPool, Context ctx)  {
+        try {
+            User user = null;
 
-            if(ctx.formParam("currentUser") ==null){
+            // If the given input was invalid, re-render the site and post an error.
+            if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastName"), ctx.formParam("streetName"), ctx.formParam("phoneNumber"))) {
+                ctx.render("orderSite2.html");
+                return;
+            }
+
+            if (ctx.formParam("currentUser") == null) {
                 String name = ctx.formParam("name");
                 String lastname = ctx.formParam("lastName");
                 String streetname = ctx.formParam("streetName");
                 int postalCode = Integer.parseInt(ctx.formParam("postalCode"));
                 int phonenumber = Integer.parseInt(ctx.formParam("phoneNumber"));
                 String email = ctx.formParam("mail");
-                user = new User(name, lastname, streetname, postalCode, phonenumber, email);
-                user.setUserID(UserMapper.getLastUserId(connectionPool) + 1);
+
+                // Takes the most recent userID in the database and ++ for insertion into object below.
+                int userID = UserMapper.getLastUserId(connectionPool) + 1;
+                user = new User(userID, name, lastname, streetname, postalCode, phonenumber, email);
+
+                // Then inserts the temporary user into the database, so we can hook an order onto it.
                 UserMapper.createTempUser(user, connectionPool);
-                ctx.sessionAttribute("currentUser",user);
 
+            } else {
+
+                user = ctx.sessionAttribute("currentUser");
             }
-            System.out.println(user);
+
+            // Calculates the carport objects total amount of materials. Sets the carportID from width and length.
             Carport carport = ctx.sessionAttribute("carport");
+            carport.setCarportID(CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool));
+            carport.setMaterialList(connectionPool);
+            double price = carport.calculateTotalPrice();
 
-           if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastName"), ctx.formParam("streetName"), ctx.formParam("phoneNumber"))) {
-               ctx.render("orderSite2.html");
-               return;
-           }
+            // Then inserts the order on either temporary or logged in user, combined with the carport and it's price.
+            OrderMapper.insertNewOrder(user, carport.getCarportID(), price, connectionPool);
+            ctx.render("orderSite3.html");
 
-           carport.setMaterialList(connectionPool);
-           Map<Material, Integer> carportMaterials = carport.getMaterialList();
-           carport.setMaterialList(carportMaterials);
-           double price = carport.calculateTotalPrice();
-
-            int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
-           OrderMapper.insertNewOrder(user, carportId,price, connectionPool);
-           ctx.render("orderSite3.html");
-
-       } catch(DatabaseException e){
-           ctx.attribute("message","Der noget galt med databasen");
-           ctx.render("orderSite2.html");
-       }
+        } catch (DatabaseException e) {
+            ctx.attribute("message", "Error while retrieving or inserting data.");
+            ctx.render("orderSite2.html");
+        } catch (NumberFormatException e) {
+            ctx.attribute("message", "Dine indtastede oplysninger kunne ikke læses, prøv igen.");
+            ctx.render("orderSite2.html");
+        }
 
     }
+
     public static boolean checkNames(Context ctx, String name, String lastname, String streetname, String phonenumber) {
         if (!name.matches("[a-zA-Z]+")) {
             ctx.attribute("message", "Name must only contain letters");

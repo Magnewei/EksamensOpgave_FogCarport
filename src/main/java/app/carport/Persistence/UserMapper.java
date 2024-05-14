@@ -108,7 +108,7 @@ public class UserMapper {
      * @throws DatabaseException If there is an issue executing the database operation.
      */
     public static boolean createTempUser(User user, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into users (email, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\") values (?,?,?,?,?,?)";
+        String sql = "insert into users (email, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\", \"userID\") values (?,?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, user.getEmail());
             ps.setBoolean(2, user.isAdmin());  // Every user created should be a non-admin.
@@ -117,6 +117,7 @@ public class UserMapper {
             ps.setString(5, user.getLastName());
             int addressId = AddressMapper.insertAddress(user.getAddress(), connectionPool).getAddressID();
             ps.setInt(6, addressId);
+            ps.setInt(7, user.getUserID());
 
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;

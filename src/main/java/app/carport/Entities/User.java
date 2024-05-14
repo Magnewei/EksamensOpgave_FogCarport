@@ -55,8 +55,8 @@ public class User {
         this.order = order;
     }
 
-    public User(String name, String lastname, String streetname, int postalcode, int phonenumber, String mail) {
-        this.userID = 0;
+    public User(int userID, String name, String lastname, String streetname, int postalcode, int phonenumber, String mail) {
+        this.userID = userID;
         this.email = mail;
         this.firstName = name;
         this.lastName = lastname;
