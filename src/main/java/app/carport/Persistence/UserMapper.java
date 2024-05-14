@@ -5,6 +5,7 @@ import app.carport.Entities.Carport;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,8 +55,6 @@ public class UserMapper {
         return null;
     }
 
-
-
     public static boolean createUser(User user, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into users (email, password, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\") values (?,?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -71,13 +70,14 @@ public class UserMapper {
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-            String msg = "An error occured. Try again.";
+            String msg = "An error occured while creating a user. Try again.";
             if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
                 msg = "The username already exists. Please choose another one.";
             }
             throw new DatabaseException(msg, e.getMessage());
         }
     }
+
     public static boolean createTempUser(User user, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into users (email, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\") values (?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -89,12 +89,10 @@ public class UserMapper {
             int addressId = AddressMapper.insertAddress(user.getAddress(), connectionPool).getAddressID();
             ps.setInt(6, addressId);
 
-
-
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-            String msg = "An error occured. Try again.";
+            String msg = "An error occured while creating a temporary user. Try again.";
             if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
                 msg = "The username already exists. Please choose another one.";
             }
@@ -257,7 +255,6 @@ public class UserMapper {
             throw new DatabaseException("Error. Couldn't update user from userID.", e.getMessage());
         }
     }
-
 
     public static int getLastUserId(ConnectionPool connectionPool) throws DatabaseException {
         int orderNumber = 0;

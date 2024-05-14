@@ -3,6 +3,7 @@ package app.carport.Entities;
 import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.MaterialMapper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ public class Carport {
         return withRoof;
     }
 
-    private boolean withRoof;
+    private final boolean withRoof;
     private Map<Material, Integer> materialList = new HashMap<>();
     private double totalPrice;
 

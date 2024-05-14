@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class AdminPanelController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.post("removerOrder", ctx -> removeOrder(connectionPool, ctx));
+        app.post("removeorder", ctx -> removeOrder(connectionPool, ctx));
         app.post("removematerial", ctx -> removeMaterial(connectionPool, ctx));
         app.post("addmaterial", ctx -> addMaterial(connectionPool, ctx));
         app.post("renderadmin", ctx -> renderAdmin(connectionPool, ctx));
@@ -33,7 +33,7 @@ public class AdminPanelController {
             int quantityInStock = Integer.parseInt(ctx.formParam("quantityInStock"));
             MaterialMapper.addMaterial(connectionPool, name, price, length, unit, quantityInStock);
             renderAdmin(connectionPool, ctx);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException |DatabaseException e) {
             renderAdmin(connectionPool, ctx);
         }
     }
@@ -49,7 +49,6 @@ public class AdminPanelController {
             renderAdmin(connectionPool, ctx);
         } catch (NumberFormatException | DatabaseException e) {
             renderAdmin(connectionPool, ctx);
-
         }
     }
 
