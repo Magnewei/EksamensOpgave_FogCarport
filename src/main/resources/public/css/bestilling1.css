@@ -199,7 +199,7 @@ form textarea {
     z-index: -1; /* Move the image behind other content */
 }
 
-.Bestilling-box {
+.Container {
     background-color: var(--primary-color);
     display: flex; /* Use flexbox layout */
     flex-direction: column;
@@ -242,7 +242,7 @@ form textarea {
     margin-right: 20px; /* Add space between boxes */
 }
 
-.Bestilling-box {
+.Container {
     background-color: var(--primary-color);
     display: flex; /* Use flexbox layout */
     flex-direction: column;

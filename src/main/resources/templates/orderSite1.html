@@ -14,7 +14,7 @@
 <div class="main-content">
 
     <form method="post">
-    <div class="Bestilling-box">
+    <div class="Container">
         <div class="dropdowns">
 <fieldset>
             <label>Bredde</label>
@@ -36,13 +36,14 @@
 
         </select>
             <label>Tagplader til</label>
-            <select class="form-control" th:name="withRoof">
+            <select th:name="withRoof">
                 <option th:value="0" >Nej</option>
                 <option th:value="1" >Ja</option>
             </select>
 
             </fieldset>
         </div>
+
         <fieldset>
         <label for="message">Extra information</label>
     <textarea id="message" name="message" ></textarea>

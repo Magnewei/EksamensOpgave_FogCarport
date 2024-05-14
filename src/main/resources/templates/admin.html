@@ -14,9 +14,11 @@
 
 <div class="main-content">
 
-    <div class="Inventar-liste">
-        <div class="Bestilling-box list">
+
+        <div class="Container">
         <label> Stocklist </label>
+            <br>
+            <div class="Container list">
         <table>
             <thead>
             <tr>
@@ -40,37 +42,19 @@
                 <td>
                     <form method="post" action="/removematerial">
                         <input type="hidden" name="remove_material" th:value="${material.materialID}">
-                        <button type="submit">Delete material</button>
+                        <button type="submit" class="adbtn"> Delete </button>
                     </form>
                 </td>
             </tr>
         </table>
             </div>
-    </div>
-    <div class="Add-material">
-        <div class="Bestilling-box">
-            <h2> Add Material </h2><br>
-            <fieldset>
-            <form method="post" action="/addmaterial">
-                <label for="name">Name:</label><br>
-                <input type="text" id="name" name="name"><br>
-                <label for="price">Price:</label><br>
-                <input type="text" id="price" name="price"><br>
-                <label for="length">Length:</label><br>
-                <input type="text" id="length" name="length"><br>
-                <label for="unit">Unit:</label><br>
-                <input type="text" id="unit" name="unit"><br>
-                <label for="quantityInStock">Quantity in Stock:</label><br>
-                <input type="text" id="quantityInStock" name="quantityInStock"><br>
-                <button type="submit" class="btn" >Add Material"</button>
-            </form>
-            </fieldset>
         </div>
-    </div>
 
-    <div class="Ordre-liste">
-        <div class="Bestilling-box list">
+
+    <div class="Container">
         <label> Ordrer </label>
+        <br>
+        <div class="Container list">
         <table>
             <thead>
             <tr>
@@ -89,24 +73,45 @@
                 <td>
                     <form method="post" action="/removeorder">
                         <input type="hidden" name="remove_order" th:value="${order.orderID}">
-                        <button type="submit">Delete order</button>
+                        <button type="submit" class="adbtn" >Delete order</button>
                     </form>
                     <form method="post" action="/acceptorder">
                         <input type="hidden" name="accept_order" th:value="${order.orderID}">
-                        <button type="submit">Accept order</button>
+                        <button type="submit" class="adbtn" >Accept order</button>
                     </form>
                     <form method="post" action="/denyorder">
                         <input type="hidden" name="deny_order" th:value="${order.orderID}">
-                        <button type="submit">Deny order</button>
+                        <button type="submit" class="adbtn" >Deny order</button>
                     </form>
                 </td>
             </tr>
         </table>
             </div>
+
     </div>
+    <div class="Add-material">
+        <div class="Container">
+            <h2> Add Material </h2><br>
+            <form method="post" action="/addmaterial">
+                <fieldset>
+                    <label for="name">Name:</label><br>
+                    <input type="text" id="name" name="name"><br>
+                    <label for="price">Price:</label><br>
+                    <input type="text" id="price" name="price"><br>
+                    <label for="length">Length:</label><br>
+                    <input type="text" id="length" name="length"><br>
+                    <label for="unit">Unit:</label><br>
+                    <input type="text" id="unit" name="unit"><br>
+                    <label for="quantityInStock">Quantity in Stock:</label><br>
+                    <input type="text" id="quantityInStock" name="quantityInStock"><br>
+                    <button type="submit" class="btn" >Add Material"</button>
+                </fieldset>
+            </form>
+        </div>
     </div>
 
 
+    </div>
 
 
 
