@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class AdminPanelController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.post("removerOrder", ctx -> removeOrder(connectionPool, ctx));
+        app.post("removeorder", ctx -> removeOrder(connectionPool, ctx));
         app.post("removematerial", ctx -> removeMaterial(connectionPool, ctx));
         app.post("addmaterial", ctx -> addMaterial(connectionPool, ctx));
         app.post("renderadmin", ctx -> renderAdmin(connectionPool, ctx));
