@@ -129,11 +129,6 @@ public class UserController {
 
             User user = UserMapper.login(mail, password, connectionPool);
 
-            if (user == null) {
-                ctx.attribute("message", "Password eller brugernavn var forkert. Prøv igen.");
-                ctx.render("login.html");
-            }
-
             ctx.sessionAttribute("currentUser", user);
             ctx.render("index.html");
 
