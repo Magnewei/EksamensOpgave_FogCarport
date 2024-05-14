@@ -1,5 +1,7 @@
 package app.carport.Services;
 
+import app.carport.Entities.Carport;
+import app.carport.Entities.Material;
 import app.carport.Entities.User;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -8,7 +10,9 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
+
 import java.io.IOException;
+import java.util.Map;
 
 public class MailServer {
     private final static String API_KEY = System.getenv("SENDGRID_API_KEY");
@@ -16,6 +20,7 @@ public class MailServer {
 
     /**
      * Sends an email notification when an order is completed.
+     *
      * @param user User to whom the email will be sent.
      * @return true if the email was sent successfully, false otherwise.
      */
@@ -62,6 +67,7 @@ public class MailServer {
 
     /**
      * Sends an email notification when an order's status is updated.
+     *
      * @param user User to whom the email will be sent. This method currently has static data for demonstration.
      * @return true if the email was sent successfully, false otherwise.
      */
@@ -76,10 +82,10 @@ public class MailServer {
         Personalization personalization = new Personalization();
 
         // Instantiate customer details into a mail.
-        personalization.addTo(new Email("magnewei@icloud.com"));
-        personalization.addDynamicTemplateData("name", "Magnus");
-        personalization.addDynamicTemplateData("orderID", "3");
-        personalization.addDynamicTemplateData("orderStatus", "denied");
+        personalization.addTo(new Email(user.getEmail()));
+        personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName());
+        personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId();
+        personalization.addDynamicTemplateData("orderStatus", user.getOrder().getStatus());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
@@ -109,6 +115,7 @@ public class MailServer {
 
     /**
      * Sends an email notification when a user's information is changed.
+     *
      * @param user User to whom the email will be sent.
      * @return true if the email was sent successfully, false otherwise.
      */
@@ -127,9 +134,9 @@ public class MailServer {
 
         // Instantiate customer details into a mail.
         personalization.addTo(new Email(user.getEmail()));
-        personalization.addDynamicTemplateData("name", user.getEmail());
+        personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName());
         personalization.addDynamicTemplateData("email", user.getEmail());
-        personalization.addDynamicTemplateData("adress", user.getAddress());
+        personalization.addDynamicTemplateData("address", user.getAddress());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
@@ -156,6 +163,7 @@ public class MailServer {
 
     /**
      * Sends an email notification about an order.
+     *
      * @param user User to whom the email will be sent.
      * @return true if the email was sent successfully, false otherwise.
      */
@@ -174,7 +182,7 @@ public class MailServer {
 
         // Instantiate customer details into a mail.
         personalization.addTo(new Email(user.getEmail()));
-        personalization.addDynamicTemplateData("name", user.getEmail());
+        personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName());
         personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
@@ -198,5 +206,26 @@ public class MailServer {
             System.out.println(e.getMessage());
         }
         return responseCode == 202;
+    }
+
+
+    /**
+     * Constructs a string representation of the materials needed for a given carport.
+     * This includes each material and its corresponding quantity formatted in a list.
+     *
+     * @param carport The Carport object containing the list of materials.
+     * @return A string detailing the list of materials and their quantities for the carport.
+     */
+    public static String printCarportMaterials(Carport carport) {
+        StringBuilder carportMaterials = new StringBuilder("Din liste betstår af følgende materialer: ");
+        Map<Material, Integer> carportMaterialsMap = carport.getMaterialList();
+
+        for (Map.Entry<Material, Integer> entry : carportMaterialsMap.entrySet()) {
+            Material material = entry.getKey();
+            int quantity = entry.getValue();
+            carportMaterials.append(material.getName() + " af en mængde på " + quantity + "\n");
+        }
+
+        return carportMaterials.toString();
     }
 }
