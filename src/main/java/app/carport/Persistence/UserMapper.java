@@ -28,7 +28,12 @@ public class UserMapper {
      * @throws DatabaseException If there is an issue accessing the database.
      */
     public static User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "select * from users INNER JOIN address ON users.\"addressID\" = address.\"addressID\" INNER JOIN orders ON users.\"userID\" = orders.\"userID\" INNER JOIN postalcode ON address.postalcode = postalcode.postalcode INNER JOIN carport ON orders.\"carportID\" = carport.\"carportID\" WHERE email = ? AND password = ?";
+        User user = null;
+
+        String sql = "select * from users INNER JOIN address ON users.\"addressID\" = address.\"addressID\" " +
+                    "INNER JOIN postalcode ON address.postalcode = postalcode.postalcode " +
+                    "WHERE email = ? AND password = ?";
+
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.setString(2, password);
@@ -39,7 +44,7 @@ public class UserMapper {
                 boolean isAdmin = rs.getBoolean("isAdmin");
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
-                int phoneNumber = rs.getInt("phoneNumber");
+                int phoneNumber = rs.getInt("phonenumber");
 
                 int addressId = rs.getInt("addressID");
                 int postalCode = rs.getInt("postalcode");
@@ -49,23 +54,44 @@ public class UserMapper {
 
                 Address address = new Address(addressId, postalCode, houseNumber, cityName, streetName);
 
-                int orderID = rs.getInt("orderID");
-                String status = rs.getString("status");
-
-                double length = rs.getDouble("length");
-                double width = rs.getDouble("width");
-                boolean withRoof = rs.getBoolean("withRoof");
-                Carport carport = new Carport(length, width, withRoof);
-
-                // If the user has an order, return the user object with the order.
-                Order order = new Order(orderID, status, carport);
-                return new User(userId, isAdmin, firstName, lastName, address, order, email, password, phoneNumber);
+                user = new User(userId, isAdmin, firstName, lastName, address, null, email, password, phoneNumber);
 
             }
+
         } catch (SQLException e) {
             throw new DatabaseException("Database does not contain a user with the given information.", e.getMessage());
         }
-        return null;
+
+        // If a user was not found in the above statement, then throw exception,
+        // return to LoginController.login() and then warn user that email or password was incorrect.
+        if (user == null) {
+            throw new DatabaseException("User not found.");
+        }
+
+        String sqlOrdersCarports = "SELECT * FROM orders " +
+                "INNER JOIN carport ON orders.\"carportID\" = carport.\"carportID\" " +
+                "WHERE orders.\"userID\" = ?";
+
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlOrdersCarports)) {
+            ps.setInt(1, user.getUserID());
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int orderID = rs.getInt("orderID");
+                    String status = rs.getString("status");
+                    double length = rs.getDouble("length");
+                    double width = rs.getDouble("width");
+                    boolean withRoof = rs.getBoolean("withRoof");
+
+                    Carport carport = new Carport(length, width, withRoof);
+                    Order order = new Order(orderID, status, carport);
+                    user.setOrder(order);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
+        return user;
     }
 
     /**
@@ -108,7 +134,7 @@ public class UserMapper {
      * @throws DatabaseException If there is an issue executing the database operation.
      */
     public static boolean createTempUser(User user, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into users (email, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\") values (?,?,?,?,?,?)";
+        String sql = "insert into users (email, \"isAdmin\", phonenumber, \"firstName\", \"lastName\", \"addressID\", \"userID\") values (?,?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, user.getEmail());
             ps.setBoolean(2, user.isAdmin());  // Every user created should be a non-admin.
@@ -117,6 +143,7 @@ public class UserMapper {
             ps.setString(5, user.getLastName());
             int addressId = AddressMapper.insertAddress(user.getAddress(), connectionPool).getAddressID();
             ps.setInt(6, addressId);
+            ps.setInt(7, user.getUserID());
 
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;

@@ -4,6 +4,7 @@ import app.carport.Entities.Carport;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
+import app.carport.Services.MailServer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -78,17 +79,16 @@ public class OrderMapper {
      * @return The highest order ID.
      * @throws DatabaseException If there is a problem executing the query.
      */
-    public static int getLastOrder(ConnectionPool connectionPool) throws DatabaseException {
-        int orderNumber = 0;
+    public static int getLastOrderID(ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT \"orderID\" " + "FROM orders " + "ORDER BY \"orderID\" DESC " + "LIMIT 1;";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery();) {
             if (rs.next()) {
-                orderNumber = rs.getInt("orderID");
+                return rs.getInt("orderID");
             }
         } catch (SQLException e) {
             throw new DatabaseException("Error retrieving the latest order ID", e.getMessage());
         }
-        return orderNumber;
+        return 0;
     }
 
     /**
@@ -100,12 +100,13 @@ public class OrderMapper {
      * @return true if the insertion was successful, false otherwise.
      * @throws DatabaseException If there is a problem executing the insert operation.
      */
-    public static boolean insertNewOrder(User user, int carportId, ConnectionPool connectionPool) throws DatabaseException {
-        String sqlMakeOrder = "INSERT INTO orders (\"userID\",\"carportID\") VALUES (?,?)";
+    public static boolean insertNewOrder(User user, int carportId,double price ,ConnectionPool connectionPool) throws DatabaseException {
+        String sqlMakeOrder = "INSERT INTO orders (\"userID\",\"carportID\",\"price\") VALUES (?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlMakeOrder)) {
 
             ps.setInt(1, user.getUserID());
             ps.setInt(2, carportId);
+            ps.setDouble(3,price);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
 
@@ -238,7 +239,7 @@ public class OrderMapper {
      * @throws DatabaseException If there is a problem executing the query.
      */
     public static Order getOrderByOrderId(int orderID, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM orders INNER JOIN carport ON orders.\"carportID\" = carport.\"carportID\" WHERE \"orderID\" = ?";
+        String sql = "SELECT * FROM users INNER JOIN orders ON users.\"userID\" = orders.\"userID\" INNER JOIN carport ON orders.\"carportID\" = carport.\"carportID\" WHERE \"orderID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setInt(1, orderID);
             ResultSet rs = ps.executeQuery();

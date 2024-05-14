@@ -1,6 +1,11 @@
 package app.carport.Services;
 
+import app.carport.Entities.Carport;
+import app.carport.Entities.Material;
+import app.carport.Entities.Order;
 import app.carport.Entities.User;
+import app.carport.Exceptions.DatabaseException;
+import app.carport.Persistence.ConnectionPool;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -8,7 +13,9 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
+
 import java.io.IOException;
+import java.util.Map;
 
 public class MailServer {
     private final static String API_KEY = System.getenv("SENDGRID_API_KEY");
@@ -16,10 +23,11 @@ public class MailServer {
 
     /**
      * Sends an email notification when an order is completed.
+     *
      * @param user User to whom the email will be sent.
      * @return true if the email was sent successfully, false otherwise.
      */
-    public static boolean mailOnOrderDone(User user) {
+    public static boolean mailOnOrderDone(Order order, ConnectionPool connectionPool) throws DatabaseException {
         int responseCode = 0;
 
         // Get api key
@@ -33,9 +41,10 @@ public class MailServer {
         Personalization personalization = new Personalization();
 
         // Instantiate customer details into a mail.
-        personalization.addTo(new Email(user.getEmail()));
-        personalization.addDynamicTemplateData("name", user.getEmail());
-        personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId());
+        personalization.addTo(new Email(order.getUser().getEmail()));
+        personalization.addDynamicTemplateData("name", order.getUser().getFirstName() + " " + order.getUser().getLastName());
+        personalization.addDynamicTemplateData("orderID", order.getOrderId());
+        personalization.addDynamicTemplateData("materialList", printCarportMaterials(order.getCarport(), connectionPool));
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
@@ -62,10 +71,11 @@ public class MailServer {
 
     /**
      * Sends an email notification when an order's status is updated.
+     *
      * @param user User to whom the email will be sent. This method currently has static data for demonstration.
      * @return true if the email was sent successfully, false otherwise.
      */
-    public static boolean mailOnStatusUpdate(User user) {
+    public static boolean mailOnStatusUpdate(Order order) {
         int responseCode = 0;
 
         // Email that we're sending our company mail from:
@@ -76,10 +86,10 @@ public class MailServer {
         Personalization personalization = new Personalization();
 
         // Instantiate customer details into a mail.
-        personalization.addTo(new Email("magnewei@icloud.com"));
-        personalization.addDynamicTemplateData("name", "Magnus");
-        personalization.addDynamicTemplateData("orderID", "3");
-        personalization.addDynamicTemplateData("orderStatus", "denied");
+        personalization.addTo(new Email(order.getUser().getEmail()));
+        personalization.addDynamicTemplateData("name", order.getUser().getFirstName() + " " + order.getUser().getLastName());
+        personalization.addDynamicTemplateData("orderID", order.getOrderId());
+        personalization.addDynamicTemplateData("orderStatus", order.getStatus());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
@@ -109,6 +119,7 @@ public class MailServer {
 
     /**
      * Sends an email notification when a user's information is changed.
+     *
      * @param user User to whom the email will be sent.
      * @return true if the email was sent successfully, false otherwise.
      */
@@ -127,9 +138,9 @@ public class MailServer {
 
         // Instantiate customer details into a mail.
         personalization.addTo(new Email(user.getEmail()));
-        personalization.addDynamicTemplateData("name", user.getEmail());
+        personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName());
         personalization.addDynamicTemplateData("email", user.getEmail());
-        personalization.addDynamicTemplateData("adress", user.getAddress());
+        personalization.addDynamicTemplateData("address", user.getAddress());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
@@ -156,6 +167,7 @@ public class MailServer {
 
     /**
      * Sends an email notification about an order.
+     *
      * @param user User to whom the email will be sent.
      * @return true if the email was sent successfully, false otherwise.
      */
@@ -174,7 +186,7 @@ public class MailServer {
 
         // Instantiate customer details into a mail.
         personalization.addTo(new Email(user.getEmail()));
-        personalization.addDynamicTemplateData("name", user.getEmail());
+        personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName());
         personalization.addDynamicTemplateData("orderID", user.getOrder().getOrderId());
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
@@ -198,5 +210,30 @@ public class MailServer {
             System.out.println(e.getMessage());
         }
         return responseCode == 202;
+    }
+
+
+    /**
+     * Constructs a string representation of the materials needed for a given carport.
+     * This includes each material and its corresponding quantity formatted in a list.
+     *
+     * @param carport The Carport object containing the list of materials.
+     * @return A string detailing the list of materials and their quantities for the carport.
+     */
+    public static String printCarportMaterials(Carport carport, ConnectionPool connectionPool) throws DatabaseException {
+        try {
+            StringBuilder carportMaterials = new StringBuilder();
+            carport.setMaterialList(connectionPool);
+            Map<Material, Integer> carportMaterialsMap = carport.getMaterialList();
+
+            for (Map.Entry<Material, Integer> entry : carportMaterialsMap.entrySet()) {
+                Material material = entry.getKey();
+                int quantity = entry.getValue();
+                carportMaterials.append(material.getName() + " af en mængde på " + quantity + "\n");
+            }
+            return carportMaterials.toString();
+        } catch (DatabaseException e) {
+            throw new DatabaseException("Couldn't get the material list for the mail.");
+        }
     }
 }

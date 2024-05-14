@@ -55,13 +55,13 @@ public class User {
         this.order = order;
     }
 
-    public User(String name, String lastname, String streetname, String streetnumber, String phonenumber, String mail) {
-        this.userID = 0;
+    public User(int userID, String name, String lastname, String streetname, int postalcode, int phonenumber, String mail) {
+        this.userID = userID;
         this.email = mail;
         this.firstName = name;
         this.lastName = lastname;
-        this.address = new Address(streetname, Integer.parseInt(streetnumber), 0);
-        this.phoneNumber = Integer.parseInt(phonenumber);
+        this.address = new Address(streetname, postalcode, 0);
+        this.phoneNumber = phonenumber;
     }
 
     public User(int userId, String email, String firstName, String lastName) {

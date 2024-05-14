@@ -51,7 +51,7 @@ public class CarportMapper {
      * @return The ID of the matching carport or 0 if no match is found.
      * @throws DatabaseException If there is a problem executing the query.
      */
-    public static int getCarportByWidthAndLength(double width, double length, boolean withRoof, ConnectionPool connectionPool) throws DatabaseException {
+    public static int getCarportIDByWidthAndLength(double width, double length, boolean withRoof, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM carport WHERE \"width\" = ? AND \"length\" = ? AND \"withRoof\"=?;";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setDouble(1, width);
@@ -82,7 +82,7 @@ public class CarportMapper {
                     for (boolean withRoof : possibleRoofTypes) {
                         Carport carport = new Carport(length, width, withRoof);
                         carport.setMaterialList(connectionPool);
-                        int carportId = getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
+                        int carportId = getCarportIDByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
                         for (Map.Entry<Material, Integer> entry : carport.getMaterialList().entrySet()) {
                             ps.setInt(1, carportId);
                             ps.setInt(2, entry.getKey().getMaterialID());

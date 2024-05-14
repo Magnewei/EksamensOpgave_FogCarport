@@ -6,6 +6,7 @@ import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.OrderMapper;
 import app.carport.Persistence.UserMapper;
+import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -41,7 +42,6 @@ public class UserController {
 
 
             if (!checkPassword(ctx, ctx.formParam("password"))) {
-                ctx.attribute("message", "Password must contain at least one letter, one digit, and be at least 8 characters long.");
                 ctx.render("createUser.html");
                 return;
             }
@@ -72,7 +72,7 @@ public class UserController {
      * @return true if the password meets all criteria, false otherwise.
      */
     public static boolean checkPassword(Context ctx, String password) {
-        if (password.length() < 16) {
+        if (password.length() < 8) {
             ctx.attribute("message", "Password must be at least 8 characters long.");
             return false;
         }
@@ -127,7 +127,9 @@ public class UserController {
                 ctx.render("login.html");
                 return;
             }
+
             User user = UserMapper.login(mail, password, connectionPool);
+
             ctx.sessionAttribute("currentUser", user);
             ctx.render("index.html");
 
@@ -170,6 +172,7 @@ public class UserController {
             currentUser.setPassword(ctx.formParam("password"));
             currentUser.setPhoneNumber(Integer.parseInt(ctx.formParam("phoneNumber")));
 
+
             Address address = currentUser.getAddress();
             address.setCityName(ctx.formParam("cityName"));
             address.setPostalCode(Integer.parseInt(ctx.formParam("postalCode")));
@@ -178,6 +181,7 @@ public class UserController {
             UserMapper.updateUser(currentUser, connectionPool); // Pass phonenumber to updateUser method
             ctx.sessionAttribute("currentUser", currentUser);
 
+            MailServer.mailOnUserChanges(currentUser);
             // Redirect to a success page
             ctx.render("userSite.html");
         } catch (DatabaseException | NumberFormatException e) {
