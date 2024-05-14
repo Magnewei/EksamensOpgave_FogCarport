@@ -21,6 +21,7 @@ public class CarportShopController {
     }
 
     public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
+        CarportMapper.addAllPossibleMaterialsToDb(connectionPool);
         renderCarportShop(ctx, connectionPool);
     }
 
@@ -34,9 +35,9 @@ public class CarportShopController {
         ctx.sessionAttribute("Carportwidth", width);
         try {
             Carport carport = new Carport(length, width, withRoof);
-            Map<Material, Integer> carportMaterials = carport.calculateMaterialList(connectionPool);
+            carport.setMaterialList(connectionPool);
+            Map<Material, Integer> carportMaterials = carport.getMaterialList();
             carport.setMaterialList(carportMaterials);
-            CarportMapper.addMaterialsToDb(carport, connectionPool);
             ctx.sessionAttribute("withRoof", withRoof);
             ctx.sessionAttribute("Carport", carport);
             CarportSVG svg = new CarportSVG(width, length);
