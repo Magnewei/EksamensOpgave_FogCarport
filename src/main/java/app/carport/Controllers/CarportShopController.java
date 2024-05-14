@@ -61,7 +61,7 @@ public class CarportShopController {
         }
 
         int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
-        boolean NewOrder = OrderMapper.insertNewOrder(user, carportId, connectionPool);
+        OrderMapper.insertNewOrder(user, carportId, connectionPool);
         ctx.render("orderSite3.html");
     }
 
@@ -75,7 +75,7 @@ public class CarportShopController {
             UserMapper.createTempUser(user, connectionPool);
 
             int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
-            boolean NewOrder = OrderMapper.insertNewOrder(user, carportId, connectionPool);
+            OrderMapper.insertNewOrder(user, carportId, connectionPool);
             ctx.render("orderSite3.html");
         } catch (DatabaseException e) {
             ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
