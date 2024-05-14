@@ -17,7 +17,8 @@ public class CarportMapper {
 
     /**
      * Retrieves a Carport by its unique ID from the database.
-     * @param carportId The ID of the carport to retrieve.
+     *
+     * @param carportId      The ID of the carport to retrieve.
      * @param connectionPool Connection pool for database connections.
      * @return Carport object if found, otherwise returns null.
      * @throws DatabaseException If there is a problem executing the query.
@@ -42,9 +43,10 @@ public class CarportMapper {
 
     /**
      * Retrieves a carport ID by matching dimensions and roof presence.
-     * @param width Width of the carport to find.
-     * @param length Length of the carport to find.
-     * @param withRoof Boolean indicating if the carport includes a roof.
+     *
+     * @param width          Width of the carport to find.
+     * @param length         Length of the carport to find.
+     * @param withRoof       Boolean indicating if the carport includes a roof.
      * @param connectionPool Connection pool for database connections.
      * @return The ID of the matching carport or 0 if no match is found.
      * @throws DatabaseException If there is a problem executing the query.
@@ -71,7 +73,7 @@ public class CarportMapper {
         double[] possibleLengths = {420, 480, 540, 600, 660, 720, 780}; // replace with your possible lengths
         double[] possibleWidths = {300, 360, 420, 480, 540, 600}; // replace with your possible widths
         boolean[] possibleRoofTypes = {true, false}; // with or without roof
-        Carport test = new Carport(660,360,true);
+        Carport test = new Carport(660, 360, true);
         test.setMaterialList(connectionPool);
 
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
