@@ -63,7 +63,7 @@ public class CarportShopController {
      */
     public static void orderButtonThree(ConnectionPool connectionPool, Context ctx) {
         try {
-            User user = null;
+            User user;
 
             // If the given input was invalid, re-render the site and post an error.
             if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastName"), ctx.formParam("streetName"), ctx.formParam("phoneNumber"))) {
@@ -72,7 +72,7 @@ public class CarportShopController {
             }
 
 
-            if (ctx.formParam("currentUser") == null) {
+            if (ctx.sessionAttribute("currentUser") == null) {
                 String name = ctx.formParam("name");
                 String lastname = ctx.formParam("lastName");
                 String streetname = ctx.formParam("streetName");
@@ -91,7 +91,6 @@ public class CarportShopController {
                 user = ctx.sessionAttribute("currentUser");
 
             }
-
 
             // Calculates the carport objects total amount of materials. Sets the carportID from width and length.
             Carport carport = ctx.sessionAttribute("carport");
