@@ -20,6 +20,13 @@ public class UserController {
         app.post("goTocreateUser", ctx -> goTocreateUser(ctx));
     }
 
+    /**
+     * Attempts to create a new user account from the provided form parameters.
+     *
+     * @param ctx            Context for handling the request, contains form parameters.
+     * @param isadmin        Boolean flag indicating if the user should have admin privileges.
+     * @param connectionPool Connection pool for database connections.
+     */
     public static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) {
         try {
             String firstName = ctx.formParam("firstName");
@@ -57,6 +64,13 @@ public class UserController {
         }
     }
 
+    /**
+     * Validates the password based on specific criteria such as length and character composition.
+     *
+     * @param ctx      Context for handling the request, can display messages.
+     * @param password Password string to validate.
+     * @return true if the password meets all criteria, false otherwise.
+     */
     public static boolean checkPassword(Context ctx, String password) {
         if (password.length() < 16) {
             ctx.attribute("message", "Password must be at least 8 characters long.");
@@ -87,12 +101,22 @@ public class UserController {
         // man kunne argumentere for denne skulle placeres i user mappe.
     }
 
-
+    /**
+     * Logs out the current user by invalidating the session and redirecting to the home page.
+     *
+     * @param ctx Context for handling the request.
+     */
     public static void logout(Context ctx) {
         ctx.req().getSession().invalidate();
         ctx.redirect("/");
     }
 
+    /**
+     * Attempts to log in a user with provided credentials. On success, stores user in session.
+     *
+     * @param ctx            Context for handling the request, contains form parameters.
+     * @param connectionPool Connection pool for database connections.
+     */
     public static void login(Context ctx, ConnectionPool connectionPool) {
         String mail = ctx.formParam("username");
         String password = ctx.formParam("password");
@@ -114,6 +138,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Renders the user-specific site, including user data and related orders.
+     *
+     * @param ctx            Context for handling the request.
+     * @param connectionPool Connection pool for database connections.
+     */
     public static void renderUserSite(Context ctx, ConnectionPool connectionPool) {
         try {
             User user = ctx.sessionAttribute("currentUser");
@@ -125,6 +155,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Updates user information based on provided form parameters and saves it to the database.
+     *
+     * @param ctx            Context for handling the request, contains form parameters.
+     * @param connectionPool Connection pool for database connections.
+     */
     public static void updateUser(Context ctx, ConnectionPool connectionPool) {
         try {
             User currentUser = ctx.sessionAttribute("currentUser");
@@ -150,6 +186,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Renders the page for creating a new user.
+     *
+     * @param ctx Context for handling the request.
+     */
     public static void goTocreateUser(Context ctx) {
         ctx.render("createUser.html");
     }
