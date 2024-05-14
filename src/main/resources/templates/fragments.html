@@ -11,8 +11,8 @@
             <button type="submit" formaction="/goToIndex" class="logo-link"></button>
               <ul>
             <li>
-                <button type="submit" th:if="${session.currentUser != null}" formaction="/logout" name="button" th:text="${session.currentUser.firstName} + ' | Logout'"></button>
-                <button type="submit" th:if="${session.currentUser == null}" formaction="/goToLogin" name="button">Login</button>
+                <button type="submit" th:if="${session.currentUser != null && session.currentUser.password != null}" formaction="/logout" name="button" th:text="${session.currentUser.firstName} + ' | Logout'"></button>
+                <button type="submit" th:if="${session.currentUser == null || session.currentUser.password == null}" formaction="/goToLogin" name="button">Login</button>
             </li>
 
             <li>

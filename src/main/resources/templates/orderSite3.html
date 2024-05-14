@@ -12,29 +12,26 @@
 <div class="main-content">
 
     <form method="post" action="orderCarport">
-    <div class="Bestilling-box2">
         <div class="Container">
-        <label> Du har Bestilt en Carport med følgende mål </label>
-
-            <ul>
-                <li>Længde: <span type="text" name="message" required th:text="${session.Carport.length}"></span></li>
-                <li>Bredde: <span type="text" name="Carportwidth" required th:text="${session.Carport.width}"></span></li>
-                <li>Skur til : <span type="text" name="Carportwidth" required th:text="${session.Carport.hasShed}"></span></li>
-            </ul>
-
+            <label> Du har Bestilt en Carport med følgende mål </label>
+            <br>
+            <fieldset>
+                <div>Længde: <span type="text" name="message"  th:text="${session.Carport.length}"></span></div>
+                <br>
+                <div>Bredde: <span type="text" name="Carportwidth"  th:text="${session.Carport.width}"></span></div>
+                <br>
+                <div>Skur til : <span type="text" name="Carportwidth"  th:text="${session.Carport.hasShed}"></span></div>
+            </fieldset>
         </div>
-    </div>
-    <div class="Container">
-        <div class="carport-svg-topview">
-            <div th:utext="${session.svg}"></div>
-        </div>
-    </div>
     </form>
+
+    <div class="Container">
+            <div class="svg-box" th:utext="${session.svg}"></div>
     </div>
 
-<div class="carport-svg-topview">
     <div th:utext="${session.svg}"></div>
-</div>
+    </div>
+
 
 <div th:replace="~{fragments :: footer}"></div>
 

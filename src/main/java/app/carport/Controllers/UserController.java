@@ -56,7 +56,7 @@ public class UserController {
             }
         } catch (DatabaseException e) {
             ctx.attribute("message", "Der opstod en fejl under oprettelsen. Prøv venligst igen.");
-            ctx.render("index.html");
+            ctx.render("createUser.html");
         }
     }
 
