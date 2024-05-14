@@ -9,6 +9,7 @@ import app.carport.Services.CarportSVG;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import javax.xml.crypto.Data;
 import java.util.Locale;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class CarportShopController {
         app.post("CustomizeCarport", ctx -> orderButtonOne(connectionPool, ctx));
         app.post("Continue", ctx -> orderButtonTwo(connectionPool, ctx));
         app.post("Order", ctx -> orderButtonThree(connectionPool, ctx));
-        app.post("OrderNoUser", ctx -> orderButtonThreeNoUser(connectionPool, ctx));
+        app.post("OrderNoUser", ctx -> orderButtonThree(connectionPool, ctx));
     }
 
     public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
@@ -29,89 +30,61 @@ public class CarportShopController {
         try {
             Locale.setDefault(new Locale("US"));
             ctx.render("orderSite2.html");
-            Double length = Double.valueOf(ctx.formParam("lengthValue"));
-            Double width = Double.valueOf(ctx.formParam("widthValue"));
+            double length = Double.valueOf(ctx.formParam("lengthValue"));
+            double width = Double.valueOf(ctx.formParam("widthValue"));
             boolean withRoof = Boolean.valueOf(ctx.formParam("withRoof"));
-            ctx.sessionAttribute("carportLength", length);
-            ctx.sessionAttribute("carportWidth", width);
 
             Carport carport = new Carport(length, width, withRoof);
-            carport.setMaterialList(connectionPool);
-            Map<Material, Integer> carportMaterials = carport.getMaterialList();
-            carport.setMaterialList(carportMaterials);
-            ctx.sessionAttribute("withRoof", withRoof);
+
             ctx.sessionAttribute("carport", carport);
             CarportSVG svg = new CarportSVG(width, length);
             ctx.sessionAttribute("svg", svg.toString());
 
-        } catch (Error | DatabaseException e) {
+        } catch (Error e) {
             ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
         }
     }
 
     public static void orderButtonThree(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
-        renderNames(ctx, connectionPool);
+       User user =null;
+        try{
 
-        User user = ctx.sessionAttribute("currentUser");
-        Carport carport = ctx.sessionAttribute("carport");
+            if(ctx.formParam("currentUser") ==null){
+                String name = ctx.formParam("name");
+                String lastname = ctx.formParam("lastName");
+                String streetname = ctx.formParam("streetName");
+                int postalCode = Integer.parseInt(ctx.formParam("postalCode"));
+                int phonenumber = Integer.parseInt(ctx.formParam("phoneNumber"));
+                String email = ctx.formParam("mail");
+                user = new User(name, lastname, streetname, postalCode, phonenumber, email);
+                user.setUserID(UserMapper.getLastUserId(connectionPool) + 1);
+                UserMapper.createTempUser(user, connectionPool);
+                ctx.sessionAttribute("currentUser",user);
 
-        if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastName"), ctx.formParam("streetName"), ctx.formParam("phoneNumber"))) {
-            ctx.render("orderSite2.html");
-            return;
-        }
-
-        int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
-        OrderMapper.insertNewOrder(user, carportId, connectionPool);
-        ctx.render("orderSite3.html");
-    }
-
-    public static void orderButtonThreeNoUser(ConnectionPool connectionPool, Context ctx) {
-        try {
-            renderNames(ctx, connectionPool);
-
+            }
+            System.out.println(user);
             Carport carport = ctx.sessionAttribute("carport");
-            User user = ctx.sessionAttribute("currentUser");
-            user.setUserID(UserMapper.getLastUserId(connectionPool) + 1);
-            UserMapper.createTempUser(user, connectionPool);
+
+           if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastName"), ctx.formParam("streetName"), ctx.formParam("phoneNumber"))) {
+               ctx.render("orderSite2.html");
+               return;
+           }
+
+           carport.setMaterialList(connectionPool);
+           Map<Material, Integer> carportMaterials = carport.getMaterialList();
+           carport.setMaterialList(carportMaterials);
+           double price = carport.calculateTotalPrice();
 
             int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
-            OrderMapper.insertNewOrder(user, carportId, connectionPool);
-            ctx.render("orderSite3.html");
-        } catch (DatabaseException e) {
-            ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
-            ctx.render("orderSite2.html");
-        }
+           OrderMapper.insertNewOrder(user, carportId,price, connectionPool);
+           ctx.render("orderSite3.html");
+
+       } catch(DatabaseException e){
+           ctx.attribute("message","Der noget galt med databasen");
+           ctx.render("orderSite2.html");
+       }
+
     }
-
-    public static void renderNames(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        User user;
-        if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastName"), ctx.formParam("streetName"), ctx.formParam("phoneNumber"))) {
-            ctx.render("orderSite2.html");
-            return;
-        }
-
-        if (ctx.sessionAttribute("currentUser") == null) {
-            String name = ctx.formParam("name");
-            String lastname = ctx.formParam("lastName");
-            String streetname = ctx.formParam("streetName");
-            String number = ctx.formParam("streetNumber");
-            String phonenumber = ctx.formParam("phoneNumber");
-            String email = ctx.formParam("mail");
-            user = new User(name, lastname, streetname, number, phonenumber, email);
-            ctx.sessionAttribute("currentUser", user);
-
-        } else {
-
-            user = ctx.sessionAttribute("currentUser");
-            ctx.attribute("name", user.getFirstName());
-            ctx.attribute("lastName", user.getLastName());
-            ctx.attribute("streetName", user.getAddress().getStreetName());
-            ctx.attribute("streetNumber", user.getAddress().getHouseNumber());
-            ctx.attribute("phoneNumber", user.getPhoneNumber());
-            ctx.attribute("email", user.getEmail());
-        }
-    }
-
     public static boolean checkNames(Context ctx, String name, String lastname, String streetname, String phonenumber) {
         if (!name.matches("[a-zA-Z]+")) {
             ctx.attribute("message", "Name must only contain letters");

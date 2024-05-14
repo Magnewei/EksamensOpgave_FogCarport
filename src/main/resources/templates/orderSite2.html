@@ -23,6 +23,7 @@
             </div>
             <div class="infoform">
                 <input type="text" name="streetName" required th:value="${session.currentUser != null ? session.currentUser.address.streetName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Street Name'}">
+                <input type="text" name="cityName" required th:value="${session.currentUser != null ? session.currentUser.address.cityName :''}" th:if="${session.currentUser != null}">
                 <input type="text" name="postalCode" required th:value="${session.currentUser != null ? session.currentUser.address.postalCode : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'postalCode'}">
                 <input type="text" name="streetNumber" required th:value="${session.currentUser != null ? session.currentUser.address.houseNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'House Number'}">
             </div>

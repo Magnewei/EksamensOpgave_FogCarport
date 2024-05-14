@@ -100,12 +100,13 @@ public class OrderMapper {
      * @return true if the insertion was successful, false otherwise.
      * @throws DatabaseException If there is a problem executing the insert operation.
      */
-    public static boolean insertNewOrder(User user, int carportId, ConnectionPool connectionPool) throws DatabaseException {
-        String sqlMakeOrder = "INSERT INTO orders (\"userID\",\"carportID\") VALUES (?,?)";
+    public static boolean insertNewOrder(User user, int carportId,double price ,ConnectionPool connectionPool) throws DatabaseException {
+        String sqlMakeOrder = "INSERT INTO orders (\"userID\",\"carportID\",\"price\") VALUES (?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlMakeOrder)) {
 
             ps.setInt(1, user.getUserID());
             ps.setInt(2, carportId);
+            ps.setDouble(3,price);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
 
