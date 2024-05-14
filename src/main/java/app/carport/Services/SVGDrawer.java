@@ -1,4 +1,4 @@
-package app.carport.SVG;
+package app.carport.Services;
 
 public class SVGDrawer {
         private static final String SVG_TEMPLATE = "<svg version=\"1.1\"\n" +

@@ -6,8 +6,8 @@ package app.carport.Entities;
  * @Author: Anton Friis Stengaard
  */
 public class Order {
-    private int orderId;
-    private String status;
+    private final int orderId;
+    private final String status;
     private User user;
     private Carport carport;
     private int totalPrice;
@@ -36,6 +36,12 @@ public class Order {
         this.status = status;
     }
 
+    public Order(int orderId, String status, int totalPrice) {
+        this.orderId = orderId;
+        this.status = status;
+        this.totalPrice = totalPrice;
+    }
+
     public int getOrderId() {
         return orderId;
     }
@@ -59,8 +65,6 @@ public class Order {
     public int getTotalPrice() {
         return totalPrice;
     }
-
-
 
     @Override
     public String toString() {

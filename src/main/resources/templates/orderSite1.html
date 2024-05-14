@@ -18,18 +18,18 @@
         <div class="dropdowns">
 <fieldset>
             <label>Bredde</label>
-        <select id="Bredde" name="Breddevalue">
+        <select id="Bredde" name="widthValue">
 
-            <option th:each="width: ${WidthList}"
+            <option th:each="width: ${widthList}"
                     th:value="${width}"
                     th:text="${width}">
             </option>
 
         </select>
             <label>Længde</label>
-        <select id="Længde" name="Længdevalue">
+        <select id="Længde" name="lengthValue">
 
-            <option th:each="length: ${LengthList}"
+            <option th:each="length: ${lengthList}"
                     th:value="${length}"
                     th:text="${length}">
             </option>
