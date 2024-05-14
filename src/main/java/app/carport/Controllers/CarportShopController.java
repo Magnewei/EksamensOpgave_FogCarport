@@ -1,15 +1,15 @@
 package app.carport.Controllers;
 
 import app.carport.Entities.Carport;
+import app.carport.Entities.Material;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
-import app.carport.MailServer.MailServer;
 import app.carport.Persistence.*;
 import app.carport.SVG.CarportSVG;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
 import java.util.Locale;
+import java.util.Map;
 
 public class CarportShopController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -33,9 +33,9 @@ public class CarportShopController {
         ctx.sessionAttribute("Carportlength", length);
         ctx.sessionAttribute("Carportwidth", width);
         try {
-
             Carport carport = new Carport(length, width, withRoof);
-            carport.calculateMaterialList(connectionPool);
+            Map<Material, Integer> carportMaterials = carport.calculateMaterialList(connectionPool);
+            carport.setMaterialList(carportMaterials);
             CarportMapper.addMaterialsToDb(carport, connectionPool);
             ctx.sessionAttribute("withRoof", withRoof);
             ctx.sessionAttribute("Carport", carport);
@@ -48,7 +48,7 @@ public class CarportShopController {
     }
 
     public static void orderButtonThree(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
-        renderNames(ctx);
+        renderNames(ctx, connectionPool);
 
         User user = ctx.sessionAttribute("currentUser");
         Carport carport = ctx.sessionAttribute("Carport");
@@ -64,21 +64,26 @@ public class CarportShopController {
     }
 
     public static void orderButtonThreeNouser(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
-        renderNames(ctx);
+        try {
+            renderNames(ctx, connectionPool);
 
-        User user = ctx.sessionAttribute("currentUser");
-        Carport carport = ctx.sessionAttribute("Carport");
-        user.setUserID(UserMapper.getLastUserId(connectionPool) + 1);
-        UserMapper.createTempUser(user, connectionPool);
+            Carport carport = ctx.sessionAttribute("Carport");
+            User user = ctx.sessionAttribute("currentUser");
+            user.setUserID(UserMapper.getLastUserId(connectionPool) + 1);
+            UserMapper.createTempUser(user, connectionPool);
 
+            int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
+            boolean NewOrder = OrderMapper.insertNewOrder(user, carportId, connectionPool);
+            ctx.render("bestilling3.html");
+        } catch (DatabaseException e) {
+            ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
+            ctx.render("bestilling2.html");
+        }
 
-        int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
-        boolean NewOrder = OrderMapper.insertNewOrder(user, carportId, connectionPool);
-        ctx.render("bestilling3.html");
     }
 
 
-    public static void renderNames(Context ctx) throws DatabaseException {
+    public static void renderNames(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         User user;
         if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastname"), ctx.formParam("streetname"), ctx.formParam("phonenumber"))) {
             ctx.render("bestilling2.html");

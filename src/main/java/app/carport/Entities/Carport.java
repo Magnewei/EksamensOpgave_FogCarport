@@ -25,7 +25,7 @@ public class Carport {
     }
 
     private boolean withRoof;
-    private Map<Material, Integer> materialList;
+    private Map<Material, Integer> materialList = new HashMap<>();
     private double totalPrice;
 
     public Carport(double length, double width, boolean withRoof) {
@@ -118,8 +118,6 @@ public class Carport {
                 return material;
             } else if (material.getLength() >= length / 2 && material.getLength() - (length / 2) <= 30) {
                 return material;
-            } else {
-                return null;
             }
         }
         return null;
@@ -136,7 +134,6 @@ public class Carport {
     }
 
     public Map<Material, Integer> calculateMaterialList(ConnectionPool connectionPool) throws DatabaseException {
-        Map<Material, Integer> materialList = new HashMap<>();
         List<Material> allMaterials = MaterialMapper.getAllMaterials(connectionPool);
 
         //Laver en liste med spærtræ som skal bruges til remme og spær.
@@ -151,7 +148,7 @@ public class Carport {
         List<Material> sternMaterials = new ArrayList<>();
         for (Material material : allMaterials) {
             if (material.getName().toLowerCase().contains("trykimp")) {
-                spærMaterials.add(material);
+                sternMaterials.add(material);
             }
         }
 
@@ -218,7 +215,6 @@ public class Carport {
         //Og en pakke skruer til sterntræet
         materialList.put(MaterialMapper.getMaterialById(1, connectionPool), 1);
 
-        this.materialList = materialList;
         return materialList;
 
     }
