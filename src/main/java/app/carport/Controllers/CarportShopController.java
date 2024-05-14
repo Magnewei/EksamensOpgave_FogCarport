@@ -95,7 +95,7 @@ public class CarportShopController {
 
             // Calculates the carport objects total amount of materials. Sets the carportID from width and length.
             Carport carport = ctx.sessionAttribute("carport");
-            carport.setCarportID(CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool));
+            carport.setCarportID(CarportMapper.getCarportIDByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool));
             carport.setMaterialList(connectionPool);
             double price = carport.calculateTotalPrice();
 
