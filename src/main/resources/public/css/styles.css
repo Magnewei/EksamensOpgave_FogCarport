@@ -101,11 +101,11 @@ label {
 
 /* Main content styles */
 .main-content {
+    display: flex;
     background-image: url('Media/Bck1.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    display: flex;
     align-items: center;
     justify-content: space-around;
     height: 100vh;
@@ -113,9 +113,12 @@ label {
 
 textarea {
     padding: 10px;
-    border: 1px solid #ccc; /* Add a border */
+    border: 1px solid #ccc;
     border-radius: 5px;
-    resize: none;
+    resize: block;
+    width: 100%;
+    max-width: 300px;
+    min-height: 100px;
 }
 
 
@@ -195,6 +198,7 @@ form textarea {
 
 /* Footer styles */
 .footer {
+    display: flex;
     background-color: var(--primary-color);
     color: var(--secondary-color);
     padding: 20px;
@@ -203,6 +207,7 @@ form textarea {
 }
 
 .login-box {
+    display:flex;
     background-color: var( --primary-color);
     padding: 30px;
     border-radius: 15px;

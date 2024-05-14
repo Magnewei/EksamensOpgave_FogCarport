@@ -26,7 +26,7 @@ public class CarportShopController {
 
     public static void orderButtonTwo(ConnectionPool connectionPool, Context ctx) {
         Locale.setDefault(new Locale("US"));
-        ctx.render("bestilling2.html");
+        ctx.render("orderSite2.html");
         Double length = Double.valueOf(ctx.formParam("Længdevalue"));
         Double width = Double.valueOf(ctx.formParam("Breddevalue"));
         boolean withRoof = Boolean.valueOf(ctx.formParam("withRoof"));
@@ -54,13 +54,13 @@ public class CarportShopController {
         Carport carport = ctx.sessionAttribute("Carport");
 
         if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastname"), ctx.formParam("streetname"), ctx.formParam("phonenumber"))) {
-            ctx.render("bestilling2.html");
+            ctx.render("orderSite2.html");
             return;
         }
 
         int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
         boolean NewOrder = OrderMapper.insertNewOrder(user, carportId, connectionPool);
-        ctx.render("bestilling3.html");
+        ctx.render("orderSite3.html");
     }
 
     public static void orderButtonThreeNouser(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
@@ -74,14 +74,14 @@ public class CarportShopController {
 
         int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
         boolean NewOrder = OrderMapper.insertNewOrder(user, carportId, connectionPool);
-        ctx.render("bestilling3.html");
+        ctx.render("orderSite3.html");
     }
 
 
     public static void renderNames(Context ctx) throws DatabaseException {
         User user;
         if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastname"), ctx.formParam("streetname"), ctx.formParam("phonenumber"))) {
-            ctx.render("bestilling2.html");
+            ctx.render("orderSite2.html");
             return;
         }
 
@@ -145,10 +145,10 @@ public class CarportShopController {
         try {
             ctx.attribute("LengthList", MaterialMapper.getAllLength(connectionPool));
             ctx.attribute("WidthList", MaterialMapper.getAllWidth(connectionPool));
-            ctx.render("bestilling1.html");
+            ctx.render("orderSite1.html");
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
-            ctx.render("bestilling1.html");
+            ctx.render("orderSite1.html");
         }
     }
 }
