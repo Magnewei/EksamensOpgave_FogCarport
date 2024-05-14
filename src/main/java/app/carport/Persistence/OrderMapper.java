@@ -39,30 +39,6 @@ public class OrderMapper {
         return orderList;
     }
 
-
-    public static List<Order> getAllOrdersJoin(ConnectionPool connectionPool) throws DatabaseException {
-        List<Order> orderList = new ArrayList<>();
-
-
-        String sql = "select * from orders";
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                int orderId = rs.getInt("orderID");
-                String status = rs.getString("status");
-                int userId = rs.getInt("userID");
-                int carportId = rs.getInt("carportID");
-
-                User user = UserMapper.getLimitedUserByUserId(userId, connectionPool);
-                Carport carport = CarportMapper.getCarportByCarportId(carportId, connectionPool);
-                orderList.add(new Order(orderId, status, user, carport));
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't get orders from database.", e.getMessage());
-        }
-        return orderList;
-    }
-
     public static List<Order> getReducedOrdersWithUsers(ConnectionPool connectionPool) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
         String sql = "select \"orderID\", status, \"userID\", email, \"firstName\", \"lastName\" from orders INNER JOIN users ON orders.\"userID\" = users.\"userID\"";
@@ -182,22 +158,6 @@ public class OrderMapper {
             throw new DatabaseException("Error. Couldn't get order from userID.", e.getMessage());
         }
         return orders;
-    }
-
-    public static Order getReducedOrderByUserId(int userID, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT \"orderID\", \"status\" FROM orders WHERE \"userID\" = ? ORDER BY \"orderID\" DESC LIMIT 1";
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
-            ps.setInt(1, userID);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int orderID = rs.getInt("orderID");
-                String status = rs.getString("status");
-                return new Order(orderID, status);
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't get reduced order from userID.", e.getMessage());
-        }
-        return null;
     }
 
     public static boolean checkIfUserHasOrder(int userID, ConnectionPool connectionPool) throws DatabaseException {
