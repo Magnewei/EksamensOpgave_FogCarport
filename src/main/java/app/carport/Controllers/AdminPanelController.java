@@ -49,7 +49,6 @@ public class AdminPanelController {
             renderAdmin(connectionPool, ctx);
         } catch (NumberFormatException | DatabaseException e) {
             renderAdmin(connectionPool, ctx);
-
         }
     }
 

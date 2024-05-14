@@ -2,6 +2,7 @@ package app.carport.Persistence;
 
 import app.carport.Entities.Address;
 import app.carport.Exceptions.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ public class AddressMapper {
                 return new Address(addressId, address.getPostalCode(), address.getHouseNumber(), address.getCityName(), address.getStreetName());
             }
         } catch (SQLException e) {
-            throw new DatabaseException("An error occured while inserting the address.", e.getMessage());
+            throw new DatabaseException("An error occurred while inserting the address.", e.getMessage());
         }
         return null;
     }

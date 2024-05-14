@@ -6,8 +6,8 @@ package app.carport.Entities;
  * @Author: Anton Friis Stengaard
  */
 public class Order {
-    private int orderId;
-    private String status;
+    private final int orderId;
+    private final String status;
     private User user;
     private Carport carport;
     private int totalPrice;
@@ -59,8 +59,6 @@ public class Order {
     public int getTotalPrice() {
         return totalPrice;
     }
-
-
 
     @Override
     public String toString() {

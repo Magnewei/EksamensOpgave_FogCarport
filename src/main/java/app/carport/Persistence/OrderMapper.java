@@ -2,6 +2,7 @@ package app.carport.Persistence;
 
 import app.carport.Entities.*;
 import app.carport.Exceptions.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -233,7 +234,7 @@ public class OrderMapper {
                 String lastName = rs.getString("lastName");
 
                 Carport carport = new Carport(length, width, withRoof);
-                User user = new User(userID,email,firstName,lastName);
+                User user = new User(userID, email, firstName, lastName);
                 return new Order(orderID, status, user, carport);
             }
         } catch (SQLException e) {

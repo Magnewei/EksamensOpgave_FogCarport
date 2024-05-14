@@ -79,10 +79,6 @@ public class CarportShopController {
             ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
             ctx.render("bestilling2.html");
         }
-        int carportId = CarportMapper.getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
-        boolean NewOrder = OrderMapper.insertNewOrder(user, carportId, connectionPool);
-        ctx.render("orderSite3.html");
-
     }
 
 
