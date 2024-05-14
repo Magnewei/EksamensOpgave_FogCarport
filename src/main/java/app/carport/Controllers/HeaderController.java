@@ -15,14 +15,28 @@ public class HeaderController {
         app.post("logout", ctx -> logout(ctx));
     }
 
+    /**
+     * Redirects to the admin panel view by rendering it.
+     * @param connectionPool Connection pool for database connections.
+     * @param ctx Context for handling the request.
+     */
     private static void goToAdmin(ConnectionPool connectionPool, Context ctx) {
         AdminPanelController.renderAdmin(connectionPool, ctx);
     }
 
+    /**
+     * Redirects to the login page view.
+     * @param ctx Context for handling the request.
+     */
     public static void goToLogin(Context ctx) {
         ctx.render("login.html");
     }
 
+    /**
+     * Redirects to the user site page view, handling any required session validation.
+     * @param ctx Context for handling the request.
+     * @param connectionPool Connection pool for database connections.
+     */
     public static void goToUserSite(Context ctx, ConnectionPool connectionPool) {
         try {
             UserController.renderUserSite(ctx, connectionPool);
@@ -32,6 +46,10 @@ public class HeaderController {
         }
     }
 
+    /**
+     * Redirects to the home page view.
+     * @param ctx Context for handling the request.
+     */
     public static void goToIndex(Context ctx) {
         ctx.render("index.html");
     }
