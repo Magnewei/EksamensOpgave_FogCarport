@@ -4,6 +4,7 @@ import app.carport.Entities.Carport;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
+import app.carport.Services.MailServer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -78,17 +79,15 @@ public class OrderMapper {
      * @return The highest order ID.
      * @throws DatabaseException If there is a problem executing the query.
      */
-    public static int getLastOrder(ConnectionPool connectionPool) throws DatabaseException {
-        int orderNumber = 0;
+    public static int getLastOrderID(ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT \"orderID\" " + "FROM orders " + "ORDER BY \"orderID\" DESC " + "LIMIT 1;";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery();) {
             if (rs.next()) {
-                orderNumber = rs.getInt("orderID");
+                return rs.getInt("orderID");
             }
         } catch (SQLException e) {
             throw new DatabaseException("Error retrieving the latest order ID", e.getMessage());
         }
-        return orderNumber;
     }
 
     /**

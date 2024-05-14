@@ -6,6 +6,7 @@ import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.OrderMapper;
 import app.carport.Persistence.UserMapper;
+import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -171,6 +172,7 @@ public class UserController {
             currentUser.setPassword(ctx.formParam("password"));
             currentUser.setPhoneNumber(Integer.parseInt(ctx.formParam("phoneNumber")));
 
+
             Address address = currentUser.getAddress();
             address.setCityName(ctx.formParam("cityName"));
             address.setPostalCode(Integer.parseInt(ctx.formParam("postalCode")));
@@ -179,6 +181,7 @@ public class UserController {
             UserMapper.updateUser(currentUser, connectionPool); // Pass phonenumber to updateUser method
             ctx.sessionAttribute("currentUser", currentUser);
 
+            MailServer.mailOnUserChanges(currentUser);
             // Redirect to a success page
             ctx.render("userSite.html");
         } catch (DatabaseException | NumberFormatException e) {

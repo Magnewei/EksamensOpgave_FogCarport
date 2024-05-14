@@ -5,6 +5,7 @@ import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.*;
 import app.carport.Services.CarportSVG;
+import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -102,6 +103,10 @@ public class CarportShopController {
             // Then inserts the order on either temporary or logged in user, combined with the carport and it's price.
             OrderMapper.insertNewOrder(user, carport.getCarportID(), price, connectionPool);
             ctx.render("orderSite3.html");
+
+            // Sends the user a mail on a successful insertion of the order.
+            user.setOrder(OrderMapper.getOrderByOrderId(OrderMapper.getLastOrderID(connectionPool), connectionPool));
+            MailServer.mailOnOrder(user);
 
         } catch (DatabaseException e) {
             ctx.attribute("message", "Error while retrieving or inserting data.");
