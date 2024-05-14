@@ -88,8 +88,8 @@ public class CarportShopController {
                 UserMapper.createTempUser(user, connectionPool);
 
             } else {
-
                 user = ctx.sessionAttribute("currentUser");
+
             }
 
 
