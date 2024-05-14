@@ -83,7 +83,6 @@ public class MaterialMapper {
             ps.setInt(1, materialId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                int materialID = rs.getInt("materialID");
                 String name = rs.getString("name");
                 double price = rs.getDouble("price");
                 double length = rs.getDouble("length");

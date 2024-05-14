@@ -87,7 +87,7 @@ public class UserMapper {
             ps.setString(4, user.getFirstName());
             ps.setString(5, user.getLastName());
             int addressId = AddressMapper.insertAddress(user.getAddress(), connectionPool).getAddressID();
-            ps.setInt(7, addressId);
+            ps.setInt(6, addressId);
 
 
 
@@ -269,5 +269,4 @@ public class UserMapper {
         }
         return orderNumber;
     }
-
 }

@@ -38,6 +38,30 @@ public class OrderMapper {
         return orderList;
     }
 
+
+    public static List<Order> getAllOrdersJoin(ConnectionPool connectionPool) throws DatabaseException {
+        List<Order> orderList = new ArrayList<>();
+
+
+        String sql = "select * from orders";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int orderId = rs.getInt("orderID");
+                String status = rs.getString("status");
+                int userId = rs.getInt("userID");
+                int carportId = rs.getInt("carportID");
+
+                User user = UserMapper.getLimitedUserByUserId(userId, connectionPool);
+                Carport carport = CarportMapper.getCarportByCarportId(carportId, connectionPool);
+                orderList.add(new Order(orderId, status, user, carport));
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error. Couldn't get orders from database.", e.getMessage());
+        }
+        return orderList;
+    }
+
     public static List<Order> getReducedOrdersWithUsers(ConnectionPool connectionPool) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
         String sql = "select \"orderID\", status, \"userID\", email, \"firstName\", \"lastName\" from orders INNER JOIN users ON orders.\"userID\" = users.\"userID\"";
