@@ -27,8 +27,8 @@
                 <input type="text" name="streetnumber" required th:value="${session.currentUser != null ? session.currentUser.address.houseNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'House Number'}">
             </div>
             <div class="infoform">
-                <input type="email" name="mail" required th:value="${session.currentUser != null ? session.currentUser.email : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Email'}">
-                <input type="tel" name="phonenumber" required th:value="${session.currentUser != null ? session.currentUser.phoneNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Phone Number'}">
+                <input type="text" name="mail" required th:value="${session.currentUser != null ? session.currentUser.email : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Email'}">
+                <input type="text" name="phonenumber" required th:value="${session.currentUser != null ? session.currentUser.phoneNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Phone Number'}">
             </div>
             </fieldset>
 
