@@ -51,18 +51,33 @@ public class CarportMapper {
         return 0;
     }
 
-    public static void addMaterialsToDb(Carport carport, ConnectionPool connectionPool) throws DatabaseException {
+    public static void addAllPossibleMaterialsToDb(ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT INTO \"materialUsage\" (\"carportID\", \"materialID\", \"quantity\") VALUES (?,?,?)";
-        int carportId = getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
+        double[] possibleLengths = {420, 480, 540, 600, 660, 720, 780}; // replace with your possible lengths
+        double[] possibleWidths = {300, 360, 420, 480, 540, 600}; // replace with your possible widths
+        boolean[] possibleRoofTypes = {true, false}; // with or without roof
+        Carport test = new Carport(660,360,true);
+        test.setMaterialList(connectionPool);
+
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            for (Map.Entry<Material, Integer> entry : carport.getMaterialList().entrySet()) {
-                ps.setInt(1, carportId);
-                ps.setInt(2, entry.getKey().getMaterialID());
-                ps.setInt(3, entry.getValue());
-                ps.executeUpdate();
+            for (double length : possibleLengths) {
+                for (double width : possibleWidths) {
+                    for (boolean withRoof : possibleRoofTypes) {
+                        Carport carport = new Carport(length, width, withRoof);
+                        carport.setMaterialList(connectionPool);
+                        int carportId = getCarportByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool);
+                        for (Map.Entry<Material, Integer> entry : carport.getMaterialList().entrySet()) {
+                            ps.setInt(1, carportId);
+                            ps.setInt(2, entry.getKey().getMaterialID());
+                            ps.setInt(3, entry.getValue());
+                            ps.addBatch();
+                        }
+                    }
+                }
             }
+            ps.executeBatch();
         } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't retrieve carport from carportID.", e.getMessage());
+            throw new DatabaseException("Error while adding materials to the database.", e.getMessage());
         }
     }
 }

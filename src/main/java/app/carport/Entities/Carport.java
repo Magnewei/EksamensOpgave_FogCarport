@@ -115,16 +115,16 @@ public class Carport {
         for (Material material : materials) {
             if (material.getLength() == length) {
                 return material;
-            } else if (material.getLength() >= length && material.getLength() - length <= 30) {
+            } else if (material.getLength() >= length && material.getLength() - length <= 50) {
                 return material;
-            } else if (material.getLength() >= length / 2 && material.getLength() - (length / 2) <= 30) {
+            } else if (material.getLength() >= length / 2 && material.getLength() - (length / 2) <= 50) {
                 return material;
             }
         }
         return null;
     }
 
-    //Tagpaldernes længder passer perfekt med de bredder vi tilbyder.
+    //Tagpladernes længder passer perfekt med de bredder vi tilbyder.
     public static Material getShortestTagpladeThatFits(List<Material> materials, double length) {
         for (Material material : materials) {
             if (material.getLength() == length) {
@@ -134,7 +134,8 @@ public class Carport {
         return null;
     }
 
-    public Map<Material, Integer> calculateMaterialList(ConnectionPool connectionPool) throws DatabaseException {
+    public void setMaterialList(ConnectionPool connectionPool) throws DatabaseException {
+        materialList.clear();
         List<Material> allMaterials = MaterialMapper.getAllMaterials(connectionPool);
 
         //Laver en liste med spærtræ som skal bruges til remme og spær.
@@ -148,7 +149,7 @@ public class Carport {
         //Laver en liste med sterntræ som skal bruges til remme og spær.
         List<Material> sternMaterials = new ArrayList<>();
         for (Material material : allMaterials) {
-            if (material.getName().toLowerCase().contains("trykimp")) {
+            if (material.getName().toLowerCase().contains("brædt")) {
                 sternMaterials.add(material);
             }
         }
@@ -179,11 +180,21 @@ public class Carport {
 
         //Der skal også bruges sternbrædder. Der skal bruges en overstern og en understern, påsiderne og bagenden, men kun overstern foran
         if (length <= 600) {
-            materialList.put(getShortestWoodThatFits(sternMaterials, length), 2);
-            materialList.put(getShortestWoodThatFits(sternMaterials, width), 1);
+            if(length == width){
+                materialList.put(getShortestWoodThatFits(sternMaterials, length), 3);
+            }
+            else{
+                materialList.put(getShortestWoodThatFits(sternMaterials, length), 2);
+                materialList.put(getShortestWoodThatFits(sternMaterials, width), 1);
+            }
         } else {
-            materialList.put(getShortestWoodThatFits(sternMaterials, length), 4);
-            materialList.put(getShortestWoodThatFits(sternMaterials, width), 1);
+            if(length == width){
+                materialList.put(getShortestWoodThatFits(sternMaterials, length), 5);
+            }
+            else{
+                materialList.put(getShortestWoodThatFits(sternMaterials, length), 4);
+                materialList.put(getShortestWoodThatFits(sternMaterials, width), 1);
+            }
         }
 
 
@@ -215,9 +226,14 @@ public class Carport {
 
         //Og en pakke skruer til sterntræet
         materialList.put(MaterialMapper.getMaterialById(1, connectionPool), 1);
+        for(Material material : materialList.keySet()){
+            if(!(material == null)){
+                //System.out.println(material.getName() + " " + carportID + " " + length);
+            }else{
+                System.out.println("Material was null" + "Length: " + length + "Width " + width);
+            }
 
-        return materialList;
-
+        }
     }
 
 

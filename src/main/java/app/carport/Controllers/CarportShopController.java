@@ -21,7 +21,7 @@ public class CarportShopController {
         app.post("OrderNoUser", ctx -> orderButtonThreeNoUser(connectionPool, ctx));
     }
 
-    public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) {
+    public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
         renderCarportShop(ctx, connectionPool);
     }
 
@@ -36,9 +36,9 @@ public class CarportShopController {
             ctx.sessionAttribute("carportWidth", width);
 
             Carport carport = new Carport(length, width, withRoof);
-            Map<Material, Integer> carportMaterials = carport.calculateMaterialList(connectionPool);
+            carport.setMaterialList(connectionPool);
+            Map<Material, Integer> carportMaterials = carport.getMaterialList();
             carport.setMaterialList(carportMaterials);
-            CarportMapper.addMaterialsToDb(carport, connectionPool);
             ctx.sessionAttribute("withRoof", withRoof);
             ctx.sessionAttribute("carport", carport);
             CarportSVG svg = new CarportSVG(width, length);
@@ -82,8 +82,6 @@ public class CarportShopController {
             ctx.render("orderSite2.html");
         }
     }
-
-
 
     public static void renderNames(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         User user;
