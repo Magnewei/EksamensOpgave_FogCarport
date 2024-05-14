@@ -17,6 +17,7 @@ public class MaterialMapper {
 
     /**
      * Retrieves a list of all distinct lengths of carports stored in the database.
+     *
      * @param connectionPool Connection pool for database connections.
      * @return A list of all distinct lengths.
      * @throws DatabaseException If there is a problem executing the query.
@@ -38,6 +39,7 @@ public class MaterialMapper {
 
     /**
      * Retrieves a list of all distinct widths of carports stored in the database.
+     *
      * @param connectionPool Connection pool for database connections.
      * @return A list of all distinct widths.
      * @throws DatabaseException If there is a problem executing the query.
@@ -59,6 +61,7 @@ public class MaterialMapper {
 
     /**
      * Retrieves a list of all materials available in the database.
+     *
      * @param connectionPool Connection pool for database connections.
      * @return A list of materials.
      * @throws DatabaseException If there is a problem executing the query.
@@ -85,8 +88,9 @@ public class MaterialMapper {
 
     /**
      * Deletes a material by its ID from the database.
+     *
      * @param connectionPool Connection pool for database connections.
-     * @param materialID The ID of the material to delete.
+     * @param materialID     The ID of the material to delete.
      * @return true if the deletion was successful, false otherwise.
      * @throws DatabaseException If there is a problem executing the delete operation.
      */
@@ -105,7 +109,8 @@ public class MaterialMapper {
 
     /**
      * Retrieves a specific material by its ID from the database.
-     * @param materialId The ID of the material to retrieve.
+     *
+     * @param materialId     The ID of the material to retrieve.
      * @param connectionPool Connection pool for database connections.
      * @return The retrieved Material object, or null if not found.
      * @throws DatabaseException If there is a problem executing the query.
@@ -132,11 +137,12 @@ public class MaterialMapper {
 
     /**
      * Adds a new material to the database.
-     * @param connectionPool Connection pool for database connections.
-     * @param name Name of the material.
-     * @param price Price of the material.
-     * @param length Length of the material.
-     * @param unit Unit of measurement for the material.
+     *
+     * @param connectionPool  Connection pool for database connections.
+     * @param name            Name of the material.
+     * @param price           Price of the material.
+     * @param length          Length of the material.
+     * @param unit            Unit of measurement for the material.
      * @param quantityInStock Quantity of the material in stock.
      * @return true if the material was added successfully, false otherwise.
      * @throws DatabaseException If there is a problem executing the insert operation.
