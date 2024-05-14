@@ -239,7 +239,7 @@ public class OrderMapper {
      * @throws DatabaseException If there is a problem executing the query.
      */
     public static Order getOrderByOrderId(int orderID, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM orders INNER JOIN carport ON orders.\"carportID\" = carport.\"carportID\" WHERE \"orderID\" = ?";
+        String sql = "SELECT * FROM users INNER JOIN orders ON users.\"userID\" = orders.\"userID\" INNER JOIN carport ON orders.\"carportID\" = carport.\"carportID\" WHERE \"orderID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setInt(1, orderID);
             ResultSet rs = ps.executeQuery();
