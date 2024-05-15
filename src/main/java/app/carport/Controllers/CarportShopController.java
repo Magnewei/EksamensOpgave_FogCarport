@@ -103,6 +103,7 @@ public class CarportShopController {
 
             // Then inserts the order on either temporary or a logged in user, combined with the carport and it's price.
             OrderMapper.insertNewOrder(user, carport.getCarportID(), price, connectionPool);
+            OrderMapper.removeMaterialStockOnOrder(carport.getMaterialList(), connectionPool);
             ctx.render("orderSite3.html");
 
             // Sends the user a mail on a successful insertion of the order.

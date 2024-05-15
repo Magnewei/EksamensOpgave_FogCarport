@@ -1,6 +1,7 @@
 package app.carport.Persistence;
 
 import app.carport.Entities.Carport;
+import app.carport.Entities.Material;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Handles database operations for order entities within the application.
@@ -264,6 +266,20 @@ public class OrderMapper {
             throw new DatabaseException("Error. Couldn't get order from orderID.", e.getMessage());
         }
         return null;
+    }
+
+    public static boolean removeMaterialStockOnOrder(Map<Material, Integer> materialList, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE material SET \"quantityInStock\" = \"quantityInStock\" - ? WHERE \"name\" = ?";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            for (Map.Entry<Material, Integer> entry : materialList.entrySet()) {
+                ps.setInt(1, entry.getValue()); // quantityToRemove
+                ps.setString(2, entry.getKey().getName()); // materialName
+                ps.executeUpdate();
+            }
+            return true;
+        } catch (SQLException e) {
+            throw new DatabaseException("Error. Couldn't remove material stock from the database.", e.getMessage());
+        }
     }
 }
 
