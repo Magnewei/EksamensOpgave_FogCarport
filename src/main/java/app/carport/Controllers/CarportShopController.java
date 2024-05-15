@@ -28,6 +28,7 @@ public class CarportShopController {
      * @throws DatabaseException if an error occurs during database access
      */
     public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
+        //CarportMapper.addAllPossibleMaterialsToDb(connectionPool);  Blev brugt til at populate materialUsage table.
         renderCarportShop(ctx, connectionPool);
     }
 
