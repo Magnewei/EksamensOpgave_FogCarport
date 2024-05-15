@@ -5,7 +5,6 @@ import app.carport.Entities.Material;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
-import app.carport.Services.MailServer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,13 +102,13 @@ public class OrderMapper {
      * @return true if the insertion was successful, false otherwise.
      * @throws DatabaseException If there is a problem executing the insert operation.
      */
-    public static boolean insertNewOrder(User user, int carportId,double price ,ConnectionPool connectionPool) throws DatabaseException {
+    public static boolean insertNewOrder(User user, int carportId, double price, ConnectionPool connectionPool) throws DatabaseException {
         String sqlMakeOrder = "INSERT INTO orders (\"userID\",\"carportID\",\"price\") VALUES (?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlMakeOrder)) {
 
             ps.setInt(1, user.getUserID());
             ps.setInt(2, carportId);
-            ps.setDouble(3,price);
+            ps.setDouble(3, price);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
 
@@ -268,6 +267,15 @@ public class OrderMapper {
         return null;
     }
 
+    /**
+     * Updates the stock quantities of materials in the database by subtracting the specified quantities.
+     * This method iterates over a map of materials and their quantities to be removed, updating the database accordingly.
+     *
+     * @param materialList   A map containing Material objects as keys and integers representing the quantity of each material to be removed.
+     * @param connectionPool The connection pool from which to obtain database connections.
+     * @return true if the update operation completes successfully for all materials.
+     * @throws DatabaseException If a SQLException occurs during database update operations.
+     */
     public static boolean removeMaterialStockOnOrder(Map<Material, Integer> materialList, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE material SET \"quantityInStock\" = \"quantityInStock\" - ? WHERE \"name\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
