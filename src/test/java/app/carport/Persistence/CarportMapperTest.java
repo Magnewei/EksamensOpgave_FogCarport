@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MaterialMapperTest {
+class CarportMapperTest {
 
     @BeforeEach
     void setUp() {
@@ -17,26 +17,10 @@ class MaterialMapperTest {
     }
 
     @Test
-    void getAllLength() {
+    void getCarportByCarportId() {
     }
 
     @Test
-    void getAllWidth() {
-    }
-
-    @Test
-    void getAllMaterials() {
-    }
-
-    @Test
-    void deleteMaterialById() {
-    }
-
-    @Test
-    void getMaterialById() {
-    }
-
-    @Test
-    void addMaterial() {
+    void getCarportIDByWidthAndLength() {
     }
 }
