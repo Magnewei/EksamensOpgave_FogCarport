@@ -33,6 +33,7 @@ public class OrderMapper {
             while (rs.next()) {
                 int orderId = rs.getInt("orderID");
                 String status = rs.getString("status");
+                int price = rs.getInt("price");
                 int userId = rs.getInt("userID");
 
                 String email = rs.getString("email");
@@ -45,7 +46,7 @@ public class OrderMapper {
 
                 User user = new User(userId, email, firstName, lastName);
                 Carport carport = new Carport(length, width, withRoof);
-                orderList.add(new Order(orderId, status, user, carport));
+                orderList.add(new Order(orderId, status, user, carport, price));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Error. Couldn't get orders from database.", e.getMessage());
