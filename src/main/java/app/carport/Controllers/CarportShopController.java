@@ -101,7 +101,7 @@ public class CarportShopController {
             double price = carport.calculateTotalPrice();
 
 
-            // Then inserts the order on either temporary or logged in user, combined with the carport and it's price.
+            // Then inserts the order on either temporary or a logged in user, combined with the carport and it's price.
             OrderMapper.insertNewOrder(user, carport.getCarportID(), price, connectionPool);
             ctx.render("orderSite3.html");
 

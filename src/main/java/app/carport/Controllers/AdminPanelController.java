@@ -3,10 +3,10 @@ package app.carport.Controllers;
 import app.carport.Entities.Material;
 import app.carport.Entities.Order;
 import app.carport.Exceptions.DatabaseException;
-import app.carport.Services.MailServer;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.MaterialMapper;
 import app.carport.Persistence.OrderMapper;
+import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -51,7 +51,6 @@ public class AdminPanelController {
     private static void denyOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             int orderID = Integer.parseInt(ctx.formParam("deny_order"));
-
             Order order = OrderMapper.getOrderByOrderId(orderID, connectionPool);
 
             OrderMapper.denyOrder(connectionPool, orderID);
@@ -125,11 +124,8 @@ public class AdminPanelController {
     public static void renderAdmin(ConnectionPool connectionPool, Context ctx) {
         try {
             List<Order> orderList = OrderMapper.getAllOrders(connectionPool);
-            orderList.forEach(order -> {
-                double totalPrice = order.getCarport().getTotalPrice();
-                order.getCarport().setTotalPrice(totalPrice);
-            });
             List<Material> materialList = MaterialMapper.getAllMaterials(connectionPool);
+
             ctx.attribute("orderlist", orderList);
             ctx.attribute("materiallist", materialList);
             ctx.render("admin.html");

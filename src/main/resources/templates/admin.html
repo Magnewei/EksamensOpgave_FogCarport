@@ -69,7 +69,7 @@
             <tr th:each="order : ${orderlist}">
                 <td th:text="${order.orderID}"></td>
                 <td th:text="${order.user.email}"></td>
-                <td th:text="${order.carport.totalPrice}"></td>
+                <td th:text="${order.totalPrice}"></td>
                 <td th:text="${order.status}"></td>
                 <td>
                     <form method="post" action="/removeorder">
