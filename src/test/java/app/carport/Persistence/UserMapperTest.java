@@ -1,5 +1,6 @@
 package app.carport.Persistence;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,16 +12,20 @@ class UserMapperTest {
     void setUp() {
     }
 
+    @AfterEach
+    void tearDown() {
+    }
+
     @Test
     void login() {
     }
 
     @Test
-    void insertAddress() {
+    void createUser() {
     }
 
     @Test
-    void createUser() {
+    void createTempUser() {
     }
 
     @Test
@@ -40,6 +45,14 @@ class UserMapperTest {
     }
 
     @Test
-    void getAddressByAddressId() {
+    void getLimitedUserByUserId() {
+    }
+
+    @Test
+    void updateUser() {
+    }
+
+    @Test
+    void getLastUserId() {
     }
 }
