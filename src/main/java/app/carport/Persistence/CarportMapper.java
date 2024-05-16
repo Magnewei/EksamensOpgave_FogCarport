@@ -67,8 +67,8 @@ public class CarportMapper {
         }
         return 0;
     }
+    //Blev brugt til at populate db
 
-    //Blev brugt til at populate database
     public static void addAllPossibleMaterialsToDb(ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT INTO \"materialUsage\" (\"carportID\", \"materialID\", \"quantity\") VALUES (?,?,?)";
         double[] possibleLengths = {420, 480, 540, 600, 660, 720, 780}; // replace with your possible lengths
