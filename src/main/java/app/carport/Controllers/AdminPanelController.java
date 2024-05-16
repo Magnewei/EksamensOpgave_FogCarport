@@ -29,6 +29,12 @@ public class AdminPanelController {
         app.post("inspectOrder", ctx -> inspectOrder(connectionPool, ctx));
     }
 
+    /**
+     * Renders the update page for a material, fetching material details based on the provided ID in the query parameter.
+     *
+     * @param connectionPool The ConnectionPool to be used for database operations.
+     * @param ctx            The Context object containing information about the web request.
+     */
     private static void renderUpdate(ConnectionPool connectionPool, Context ctx) {
         try {
             int materialID = Integer.parseInt(ctx.queryParam("update_material"));
@@ -41,6 +47,12 @@ public class AdminPanelController {
         }
     }
 
+    /**
+     * Processes the form submission for updating a material's details in the database and re-renders the admin view.
+     *
+     * @param connectionPool The ConnectionPool to be used for database operations.
+     * @param ctx            The Context object containing information about the web request.
+     */
     private static void updateMaterial(ConnectionPool connectionPool, Context ctx) {
         int materialID = Integer.parseInt(ctx.formParam("materialID"));
         String name = ctx.formParam("materialName");
