@@ -1,7 +1,6 @@
 package app.carport.Persistence;
 
 import app.carport.Entities.Carport;
-import app.carport.Entities.Material;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
@@ -12,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Handles database operations for order entities within the application.
