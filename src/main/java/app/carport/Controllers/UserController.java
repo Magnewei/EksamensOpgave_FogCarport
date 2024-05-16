@@ -19,8 +19,8 @@ public class UserController {
         app.post("updateUser", ctx -> updateUser(ctx, connectionPool));
         app.post("goTocreateUser", ctx -> goTocreateUser(ctx));
         app.post("inspectUserOrder", ctx -> AdminPanelController.inspectOrder(connectionPool, ctx));
-        app.post("loginNouser",ctx->loginNouser(ctx,connectionPool));
-        app.post("createPassword",ctx->createPassword(ctx,connectionPool));
+        app.post("loginNouser", ctx -> loginNouser(ctx, connectionPool));
+        app.post("createPassword", ctx -> createPassword(ctx, connectionPool));
     }
 
 
@@ -30,17 +30,23 @@ public class UserController {
     }
 
     private static void createPassword(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        User user = ctx.sessionAttribute("currentUser");
-        String password = ctx.formParam("password");
-        if (!checkPassword(ctx, ctx.formParam("password"))) {
+        try {
+            User user = ctx.sessionAttribute("currentUser");
+            String password = ctx.formParam("password");
+            if (!checkPassword(ctx, ctx.formParam("password"))) {
+                ctx.render("noUserupdate.html");
+                return;
+            }
+            user.setPassword(password);
+            UserMapper.updatePassword(user, connectionPool);
+            ctx.req().getSession().invalidate();
+            ctx.attribute("message", "Bruger oprettet du kan nu logge ind ");
+            ctx.render("/login.html");
+
+        } catch (DatabaseException e) {
+            ctx.attribute("message", "Der kunne ikke oprettes en bruger med de indtastede oplysninger. Prøv igen.");
             ctx.render("noUserupdate.html");
-            return;
         }
-        user.setPassword(password);
-        UserMapper.updatePassword(user,connectionPool);
-        ctx.req().getSession().invalidate();
-        ctx.attribute("message","Bruger oprettet du kan nu logge ind ");
-        ctx.render("/login.html");
     }
 
 
@@ -81,9 +87,10 @@ public class UserController {
                 ctx.attribute("message", "Brugernavnet eksisterer allerede. Vælg venligst et andet brugernavn.");
                 ctx.render("createUser.html");
             }
-        } catch (DatabaseException e) {
+        } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", "Der opstod en fejl under oprettelsen. Prøv venligst igen.");
             ctx.render("createUser.html");
+
         }
     }
 
