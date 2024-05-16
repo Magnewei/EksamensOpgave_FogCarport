@@ -266,28 +266,5 @@ public class OrderMapper {
         }
         return null;
     }
-
-    /**
-     * Updates the stock quantities of materials in the database by subtracting the specified quantities.
-     * This method iterates over a map of materials and their quantities to be removed, updating the database accordingly.
-     *
-     * @param materialList   A map containing Material objects as keys and integers representing the quantity of each material to be removed.
-     * @param connectionPool The connection pool from which to obtain database connections.
-     * @return true if the update operation completes successfully for all materials.
-     * @throws DatabaseException If a SQLException occurs during database update operations.
-     */
-    public static boolean removeMaterialStockOnOrder(Map<Material, Integer> materialList, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "UPDATE material SET \"quantityInStock\" = \"quantityInStock\" - ? WHERE \"name\" = ?";
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            for (Map.Entry<Material, Integer> entry : materialList.entrySet()) {
-                ps.setInt(1, entry.getValue()); // quantityToRemove
-                ps.setString(2, entry.getKey().getName()); // materialName
-                ps.executeUpdate();
-            }
-            return true;
-        } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't remove material stock from the database.", e.getMessage());
-        }
-    }
 }
 
