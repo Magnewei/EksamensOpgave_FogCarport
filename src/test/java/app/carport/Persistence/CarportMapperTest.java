@@ -23,4 +23,16 @@ class CarportMapperTest {
     @Test
     void getCarportIDByWidthAndLength() {
     }
+
+    @Test
+    void testGetCarportByCarportId() {
+    }
+
+    @Test
+    void testGetCarportIDByWidthAndLength() {
+    }
+
+    @Test
+    void addAllPossibleMaterialsToDb() {
+    }
 }

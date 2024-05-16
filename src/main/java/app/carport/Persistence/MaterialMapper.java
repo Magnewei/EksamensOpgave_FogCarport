@@ -163,7 +163,17 @@ public class MaterialMapper {
         }
     }
 
-
+    /**
+     * Updates the details of an existing material in the database.
+     *
+     * @param connectionPool  The ConnectionPool from which to get the database connection.
+     * @param materialID      The ID of the material to update.
+     * @param name            The new name of the material.
+     * @param price           The new price of the material.
+     * @param length          The new length of the material.
+     * @param unit            The unit of measurement for the material.
+     * @param quantityInStock The new stock quantity of the material.
+     */
     public static void updateMaterial(ConnectionPool connectionPool, int materialID, String name, double price, double length, String unit, int quantityInStock) {
         String sql = "UPDATE material SET name = ?, price = ?, length = ?, unit = ?, \"quantityInStock\" = ? WHERE \"materialID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
