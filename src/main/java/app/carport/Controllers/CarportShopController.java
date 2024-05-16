@@ -68,19 +68,19 @@ public class CarportShopController {
             User user;
 
             // If the given input was invalid, re-render the site and post an error.
-            if (!checkNames(ctx, ctx.formParam("name"), ctx.formParam("lastName"), ctx.formParam("streetName"), ctx.formParam("phoneNumber"))) {
+            if (!checkNames(ctx, ctx.formParam("firstName"), ctx.formParam("lastName"), ctx.formParam("streetName"), ctx.formParam("phoneNumber"))) {
                 ctx.render("orderSite2.html");
                 return;
             }
 
 
             if (ctx.sessionAttribute("currentUser") == null) {
-                String name = ctx.formParam("name");
+                String name = ctx.formParam("firstName");
                 String lastname = ctx.formParam("lastName");
                 String streetname = ctx.formParam("streetName");
                 int postalCode = Integer.parseInt(ctx.formParam("postalCode"));
                 int phonenumber = Integer.parseInt(ctx.formParam("phoneNumber"));
-                String email = ctx.formParam("mail");
+                String email = ctx.formParam("email");
 
                 // Takes the most recent userID in the database and ++ for insertion into object below.
                 int userID = UserMapper.getLastUserId(connectionPool) + 1;

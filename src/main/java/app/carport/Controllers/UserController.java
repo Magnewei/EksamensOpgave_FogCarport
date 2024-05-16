@@ -22,8 +22,13 @@ public class UserController {
         app.post("updateUser", ctx -> updateUser(ctx, connectionPool));
         app.post("goTocreateUser", ctx -> goTocreateUser(ctx));
         app.post("inspectUserOrder", ctx -> inspectOrder(connectionPool, ctx));  // imported from AdminController
+        app.post("loginNouser",ctx->loginNouser(ctx,connectionPool));
     }
 
+
+    private static void loginNouser(Context ctx, ConnectionPool connectionPool) {
+        ctx.render("noUserupdate.html");
+    }
     /**
      * Attempts to create a new user account from the provided form parameters.
      *
