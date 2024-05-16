@@ -45,50 +45,14 @@ class UserMapperTest {
     }
 
     @Test
-    void getLimitedUserByUserId() {
-    }
-
-    @Test
     void updateUser() {
     }
 
     @Test
+    void updatePassword() {
+    }
+
+    @Test
     void getLastUserId() {
-    }
-
-    @Test
-    void testLogin() {
-    }
-
-    @Test
-    void testCreateUser() {
-    }
-
-    @Test
-    void testCreateTempUser() {
-    }
-
-    @Test
-    void testDeleteUser() {
-    }
-
-    @Test
-    void testCheckIfUserExistsByName() {
-    }
-
-    @Test
-    void testGetAllUsers() {
-    }
-
-    @Test
-    void testGetUserByUserId() {
-    }
-
-    @Test
-    void testUpdateUser() {
-    }
-
-    @Test
-    void testGetLastUserId() {
     }
 }

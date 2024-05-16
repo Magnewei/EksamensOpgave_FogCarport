@@ -41,42 +41,10 @@ class MaterialMapperTest {
     }
 
     @Test
-    void testGetAllLength() {
-    }
-
-    @Test
-    void testGetAllWidth() {
-    }
-
-    @Test
-    void testGetAllMaterials() {
-    }
-
-    @Test
-    void testDeleteMaterialById() {
-    }
-
-    @Test
-    void testGetMaterialById() {
-    }
-
-    @Test
-    void testAddMaterial() {
-    }
-
-    @Test
     void updateMaterial() {
     }
 
     @Test
     void removeMaterialStockOnOrder() {
-    }
-
-    @Test
-    void addMaterialStock() {
-    }
-
-    @Test
-    void changeMaterialPrice() {
     }
 }

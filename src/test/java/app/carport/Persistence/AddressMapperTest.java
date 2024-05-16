@@ -35,24 +35,4 @@ class AddressMapperTest {
     @Test
     void updateCityData() {
     }
-
-    @Test
-    void testInsertAddress() {
-    }
-
-    @Test
-    void testUpdateAddress() {
-    }
-
-    @Test
-    void testGetAddressByAddressId() {
-    }
-
-    @Test
-    void testInsertCityData() {
-    }
-
-    @Test
-    void testUpdateCityData() {
-    }
 }
