@@ -1,5 +1,6 @@
 package app.carport.Controllers;
 
+import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.http.Context;

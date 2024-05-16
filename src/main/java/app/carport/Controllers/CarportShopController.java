@@ -52,7 +52,7 @@ public class CarportShopController {
             CarportSVG svg = new CarportSVG(width, length);
             ctx.sessionAttribute("svg", svg.toString());
 
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             ctx.attribute("message", "Noget gik galt i oprettelsen af carport");
         }
     }

@@ -54,15 +54,21 @@ public class AdminPanelController {
      * @param ctx            The Context object containing information about the web request.
      */
     private static void updateMaterial(ConnectionPool connectionPool, Context ctx) {
-        int materialID = Integer.parseInt(ctx.formParam("materialID"));
-        String name = ctx.formParam("materialName");
-        double price = Double.parseDouble(ctx.formParam("materialPrice"));
-        double length = Double.parseDouble(ctx.formParam("materialLength"));
-        String unit = ctx.formParam("materialUnit");
-        int quantityInStock = Integer.parseInt(ctx.formParam("materialQuantityInStock"));
+        try {
+            int materialID = Integer.parseInt(ctx.formParam("materialID"));
+            String name = ctx.formParam("materialName");
+            double price = Double.parseDouble(ctx.formParam("materialPrice"));
+            double length = Double.parseDouble(ctx.formParam("materialLength"));
+            String unit = ctx.formParam("materialUnit");
+            int quantityInStock = Integer.parseInt(ctx.formParam("materialQuantityInStock"));
 
-        MaterialMapper.updateMaterial(connectionPool, materialID, name, price, length, unit, quantityInStock);
-        renderAdmin(connectionPool, ctx);
+            MaterialMapper.updateMaterial(connectionPool, materialID, name, price, length, unit, quantityInStock);
+            renderAdmin(connectionPool, ctx);
+
+        } catch (NumberFormatException e) {
+            ctx.attribute("message", e.getMessage());
+            renderAdmin(connectionPool, ctx);
+        }
     }
 
     /**
