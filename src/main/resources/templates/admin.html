@@ -86,6 +86,10 @@
                         <input type="hidden" name="deny_order" th:value="${order.orderID}">
                         <button type="submit" class="adbtn">Deny order</button>
                     </form>
+                    <form method="post" action="/inspectOrder">
+                        <input type="hidden" name="order_id" th:value="${order.orderID}">
+                        <button type="submit" class="adbtn">Inspect order</button>
+                    </form>
                 </td>
             </tr>
 </tbody>
