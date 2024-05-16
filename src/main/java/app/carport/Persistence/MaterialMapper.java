@@ -147,7 +147,7 @@ public class MaterialMapper {
      * @return true if the material was added successfully, false otherwise.
      * @throws DatabaseException If there is a problem executing the insert operation.
      */
-    public static boolean addMaterial(ConnectionPool connectionPool, String name, double price, double length, String unit, int quantityInStock) throws DatabaseException {
+    public static void addMaterial(ConnectionPool connectionPool, String name, double price, double length, String unit, int quantityInStock) throws DatabaseException {
         String sql = "INSERT INTO material (name, price, length, unit, \"quantityInStock\") VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, name);
@@ -157,10 +157,23 @@ public class MaterialMapper {
             ps.setInt(5, quantityInStock);
             int executeUpdate = ps.executeUpdate();
 
-            return (executeUpdate >= 0);
-
         } catch (SQLException e) {
             throw new DatabaseException("Error. Couldn't get material from the given materialID.", e.getMessage());
+        }
+    }
+
+    public static void updateMaterial(ConnectionPool connectionPool, int materialID, String name, double price, double length, String unit, int quantityInStock) {
+        String sql = "UPDATE material SET name = ?, price = ?, length = ?, unit = ?, \"quantityInStock\" = ? WHERE \"materialID\" = ?";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setDouble(2, price);
+            ps.setDouble(3, length);
+            ps.setString(4, unit);
+            ps.setInt(5, quantityInStock);
+            ps.setInt(6, materialID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

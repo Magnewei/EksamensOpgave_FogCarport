@@ -44,6 +44,10 @@
                         <input type="hidden" name="remove_material" th:value="${material.materialID}">
                         <button type="submit" class="adbtn"> Delete </button>
                     </form>
+                    <form method="get" action="/renderupdate">
+                        <input type="hidden" name="update_material" th:value="${material.materialID}">
+                        <button type="submit" class="adbtn">Edit</button>
+                    </form>
                 </td>
             </tr>
         </table>
