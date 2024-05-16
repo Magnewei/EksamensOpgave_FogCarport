@@ -48,7 +48,7 @@ public class OrderMapper {
                 orderList.add(new Order(orderId, status, user, carport, price));
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't get orders from database.", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get all orders from the database.", e.getMessage());
         }
         return orderList;
     }
@@ -68,7 +68,7 @@ public class OrderMapper {
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't delete the order from orderID.", e.getMessage());
+            throw new DatabaseException("Error. Couldn't delete the order from the given orderID.", e.getMessage());
         }
     }
 
@@ -86,7 +86,7 @@ public class OrderMapper {
                 return rs.getInt("orderID");
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error retrieving the latest order ID", e.getMessage());
+            throw new DatabaseException("Error retrieving the latest orderID", e.getMessage());
         }
         return 0;
     }
@@ -116,28 +116,6 @@ public class OrderMapper {
     }
 
     /**
-     * Updates the status of an existing order in the database.
-     *
-     * @param orderId        The ID of the order to update.
-     * @param status         New status to be set.
-     * @param connectionPool Connection pool for database connections.
-     * @return true if the update was successful, false otherwise.
-     * @throws DatabaseException If there is a problem executing the update operation.
-     */
-    public static boolean updateStatus(int orderId, String status, ConnectionPool connectionPool) throws DatabaseException {
-        String sqlUpdateStatus = "UPDATE orders SET \"status\" = ? WHERE \"orderID\" = ?";
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlUpdateStatus)) {
-            ps.setString(1, status);
-            ps.setInt(2, orderId);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
-
-        } catch (SQLException e) {
-            throw new DatabaseException("Error updating order status", e.getMessage());
-        }
-    }
-
-    /**
      * Marks an order as accepted within the database.
      *
      * @param orderID        The ID of the order to mark as accepted.
@@ -153,7 +131,7 @@ public class OrderMapper {
             return rowsAffected > 0;
 
         } catch (SQLException e) {
-            throw new DatabaseException("Error accepting order.", e.getMessage());
+            throw new DatabaseException("Error. Couldn't accept the order.", e.getMessage());
         }
     }
 
@@ -173,7 +151,7 @@ public class OrderMapper {
             return rowsAffected > 0;
 
         } catch (SQLException e) {
-            throw new DatabaseException("Error denying order.", e.getMessage());
+            throw new DatabaseException("Error. Couldn't deny the order.", e.getMessage());
         }
     }
 
@@ -205,29 +183,6 @@ public class OrderMapper {
             throw new DatabaseException("Error. Couldn't get order from userID.", e.getMessage());
         }
         return orders;
-    }
-
-    /**
-     * Checks if a specific user has any orders in the database.
-     *
-     * @param userID         The ID of the user to check.
-     * @param connectionPool Connection pool for database connections.
-     * @return true if the user has one or more orders, false otherwise.
-     * @throws DatabaseException If there is a problem executing the query.
-     */
-    public static boolean checkIfUserHasOrder(int userID, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT COUNT(*) AS count FROM orders WHERE \"userID\" = ?";
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, userID);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                return count > 0;
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't find an order from the userID, or the userID doesn't exist.", e.getMessage());
-        }
-        return false;
     }
 
     /**
