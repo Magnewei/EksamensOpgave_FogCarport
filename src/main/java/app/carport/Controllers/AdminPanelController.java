@@ -226,7 +226,7 @@ public class AdminPanelController {
      * @return {@code true} if the stock was updated successfully; {@code false} otherwise.
      * @throws DatabaseException If a database error occurs.
      */
-    private static void inspectOrder(ConnectionPool connectionPool, Context ctx) {
+    public static void inspectOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             Locale.setDefault(new Locale("US"));
             int orderID = Integer.parseInt(ctx.formParam("order_id"));
