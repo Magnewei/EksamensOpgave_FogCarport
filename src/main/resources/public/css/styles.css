@@ -320,7 +320,24 @@ form textarea {
     margin-top: 10px;
 }
 .Billede-box {
-    background-image: url('Media/indexFiller.png');
+    background-image: url("Media/Boxb2.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    border-radius: 4px;
+    border: 2px solid var(--primary-color);
+    text-align: center;
+    height: 80%;
+    flex: 40%;
+    padding: 15px;
+    margin: 15px;
+}
+.Billede-box2 {
+    background-image: url("Media/Boxb3.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
