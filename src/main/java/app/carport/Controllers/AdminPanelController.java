@@ -53,7 +53,7 @@ public class AdminPanelController {
      * @param connectionPool The ConnectionPool to be used for database operations.
      * @param ctx            The Context object containing information about the web request.
      */
-    private static void updateMaterial(ConnectionPool connectionPool, Context ctx) {
+    private static void updateMaterial(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
         try {
             int materialID = Integer.parseInt(ctx.formParam("materialID"));
             String name = ctx.formParam("materialName");
@@ -65,7 +65,7 @@ public class AdminPanelController {
             MaterialMapper.updateMaterial(connectionPool, materialID, name, price, length, unit, quantityInStock);
             renderAdmin(connectionPool, ctx);
 
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | DatabaseException e) {
             ctx.attribute("message", e.getMessage());
             renderAdmin(connectionPool, ctx);
         }
