@@ -5,7 +5,6 @@ import app.carport.Entities.Carport;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -253,7 +252,7 @@ public class UserMapper {
                 users.add(user);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't get users from database.", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get all users from the database.", e.getMessage());
 
         }
         // Return users if List contains objects.
@@ -292,7 +291,7 @@ public class UserMapper {
                 return new User(userId, email, password, isAdmin, firstName, lastName, address, phoneNumber);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't get user from userID.", e.getMessage());
+            throw new DatabaseException("Error. Couldn't get user from the given userID.", e.getMessage());
         }
         return null;
     }
@@ -320,7 +319,7 @@ public class UserMapper {
             return rowsAffected > 0;
 
         } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't update user from userID.", e.getMessage());
+            throw new DatabaseException("Error. Couldn't update user from the given userID.", e.getMessage());
         }
     }
 
@@ -343,7 +342,7 @@ public class UserMapper {
             return rowsAffected > 0;
 
         } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't update user from userID.", e.getMessage());
+            throw new DatabaseException("Error. Couldn't update user from the given userID.", e.getMessage());
         }
     }
 
@@ -362,7 +361,7 @@ public class UserMapper {
                 orderNumber = rs.getInt("userID");
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error retrieving the latest user ID", e.getMessage());
+            throw new DatabaseException("Error retrieving the latest userID", e.getMessage());
         }
         return orderNumber;
     }
