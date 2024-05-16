@@ -19,22 +19,35 @@ public class UserController {
         app.post("updateUser", ctx -> updateUser(ctx, connectionPool));
         app.post("goTocreateUser", ctx -> goTocreateUser(ctx));
         app.post("inspectUserOrder", ctx -> AdminPanelController.inspectOrder(connectionPool, ctx));
-        app.post("loginNouser", ctx -> loginNouser(ctx, connectionPool));
+        app.post("loginNoUser", ctx -> loginNoUser(ctx, connectionPool));
         app.post("createPassword", ctx -> createPassword(ctx, connectionPool));
     }
 
-
-    private static void loginNouser(Context ctx, ConnectionPool connectionPool) {
-        ctx.render("noUserupdate.html");
-
+    /**
+     * Renders a specific page when a user login attempt fails due to non-existence of the user in the system.
+     *
+     * @param ctx            The Context object containing information about the web request.
+     * @param connectionPool The ConnectionPool used for database operations, though it is not utilized in this method.
+     */
+    private static void loginNoUser(Context ctx, ConnectionPool connectionPool) {
+        ctx.render("noUserUpdate.html");
     }
 
+    /**
+     * Creates or updates the password for the current user in session and handles the password validation.
+     * If password validation fails, it redirects to an error page. Otherwise, it updates the password in the database
+     * and invalidates the session to force re-login.
+     *
+     * @param ctx            The Context object containing information about the web request, including form parameters and session attributes.
+     * @param connectionPool The ConnectionPool from which to get the database connection.
+     * @throws DatabaseException if there is an error during the update process in the database.
+     */
     private static void createPassword(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         try {
             User user = ctx.sessionAttribute("currentUser");
             String password = ctx.formParam("password");
             if (!checkPassword(ctx, ctx.formParam("password"))) {
-                ctx.render("noUserupdate.html");
+                ctx.render("noUserUpdate.html");
                 return;
             }
             user.setPassword(password);
@@ -45,7 +58,7 @@ public class UserController {
 
         } catch (DatabaseException e) {
             ctx.attribute("message", "Der kunne ikke oprettes en bruger med de indtastede oplysninger. Prøv igen.");
-            ctx.render("noUserupdate.html");
+            ctx.render("noUserUpdate.html");
         }
     }
 
