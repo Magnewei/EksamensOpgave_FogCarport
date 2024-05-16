@@ -13,7 +13,6 @@
 
     <form method="post" action="orderCarport">
         <div class="Container">
-            <p th:text="${order.orderId}"></p>
             <label> Du har Bestilt en Carport med følgende mål </label>
             <br>
             <fieldset>
@@ -26,8 +25,13 @@
         </div>
     </form>
 
-
     <div id="svg1" class="ContainerSvg" th:utext="${session.svg}"></div>
+
+    <form method="post" action="loginNouser">
+        <button type="submit"  name="button">Opret bruger for at se ordre</button>
+
+    </form>
+
 </div>
 
 
@@ -36,5 +40,4 @@
 </body>
 
 </html>
-
 

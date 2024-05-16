@@ -324,6 +324,20 @@ public class UserMapper {
         }
     }
 
+    public static boolean updatePassword(User user, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE users SET password = ? WHERE \"userID\" = ?";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, user.getPassword());
+            ps.setInt(2, user.getUserID());
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Error. Couldn't update user from userID.", e.getMessage());
+        }
+    }
+
     /**
      * Retrieves the latest user ID from the database. Typically used to get the most recently created user.
      *
