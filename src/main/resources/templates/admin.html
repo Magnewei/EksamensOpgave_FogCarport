@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -40,16 +39,9 @@
                     <td th:text="${material.unit}"></td>
                     <td th:text="${material.quantityInStock}"></td>
                     <td>
-                        <form method="post" action="/removematerial">
-                            <input type="hidden" name="remove_material" th:value="${material.materialID}">
-                            <button type="submit" class="adbtn"> Delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form method="post" action="/addMaterialStock">
+                        <form method="post" action="/editMaterial">
                             <input type="hidden" name="material_id" th:value="${material.materialID}">
-                            <input type="number" name="quantityToAdd" placeholder="Materiale mængde">
-                            <button type="submit" class="adbtn">Add materialer</button>
+                            <button type="submit" class="adbtn">Edit material</button>
                         </form>
                     </td>
                 </tr>
@@ -90,6 +82,10 @@
                         <form method="post" action="/denyorder">
                             <input type="hidden" name="deny_order" th:value="${order.orderID}">
                             <button type="submit" class="adbtn">Deny order</button>
+                        </form>
+                        <form method="post" action="/inspectOrder">
+                            <input type="hidden" name="order_id" th:value="${order.orderID}">
+                            <button type="submit" class="adbtn">Inspect order</button>
                         </form>
                     </td>
                 </tr>

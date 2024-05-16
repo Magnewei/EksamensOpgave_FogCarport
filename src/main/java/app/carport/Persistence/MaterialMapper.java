@@ -208,4 +208,18 @@ public class MaterialMapper {
             throw new DatabaseException("Error. Couldn't update material stock in the database.", e.getMessage());
         }
     }
+
+    public static boolean changeMaterialPrice(double price, int materialID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE material SET \"price\" = ? WHERE \"materialID\" = ?";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setDouble(1, price);
+            ps.setInt(2, materialID);
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            throw new DatabaseException("Error. Couldn't update material stock in the database.", e.getMessage());
+        }
+    }
+
+
 }
