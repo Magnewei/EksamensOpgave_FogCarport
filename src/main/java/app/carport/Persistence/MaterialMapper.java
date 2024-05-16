@@ -211,49 +211,4 @@ public class MaterialMapper {
             throw new DatabaseException("Error. Couldn't remove material stock from the database.", e.getMessage());
         }
     }
-
-    /**
-     * Updates the stock quantity of a specific material in the database.
-     *
-     * @param materialID     The ID of the material to update.
-     * @param quantityToAdd  The amount to add to the current stock quantity.
-     * @param connectionPool The connection pool to use for obtaining a database connection.
-     * @return {@code true} if the stock was updated successfully; {@code false} otherwise.
-     * @throws DatabaseException If a database error occurs.
-     */
-    public static boolean addMaterialStock(int materialID, int quantityToAdd, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "UPDATE material SET \"quantityInStock\" = \"quantityInStock\" + ? WHERE \"materialID\" = ?";
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, quantityToAdd);
-            ps.setInt(2, materialID);
-            int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
-        } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't update material stock in the database.", e.getMessage());
-        }
-    }
-
-    /**
-     * Updates the price of a specific material in the database. This method constructs and executes
-     * an SQL update statement that modifies the price field of a material record identified by materialID.
-     * The method returns a boolean indicating whether the update was successful (i.e., if any rows were affected).
-     *
-     * @param price          The new price to set for the material.
-     * @param materialID     The ID of the material to be updated.
-     * @param connectionPool The connection pool from which to obtain the database connection.
-     * @return {@code true} if the price update affected at least one row, indicating success; {@code false} otherwise.
-     * @throws DatabaseException if an SQL error occurs during the update process.
-     */
-    public static boolean changeMaterialPrice(double price, int materialID, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "UPDATE material SET \"price\" = ? WHERE \"materialID\" = ?";
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setDouble(1, price);
-            ps.setInt(2, materialID);
-            int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
-        } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't update material stock in the database.", e.getMessage());
-
-        }
-    }
 }
