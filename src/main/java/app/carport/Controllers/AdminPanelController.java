@@ -25,19 +25,17 @@ public class AdminPanelController {
         app.get("renderupdate", ctx -> renderUpdate(connectionPool, ctx));
         app.post("acceptorder", ctx -> acceptOrder(connectionPool, ctx));
         app.post("denyorder", ctx -> denyOrder(connectionPool, ctx));
-        app.post("addMaterialStock", ctx -> addMaterialStock(connectionPool, ctx));
         app.post("editMaterial", ctx -> renderEditMaterial(connectionPool, ctx));
-        app.post("changeMaterialPrice", ctx -> changeMaterialPrice(connectionPool, ctx));
         app.post("inspectOrder", ctx -> inspectOrder(connectionPool, ctx));
     }
 
     private static void renderUpdate(ConnectionPool connectionPool, Context ctx) {
-        try{
+        try {
             int materialID = Integer.parseInt(ctx.queryParam("update_material"));
             Material material = MaterialMapper.getMaterialById(materialID, connectionPool);
             ctx.attribute("material", material);
             ctx.render("editMaterial.html");
-        }catch (NumberFormatException | DatabaseException e){
+        } catch (NumberFormatException | DatabaseException e) {
             ctx.attribute("message", e.getMessage());
             renderAdmin(connectionPool, ctx);
         }
@@ -149,25 +147,6 @@ public class AdminPanelController {
     }
 
     /**
-     * Removes a material from the inventory database.
-     *
-     * @param connectionPool Connection pool for database connections.
-     * @param ctx            Context for handling the request, contains form parameters.
-     */
-    private static void addMaterialStock(ConnectionPool connectionPool, Context ctx) {
-        try {
-            int materialID = Integer.parseInt(ctx.formParam("material_id"));
-            int quantityToAdd = Integer.parseInt(ctx.formParam("quantityToAdd"));
-
-
-            MaterialMapper.addMaterialStock(materialID, quantityToAdd, connectionPool);
-            renderAdmin(connectionPool, ctx);
-        } catch (NumberFormatException | DatabaseException e) {
-            renderAdmin(connectionPool, ctx);
-        }
-    }
-
-    /**
      * Renders the admin panel, displaying all orders and materials.
      *
      * @param connectionPool Connection pool for database connections.
@@ -214,43 +193,17 @@ public class AdminPanelController {
     }
 
     /**
-     * Updates the price of a specific material based on inputs from a web form context.
-     * The method retrieves the material ID and new price from the form parameters, updates the material's
-     * price in the database, and then updates the material object. If successful, it updates the context
-     * with the modified material and a success message. If any errors occur, such as database access issues
-     * or format problems, an error message is set in the context.
+     * Handles the inspection of a specific order by retrieving order details and generating an SVG
+     * representation of the associated carport. This method retrieves the order ID from the web context's
+     * form parameters, fetches the corresponding order and its related carport from the database, then
+     * generates an SVG for the carport. The order details and SVG are set in the context and session
+     * respectively, for rendering on the web page. If successful, it displays the detailed order page;
+     * otherwise, it redirects to an admin error page with an appropriate error message.
      *
-     * @param connectionPool The connection pool to manage database connections.
-     * @param ctx            The web context containing the form parameters for material ID and new price.
-     * @throws DatabaseException     If there are issues accessing the database or updating the material's price.
-     * @throws NumberFormatException If the form parameters for material ID or price are not correctly formatted.
-     */
-    private static void changeMaterialPrice(ConnectionPool connectionPool, Context ctx) {
-        try {
-            int materialID = Integer.parseInt(ctx.formParam("material_id"));
-            double materialPrice = Double.parseDouble(ctx.formParam("material_price"));
-
-            Material material = MaterialMapper.getMaterialById(materialID, connectionPool);
-            MaterialMapper.changeMaterialPrice(materialPrice, materialID, connectionPool);
-            material.setPrice(materialPrice);
-
-            ctx.attribute("material", material);
-            ctx.attribute("message", material.getName() + " had it's price changed to" + materialPrice);
-            ctx.render("editMaterial.html");
-        } catch (DatabaseException | NumberFormatException e) {
-            ctx.attribute("message", e.getMessage());
-            ctx.render("editMaterial.html");
-        }
-    }
-
-    /**
-     * Updates the stock quantity of a specific material in the database.
-     *
-     * @param materialID     The ID of the material to update.
-     * @param quantityToAdd  The amount to add to the current stock quantity.
-     * @param connectionPool The connection pool to use for obtaining a database connection.
-     * @return {@code true} if the stock was updated successfully; {@code false} otherwise.
-     * @throws DatabaseException If a database error occurs.
+     * @param connectionPool The connection pool used to manage database connections.
+     * @param ctx            The web context containing the request data, including form parameters.
+     * @throws DatabaseException     If there is a problem accessing the database or retrieving the order.
+     * @throws NumberFormatException If the order ID is not in a valid integer format.
      */
     public static void inspectOrder(ConnectionPool connectionPool, Context ctx) {
         try {
@@ -270,6 +223,5 @@ public class AdminPanelController {
             ctx.render("admin.html");
         }
     }
-
 }
 
