@@ -64,6 +64,12 @@
                 <td th:text="${order.status}"></td>
                 <td th:text="${order.totalPrice}"></td>
                 <td>
+                    <form method="post" action="/inspectUserOrder">
+                        <input type="hidden" name="order_id" th:value="${order.orderID}">
+                        <button type="submit" class="adbtn" th:if="${order.status == 'accepted' ||  order.status == 'Accepted'}">Inspect order</button>
+                    </form>
+                </td>
+            </tr>
             </tbody>
         </table>
         </div>

@@ -19,14 +19,40 @@ public class AdminPanelController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("removeorder", ctx -> removeOrder(connectionPool, ctx));
         app.post("removematerial", ctx -> removeMaterial(connectionPool, ctx));
+        app.post("updatematerial", ctx -> updateMaterial(connectionPool, ctx));
         app.post("addmaterial", ctx -> addMaterial(connectionPool, ctx));
-        app.post("renderadmin", ctx -> renderAdmin(connectionPool, ctx));
+        app.get("renderadmin", ctx -> renderAdmin(connectionPool, ctx));
+        app.get("renderupdate", ctx -> renderUpdate(connectionPool, ctx));
         app.post("acceptorder", ctx -> acceptOrder(connectionPool, ctx));
         app.post("denyorder", ctx -> denyOrder(connectionPool, ctx));
         app.post("addMaterialStock", ctx -> addMaterialStock(connectionPool, ctx));
         app.post("editMaterial", ctx -> renderEditMaterial(connectionPool, ctx));
         app.post("changeMaterialPrice", ctx -> changeMaterialPrice(connectionPool, ctx));
         app.post("inspectOrder", ctx -> inspectOrder(connectionPool, ctx));
+    }
+
+    private static void renderUpdate(ConnectionPool connectionPool, Context ctx) {
+        try{
+            int materialID = Integer.parseInt(ctx.queryParam("update_material"));
+            Material material = MaterialMapper.getMaterialById(materialID, connectionPool);
+            ctx.attribute("material", material);
+            ctx.render("editMaterial.html");
+        }catch (NumberFormatException | DatabaseException e){
+            ctx.attribute("message", e.getMessage());
+            renderAdmin(connectionPool, ctx);
+        }
+    }
+
+    private static void updateMaterial(ConnectionPool connectionPool, Context ctx) {
+        int materialID = Integer.parseInt(ctx.formParam("materialID"));
+        String name = ctx.formParam("materialName");
+        double price = Double.parseDouble(ctx.formParam("materialPrice"));
+        double length = Double.parseDouble(ctx.formParam("materialLength"));
+        String unit = ctx.formParam("materialUnit");
+        int quantityInStock = Integer.parseInt(ctx.formParam("materialQuantityInStock"));
+
+        MaterialMapper.updateMaterial(connectionPool, materialID, name, price, length, unit, quantityInStock);
+        renderAdmin(connectionPool, ctx);
     }
 
     /**
@@ -226,7 +252,7 @@ public class AdminPanelController {
      * @return {@code true} if the stock was updated successfully; {@code false} otherwise.
      * @throws DatabaseException If a database error occurs.
      */
-    private static void inspectOrder(ConnectionPool connectionPool, Context ctx) {
+    public static void inspectOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             Locale.setDefault(new Locale("US"));
             int orderID = Integer.parseInt(ctx.formParam("order_id"));

@@ -10,6 +10,8 @@ import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import static app.carport.Controllers.AdminPanelController.inspectOrder;
+
 
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -19,6 +21,7 @@ public class UserController {
         app.get("getUserSite", ctx -> renderUserSite(ctx, connectionPool));
         app.post("updateUser", ctx -> updateUser(ctx, connectionPool));
         app.post("goTocreateUser", ctx -> goTocreateUser(ctx));
+        app.post("inspectUserOrder", ctx -> inspectOrder(connectionPool, ctx));  // imported from AdminController
     }
 
     /**
