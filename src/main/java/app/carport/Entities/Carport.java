@@ -115,9 +115,7 @@ public class Carport {
         for (Material material : materials) {
             if (material.getLength() == length) {
                 return material;
-            } else if (material.getLength() >= length && material.getLength() - length <= 50) {
-                return material;
-            } else if (material.getLength() >= length / 2 && material.getLength() - (length / 2) <= 50) {
+            } else if (material.getLength() * 2 >= length) {
                 return material;
             }
         }
@@ -128,6 +126,8 @@ public class Carport {
     public static Material getShortestTagpladeThatFits(List<Material> materials, double length) {
         for (Material material : materials) {
             if (material.getLength() == length) {
+                return material;
+            } else if (material.getLength() * 2 >= length) {
                 return material;
             }
         }
