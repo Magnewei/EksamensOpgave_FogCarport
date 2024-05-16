@@ -23,12 +23,30 @@ public class UserController {
         app.post("goTocreateUser", ctx -> goTocreateUser(ctx));
         app.post("inspectUserOrder", ctx -> inspectOrder(connectionPool, ctx));  // imported from AdminController
         app.post("loginNouser",ctx->loginNouser(ctx,connectionPool));
+        app.post("createPassword",ctx->createPassword(ctx,connectionPool));
     }
 
 
     private static void loginNouser(Context ctx, ConnectionPool connectionPool) {
         ctx.render("noUserupdate.html");
+
     }
+
+    private static void createPassword(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        User user = ctx.sessionAttribute("currentUser");
+        String password = ctx.formParam("password");
+        if (!checkPassword(ctx, ctx.formParam("password"))) {
+            ctx.render("noUserupdate.html");
+            return;
+        }
+        user.setPassword(password);
+        UserMapper.updatePassword(user,connectionPool);
+        ctx.req().getSession().invalidate();
+        ctx.attribute("message","Bruger oprettet du kan nu logge ind ");
+        ctx.render("/login.html");
+    }
+
+
     /**
      * Attempts to create a new user account from the provided form parameters.
      *
@@ -179,8 +197,6 @@ public class UserController {
             currentUser.setEmail(ctx.formParam("email"));
             currentUser.setPassword(ctx.formParam("password"));
             currentUser.setPhoneNumber(Integer.parseInt(ctx.formParam("phoneNumber")));
-
-
             Address address = currentUser.getAddress();
             address.setCityName(ctx.formParam("cityName"));
             address.setPostalCode(Integer.parseInt(ctx.formParam("postalCode")));
@@ -191,9 +207,9 @@ public class UserController {
 
             MailServer.mailOnUserChanges(currentUser);
             // Redirect to a success page
-            ctx.render("userSite.html");
+            ctx.render("index.html");
         } catch (DatabaseException | NumberFormatException e) {
-            ctx.attribute("message", "An error occurred while updating the user information.");
+            ctx.attribute("message", e.getMessage());
             ctx.render("userSite.html");
         }
     }

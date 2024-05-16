@@ -13,38 +13,18 @@
 <div class="main-content">
 
     <div class="Container">
-        <form method="post">
+        <form method="post" action="/createPassword">
 
             <fieldset>
                 <h2> Dine Informationer </h2>
-                <label for="firstName">First Name:</label><br>
-                <input type="text" id="firstName" name="firstName" th:value="${session.currentUser.firstName}"><br>
-                <label for="lastName">Last Name:</label><br>
-                <input type="text" id="lastName" name="lastName" th:value="${session.currentUser.lastName}"><br>
-                <label for="password">Password:</label><br>
-                <input type="password" id="password" name="password"><br>
                 <label for="email">Email:</label><br>
                 <input type="text" id="email" name="email" th:value="${session.currentUser.email}"><br>
-                <label for="phoneNumber">Phone Number:</label><br>
-                <input type="text" id="phoneNumber" name="phoneNumber" th:value="${session.currentUser.phoneNumber}"><br>
+                <label for="password">Vælg en adgangskode</label><br>
+                <input type="password" id="password" name="password"><br>
+                <button>Opret bruger</button>
+
             </fieldset>
 
-
-            <fieldset>
-                <h2> Address </h2>
-                <label for="streetName">Street Name:</label><br>
-                <input type="text" id="streetName" name="streetName" th:value="${session.currentUser.address.streetName}"><br>
-                <label for="houseNumber">House Number:</label><br>
-                <input type="text" id="houseNumber" name="houseNumber" th:value="${session.currentUser.address.houseNumber}"><br>
-                <label for="postalCode">Postal Code:</label><br>
-                <input type="text" id="postalCode" name="postalCode" th:value="${session.currentUser.address.postalCode}"><br>
-                <label for="cityName">City Name:</label><br>
-                <input type="text" id="cityName" name="cityName"><br>
-            </fieldset>
-        </form>
-
-        <form method="post"  action="/updateUser">
-            <button>Opret bruger</button>
         </form>
     </div>
 
