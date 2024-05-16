@@ -67,14 +67,13 @@ public class CarportMapper {
         }
         return 0;
     }
+    //Blev brugt til at populate db
 
     public static void addAllPossibleMaterialsToDb(ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT INTO \"materialUsage\" (\"carportID\", \"materialID\", \"quantity\") VALUES (?,?,?)";
         double[] possibleLengths = {420, 480, 540, 600, 660, 720, 780}; // replace with your possible lengths
         double[] possibleWidths = {300, 360, 420, 480, 540, 600}; // replace with your possible widths
         boolean[] possibleRoofTypes = {true, false}; // with or without roof
-        Carport test = new Carport(660, 360, true);
-        test.setMaterialList(connectionPool);
 
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             for (double length : possibleLengths) {

@@ -42,6 +42,14 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
+    public Order(int orderId, String status, User user, Carport carport, int totalPrice) {
+        this.orderId = orderId;
+        this.status = status;
+        this.user = user;
+        this.carport = carport;
+        this.totalPrice = totalPrice;
+    }
+
     public int getOrderId() {
         return orderId;
     }

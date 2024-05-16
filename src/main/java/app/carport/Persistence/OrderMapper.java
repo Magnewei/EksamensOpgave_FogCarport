@@ -4,7 +4,6 @@ import app.carport.Entities.Carport;
 import app.carport.Entities.Order;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
-import app.carport.Services.MailServer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,6 +32,7 @@ public class OrderMapper {
             while (rs.next()) {
                 int orderId = rs.getInt("orderID");
                 String status = rs.getString("status");
+                int price = rs.getInt("price");
                 int userId = rs.getInt("userID");
 
                 String email = rs.getString("email");
@@ -45,7 +45,7 @@ public class OrderMapper {
 
                 User user = new User(userId, email, firstName, lastName);
                 Carport carport = new Carport(length, width, withRoof);
-                orderList.add(new Order(orderId, status, user, carport));
+                orderList.add(new Order(orderId, status, user, carport, price));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Error. Couldn't get orders from database.", e.getMessage());
@@ -100,13 +100,13 @@ public class OrderMapper {
      * @return true if the insertion was successful, false otherwise.
      * @throws DatabaseException If there is a problem executing the insert operation.
      */
-    public static boolean insertNewOrder(User user, int carportId,double price ,ConnectionPool connectionPool) throws DatabaseException {
+    public static boolean insertNewOrder(User user, int carportId, double price, ConnectionPool connectionPool) throws DatabaseException {
         String sqlMakeOrder = "INSERT INTO orders (\"userID\",\"carportID\",\"price\") VALUES (?,?,?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlMakeOrder)) {
 
             ps.setInt(1, user.getUserID());
             ps.setInt(2, carportId);
-            ps.setDouble(3,price);
+            ps.setDouble(3, price);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
 

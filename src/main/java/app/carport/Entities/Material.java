@@ -7,7 +7,7 @@ package app.carport.Entities;
  */
 public class Material {
     private final int materialID;
-    private final double price;
+    private double price;
     private final String name;
     private final String unit;
     private final double length;
@@ -44,5 +44,9 @@ public class Material {
 
     public int getQuantityInStock() {
         return quantityInStock;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

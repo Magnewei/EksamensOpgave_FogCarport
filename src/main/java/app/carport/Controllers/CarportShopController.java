@@ -28,6 +28,7 @@ public class CarportShopController {
      * @throws DatabaseException if an error occurs during database access
      */
     public static void orderButtonOne(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
+        //CarportMapper.addAllPossibleMaterialsToDb(connectionPool);  Blev brugt til at populate materialUsage table.
         renderCarportShop(ctx, connectionPool);
     }
 
@@ -100,8 +101,9 @@ public class CarportShopController {
             double price = carport.calculateTotalPrice();
 
 
-            // Then inserts the order on either temporary or logged in user, combined with the carport and it's price.
+            // Then inserts the order on either temporary or a logged in user, combined with the carport and it's price.
             OrderMapper.insertNewOrder(user, carport.getCarportID(), price, connectionPool);
+            MaterialMapper.removeMaterialStockOnOrder(carport.getMaterialList(), connectionPool);
             ctx.render("orderSite3.html");
 
             // Sends the user a mail on a successful insertion of the order.

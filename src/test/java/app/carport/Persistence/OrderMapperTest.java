@@ -1,14 +1,20 @@
 package app.carport.Persistence;
 
-import app.carport.Entities.Address;
-import app.carport.Exceptions.DatabaseException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 class OrderMapperTest {
 
+    @BeforeEach
+    void setUp() {
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
 
     @Test
     void getAllOrders() {
@@ -19,7 +25,7 @@ class OrderMapperTest {
     }
 
     @Test
-    void getLastOrder() {
+    void getLastOrderID() {
     }
 
     @Test
@@ -39,12 +45,18 @@ class OrderMapperTest {
     }
 
     @Test
-    void getOrderByOrderId() {
+    void getOrdersByUserId() {
     }
 
     @Test
     void checkIfUserHasOrder() {
     }
 
+    @Test
+    void getOrderByOrderId() {
+    }
 
+    @Test
+    void removeMaterialStockOnOrder() {
+    }
 }

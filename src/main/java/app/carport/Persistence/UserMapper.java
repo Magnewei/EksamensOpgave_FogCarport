@@ -299,39 +299,6 @@ public class UserMapper {
     }
 
     /**
-     * Retrieves a limited user by their user ID, intended for situations where minimal user data is necessary.
-     *
-     * @param userId         The user ID to search for.
-     * @param connectionPool Connection pool for database connections.
-     * @return User object with limited details if found, otherwise null.
-     * @throws DatabaseException If there is an issue accessing the database.
-     */
-    public static User getLimitedUserByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT \"userID\", \"email\", \"firstName\", \"lastName\", \"orderID\",status FROM users INNER JOIN orders ON users.\"userID\" = orders.\"userID\" WHERE users.\"userID\" = ?";
-
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int userID = rs.getInt("userID");
-                String email = rs.getString("email");
-                String firstName = rs.getString("firstName");
-                String lastName = rs.getString("lastName");
-                // If the user has an order, return the user object with the order.
-
-                int orderID = rs.getInt("orderID");
-                String status = rs.getString("status");
-
-                Order order = new Order(orderID, status);
-                return new User(userID, email, firstName, lastName, order);
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't get reduced user from userID.", e.getMessage());
-        }
-        return null;
-    }
-
-    /**
      * Updates a user's information in the database.
      *
      * @param user           User object containing updated details.
