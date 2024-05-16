@@ -1,16 +1,19 @@
 package app.carport.Controllers;
 
+import app.carport.Entities.Carport;
 import app.carport.Entities.Material;
 import app.carport.Entities.Order;
 import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.MaterialMapper;
 import app.carport.Persistence.OrderMapper;
+import app.carport.Services.CarportSVG;
 import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 import java.util.List;
+import java.util.Locale;
 
 public class AdminPanelController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -21,6 +24,9 @@ public class AdminPanelController {
         app.post("acceptorder", ctx -> acceptOrder(connectionPool, ctx));
         app.post("denyorder", ctx -> denyOrder(connectionPool, ctx));
         app.post("addMaterialStock", ctx -> addMaterialStock(connectionPool, ctx));
+        app.post("editMaterial", ctx -> renderEditMaterial(connectionPool, ctx));
+        app.post("changeMaterialPrice", ctx -> changeMaterialPrice(connectionPool, ctx));
+        app.post("inspectOrder", ctx -> inspectOrder(connectionPool, ctx));
     }
 
     /**
@@ -128,7 +134,7 @@ public class AdminPanelController {
             int quantityToAdd = Integer.parseInt(ctx.formParam("quantityToAdd"));
 
 
-            MaterialMapper.addMaterialStock( materialID, quantityToAdd, connectionPool);
+            MaterialMapper.addMaterialStock(materialID, quantityToAdd, connectionPool);
             renderAdmin(connectionPool, ctx);
         } catch (NumberFormatException | DatabaseException e) {
             renderAdmin(connectionPool, ctx);
@@ -154,5 +160,57 @@ public class AdminPanelController {
             ctx.render("admin.html");
         }
     }
+
+
+    public static void renderEditMaterial(ConnectionPool connectionPool, Context ctx) {
+        try {
+            int materialID = Integer.parseInt(ctx.formParam("material_id"));
+            Material material = MaterialMapper.getMaterialById(materialID, connectionPool);
+
+            ctx.attribute("material", material);
+            ctx.render("editMaterial.html");
+        } catch (DatabaseException | NumberFormatException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("editMaterial.html");
+        }
+    }
+
+    private static void changeMaterialPrice(ConnectionPool connectionPool, Context ctx) {
+        try {
+            int materialID = Integer.parseInt(ctx.formParam("material_id"));
+            double materialPrice = Double.parseDouble(ctx.formParam("material_price"));
+
+            Material material = MaterialMapper.getMaterialById(materialID, connectionPool);
+            MaterialMapper.changeMaterialPrice(materialPrice, materialID, connectionPool);
+            material.setPrice(materialPrice);
+
+            ctx.attribute("material", material);
+            ctx.attribute("message", material.getName() + " had it's price changed to" + materialPrice);
+            ctx.render("editMaterial.html");
+        } catch (DatabaseException | NumberFormatException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("editMaterial.html");
+        }
+    }
+
+    private static void inspectOrder(ConnectionPool connectionPool, Context ctx) {
+        try {
+            Locale.setDefault(new Locale("US"));
+            int orderID = Integer.parseInt(ctx.formParam("order_id"));
+            Order order = OrderMapper.getOrderByOrderId(orderID, connectionPool);
+            Carport carport = order.getCarport();
+
+            CarportSVG carportSVG = new CarportSVG(carport.getWidth(), carport.getLength());
+
+            ctx.attribute("order", order);
+            ctx.sessionAttribute("svg", carportSVG.toString());
+            ctx.sessionAttribute("carport", carport);
+            ctx.render("orderSite3.html");
+        } catch (DatabaseException | NumberFormatException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("admin.html");
+        }
+    }
+
 }
 
