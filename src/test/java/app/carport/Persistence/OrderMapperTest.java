@@ -59,4 +59,84 @@ class OrderMapperTest {
     @Test
     void removeMaterialStockOnOrder() {
     }
+
+    @Test
+    void testGetAllOrders() {
+    }
+
+    @Test
+    void testDeleteOrderById() {
+    }
+
+    @Test
+    void testGetLastOrderID() {
+    }
+
+    @Test
+    void testInsertNewOrder() {
+    }
+
+    @Test
+    void testUpdateStatus() {
+    }
+
+    @Test
+    void testAcceptOrder() {
+    }
+
+    @Test
+    void testDenyOrder() {
+    }
+
+    @Test
+    void testGetOrdersByUserId() {
+    }
+
+    @Test
+    void testCheckIfUserHasOrder() {
+    }
+
+    @Test
+    void testGetOrderByOrderId() {
+    }
+
+    @Test
+    void testGetAllOrders1() {
+    }
+
+    @Test
+    void testDeleteOrderById1() {
+    }
+
+    @Test
+    void testGetLastOrderID1() {
+    }
+
+    @Test
+    void testInsertNewOrder1() {
+    }
+
+    @Test
+    void testUpdateStatus1() {
+    }
+
+    @Test
+    void testAcceptOrder1() {
+    }
+
+    @Test
+    void testDenyOrder1() {
+    }
+
+    @Test
+    void testGetOrdersByUserId1() {
+    }
+
+    @Test
+    void testCheckIfUserHasOrder1() {
+    }
+
+    @Test
+    void testGetOrderByOrderId1() {
+    }
 }

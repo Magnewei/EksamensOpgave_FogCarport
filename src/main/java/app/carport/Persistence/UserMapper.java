@@ -31,8 +31,8 @@ public class UserMapper {
         User user = null;
 
         String sql = "select * from users INNER JOIN address ON users.\"addressID\" = address.\"addressID\" " +
-                    "INNER JOIN postalcode ON address.postalcode = postalcode.postalcode " +
-                    "WHERE email = ? AND password = ?";
+                "INNER JOIN postalcode ON address.postalcode = postalcode.postalcode " +
+                "WHERE email = ? AND password = ?";
 
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -324,6 +324,15 @@ public class UserMapper {
         }
     }
 
+
+    /**
+     * Updates the password for a given user in the database.
+     *
+     * @param user           The User object containing the user's ID and new password.
+     * @param connectionPool The ConnectionPool from which to get the database connection.
+     * @return true if the password was successfully updated, false otherwise.
+     * @throws DatabaseException if there is an error during the update process.
+     */
     public static boolean updatePassword(User user, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET password = ? WHERE \"userID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
