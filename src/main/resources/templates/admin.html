@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -15,82 +14,87 @@
 <div class="main-content">
 
 
-        <div class="Container">
+    <div class="Container">
         <label> Stocklist </label>
-            <br>
-            <div class="ContainerAdmin list">
-        <table>
-            <thead>
-            <tr>
-                <th>MaterialeID</th>
-                <th>Navn</th>
-                <th>Pris</th>
-                <th>Længde</th>
-                <th>Enhed</th>
-                <th>Mængde i beholdning</th>
-            </tr>
-            </thead>
+        <br>
+        <div class="ContainerAdmin list">
+            <table>
+                <thead>
+                <tr>
+                    <th>MaterialeID</th>
+                    <th>Navn</th>
+                    <th>Pris</th>
+                    <th>Længde</th>
+                    <th>Enhed</th>
+                    <th>Mængde i beholdning</th>
+                </tr>
+                </thead>
 
-            <tbody>
-            <tr th:each="material : ${materiallist}">
-                <td th:text="${material.materialID}"></td>
-                <td th:text="${material.name}"></td>
-                <td th:text="${material.price}"></td>
-                <td th:text="${material.length}"></td>
-                <td th:text="${material.unit}"></td>
-                <td th:text="${material.quantityInStock}"></td>
-                <td>
-                    <form method="post" action="/removematerial">
-                        <input type="hidden" name="remove_material" th:value="${material.materialID}">
-                        <button type="submit" class="adbtn"> Delete </button>
-                    </form>
-                </td>
-            </tr>
-        </table>
-            </div>
+                <tbody>
+                <tr th:each="material : ${materiallist}">
+                    <td th:text="${material.materialID}"></td>
+                    <td th:text="${material.name}"></td>
+                    <td th:text="${material.price}"></td>
+                    <td th:text="${material.length}"></td>
+                    <td th:text="${material.unit}"></td>
+                    <td th:text="${material.quantityInStock}"></td>
+                    <td>
+                        <form method="post" action="/editMaterial">
+                            <input type="hidden" name="material_id" th:value="${material.materialID}">
+                            <button type="submit" class="adbtn">Edit material</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
+    </div>
 
 
     <div class="Container">
         <label> Ordrer </label>
         <br>
-<div class="ContainerAdmin list">
-        <table>
-            <thead>
-            <tr>
-                <th>OrdreID</th>
-                <th>Kundens navn</th>
-                <th>Pris</th>
-                <th>Status</th>
-            </tr>
-            </thead>
+        <div class="ContainerAdmin list">
+            <table>
+                <thead>
+                <tr>
+                    <th>OrdreID</th>
+                    <th>Kundens navn</th>
+                    <th>Pris</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
 
-            <tbody>
-            <tr th:each="order : ${orderlist}">
-                <td th:text="${order.orderID}"></td>
-                <td th:text="${order.user.email}"></td>
-                <td th:text="${order.totalPrice}"></td>
-                <td th:text="${order.status}"></td>
-                <td>
-                    <form method="post" action="/removeorder">
-                        <input type="hidden" name="remove_order" th:value="${order.orderID}">
-                        <button type="submit" class="adbtn">Delete order</button>
-                    </form>
-                    <form method="post" action="/acceptorder">
-                        <input type="hidden" name="accept_order" th:value="${order.orderID}">
-                        <button type="submit" class="adbtn">Accept order</button>
-                    </form>
-                    <form method="post" action="/denyorder">
-                        <input type="hidden" name="deny_order" th:value="${order.orderID}">
-                        <button type="submit" class="adbtn">Deny order</button>
-                    </form>
-                </td>
-            </tr>
-</tbody>
+                <tbody>
+                <tr th:each="order : ${orderlist}">
+                    <td th:text="${order.orderID}"></td>
+                    <td th:text="${order.user.email}"></td>
+                    <td th:text="${order.totalPrice}"></td>
+                    <td th:text="${order.status}"></td>
+                    <td>
+                        <form method="post" action="/removeorder">
+                            <input type="hidden" name="remove_order" th:value="${order.orderID}">
+                            <button type="submit" class="adbtn">Delete order</button>
+                        </form>
+                        <form method="post" action="/acceptorder">
+                            <input type="hidden" name="accept_order" th:value="${order.orderID}">
+                            <button type="submit" class="adbtn">Accept order</button>
+                        </form>
+                        <form method="post" action="/denyorder">
+                            <input type="hidden" name="deny_order" th:value="${order.orderID}">
+                            <button type="submit" class="adbtn">Deny order</button>
+                        </form>
+                        <form method="post" action="/inspectOrder">
+                            <input type="hidden" name="order_id" th:value="${order.orderID}">
+                            <button type="submit" class="adbtn">Inspect order</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
 
-        </table>
+            </table>
+        </div>
     </div>
-    </div>
+    addMaterialStock
 
     <div class="Add-material">
         <div class="Container">
@@ -107,16 +111,14 @@
                     <input type="text" id="unit" name="unit"><br>
                     <label for="quantityInStock">Quantity in Stock:</label><br>
                     <input type="text" id="quantityInStock" name="quantityInStock"><br>
-                    <button type="submit" class="btn" >Add Material"</button>
+                    <button type="submit" class="btn">Add Material"</button>
                 </fieldset>
             </form>
         </div>
     </div>
 
 
-    </div>
-
-
+</div>
 
 
 <div th:replace="~{fragments :: footer}"></div>

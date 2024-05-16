@@ -3,28 +3,19 @@
 
 left to right direction
 
-[*] --> Login
+[*] --> Index: On page load
 
-Login --> Create_user: On click: Create user
-Create_user --> Login: On click: Create user
-Login --> Create_admin: On click: Create admin
-Create_admin --> Login: On click: Create admin
-Login --> Shop: On successful login
+Index --> Login: On click: Login
+Index --> OrderCarport: On click: Customize
 
-Shop --> Shop: On click: Add to basket
-Shop --> Cart: On click: View cart
-Shop --> Admin: On click: Admin
-Shop --> Login: On click: Logout
+Login --> Index: On successful login
+Login --> Register: On click: Register
 
-Cart --> Shop: On click: Pay now
-Cart --> Cart: On click: Pay later
-Cart --> Shop: On click: Delete order
+Register --> Login: On successful registration
+Register --> Register: on failed registration
 
-
-Admin --> Admin: On click: Delete Order
-Admin --> Admin: On click: Add skejs
-Admin --> Admin: On click: Delete user
-
+OrderCarport --> OrderUserDetails: On click: Continue
+OrderUserDetails --> OrderConfirmation: On click: Order
 
 
 
