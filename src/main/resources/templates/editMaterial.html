@@ -13,9 +13,10 @@
 
 <div class="main-content">
 
-
     <div class="Container">
+        <h2>Edit Material</h2>
         <form method="post" action="/updatematerial">
+            <fieldset>
             <input type="hidden" id="materialID" name="materialID" th:value="${material.materialID}" required>
 
             <label for="materialName">Name:</label>
@@ -33,9 +34,13 @@
             <label for="materialQuantityInStock">Quantity in Stock:</label>
             <input type="number" id="materialQuantityInStock" name="materialQuantityInStock" placeholder="Quantity in stock" th:value="${material.quantityInStock}" required>
 
-            <button type="submit">Update Material</button>
+            <button type="submit" class="btn">Update Material</button>
+
+            </fieldset>
         </form>
+
     </div>
+
 </div>
 
 <div th:replace="~{fragments :: footer}"></div>
