@@ -30,8 +30,27 @@
                 <th>Mængde i beholdning</th>
             </tr>
             </thead>
-
-
+            <tbody>
+            <tr th:each="material : ${materiallist}">
+                <td th:text="${material.materialID}"></td>
+                <td th:text="${material.name}"></td>
+                <td th:text="${material.price}"></td>
+                <td th:text="${material.length}"></td>
+                <td th:text="${material.unit}"></td>
+                <td th:text="${material.quantityInStock}"></td>
+                <td>
+                    <form method="post" action="/removematerial">
+                        <input type="hidden" name="remove_material" th:value="${material.materialID}">
+                        <button type="submit" class="adbtn"> Delete </button>
+                    </form>
+                    <form method="get" action="/renderupdate">
+                        <input type="hidden" name="update_material" th:value="${material.materialID}">
+                        <button type="submit" class="adbtn">Edit</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+            </div>
                 <tbody>
                 <tr th:each="material : ${materiallist}">
                     <td th:text="${material.materialID}"></td>
