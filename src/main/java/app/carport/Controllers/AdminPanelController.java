@@ -20,6 +20,7 @@ public class AdminPanelController {
         app.post("renderadmin", ctx -> renderAdmin(connectionPool, ctx));
         app.post("acceptorder", ctx -> acceptOrder(connectionPool, ctx));
         app.post("denyorder", ctx -> denyOrder(connectionPool, ctx));
+        app.post("addMaterialStock", ctx -> addMaterialStock(connectionPool, ctx));
     }
 
     /**
@@ -109,6 +110,25 @@ public class AdminPanelController {
         try {
             int materialID = Integer.parseInt(ctx.formParam("remove_material"));
             MaterialMapper.deleteMaterialById(connectionPool, materialID);
+            renderAdmin(connectionPool, ctx);
+        } catch (NumberFormatException | DatabaseException e) {
+            renderAdmin(connectionPool, ctx);
+        }
+    }
+
+    /**
+     * Removes a material from the inventory database.
+     *
+     * @param connectionPool Connection pool for database connections.
+     * @param ctx            Context for handling the request, contains form parameters.
+     */
+    private static void addMaterialStock(ConnectionPool connectionPool, Context ctx) {
+        try {
+            int materialID = Integer.parseInt(ctx.formParam("material_id"));
+            int quantityToAdd = Integer.parseInt(ctx.formParam("quantityToAdd"));
+
+
+            MaterialMapper.addMaterialStock( materialID, quantityToAdd, connectionPool);
             renderAdmin(connectionPool, ctx);
         } catch (NumberFormatException | DatabaseException e) {
             renderAdmin(connectionPool, ctx);
