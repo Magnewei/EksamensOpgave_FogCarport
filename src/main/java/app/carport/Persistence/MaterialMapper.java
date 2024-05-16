@@ -159,7 +159,7 @@ public class MaterialMapper {
             int executeUpdate = ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't get material from the given materialID.", e.getMessage());
+            throw new DatabaseException("Error. Couldn't add the material to the database from the given information.", e.getMessage());
         }
     }
 
@@ -174,7 +174,7 @@ public class MaterialMapper {
      * @param unit            The unit of measurement for the material.
      * @param quantityInStock The new stock quantity of the material.
      */
-    public static void updateMaterial(ConnectionPool connectionPool, int materialID, String name, double price, double length, String unit, int quantityInStock) {
+    public static void updateMaterial(ConnectionPool connectionPool, int materialID, String name, double price, double length, String unit, int quantityInStock) throws DatabaseException {
         String sql = "UPDATE material SET name = ?, price = ?, length = ?, unit = ?, \"quantityInStock\" = ? WHERE \"materialID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, name);
@@ -185,7 +185,7 @@ public class MaterialMapper {
             ps.setInt(6, materialID);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Error. Couldn't update the material information from the given information.", e.getMessage());
         }
     }
 
