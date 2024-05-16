@@ -162,6 +162,18 @@ public class AdminPanelController {
     }
 
 
+    /**
+     * Renders the edit page for a specific material. This method extracts the material ID from the web
+     * context's form parameters, retrieves the corresponding material from the database, and sets it in
+     * the context for rendering. If successful, the edit material page is displayed with the material details
+     * pre-filled. If an error occurs (e.g., the material ID is not valid or the material cannot be retrieved),
+     * an error message is displayed on the same page.
+     *
+     * @param connectionPool The connection pool used to manage database connections.
+     * @param ctx            The web context containing the request data, including form parameters.
+     * @throws DatabaseException     If there is a problem accessing the database or retrieving the material.
+     * @throws NumberFormatException If the material ID provided is not in a valid integer format.
+     */
     public static void renderEditMaterial(ConnectionPool connectionPool, Context ctx) {
         try {
             int materialID = Integer.parseInt(ctx.formParam("material_id"));
@@ -175,6 +187,18 @@ public class AdminPanelController {
         }
     }
 
+    /**
+     * Updates the price of a specific material based on inputs from a web form context.
+     * The method retrieves the material ID and new price from the form parameters, updates the material's
+     * price in the database, and then updates the material object. If successful, it updates the context
+     * with the modified material and a success message. If any errors occur, such as database access issues
+     * or format problems, an error message is set in the context.
+     *
+     * @param connectionPool The connection pool to manage database connections.
+     * @param ctx            The web context containing the form parameters for material ID and new price.
+     * @throws DatabaseException     If there are issues accessing the database or updating the material's price.
+     * @throws NumberFormatException If the form parameters for material ID or price are not correctly formatted.
+     */
     private static void changeMaterialPrice(ConnectionPool connectionPool, Context ctx) {
         try {
             int materialID = Integer.parseInt(ctx.formParam("material_id"));
@@ -193,6 +217,15 @@ public class AdminPanelController {
         }
     }
 
+    /**
+     * Updates the stock quantity of a specific material in the database.
+     *
+     * @param materialID     The ID of the material to update.
+     * @param quantityToAdd  The amount to add to the current stock quantity.
+     * @param connectionPool The connection pool to use for obtaining a database connection.
+     * @return {@code true} if the stock was updated successfully; {@code false} otherwise.
+     * @throws DatabaseException If a database error occurs.
+     */
     private static void inspectOrder(ConnectionPool connectionPool, Context ctx) {
         try {
             Locale.setDefault(new Locale("US"));

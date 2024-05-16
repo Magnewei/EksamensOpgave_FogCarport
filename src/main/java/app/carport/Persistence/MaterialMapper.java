@@ -209,6 +209,17 @@ public class MaterialMapper {
         }
     }
 
+    /**
+     * Updates the price of a specific material in the database. This method constructs and executes
+     * an SQL update statement that modifies the price field of a material record identified by materialID.
+     * The method returns a boolean indicating whether the update was successful (i.e., if any rows were affected).
+     *
+     * @param price          The new price to set for the material.
+     * @param materialID     The ID of the material to be updated.
+     * @param connectionPool The connection pool from which to obtain the database connection.
+     * @return {@code true} if the price update affected at least one row, indicating success; {@code false} otherwise.
+     * @throws DatabaseException if an SQL error occurs during the update process.
+     */
     public static boolean changeMaterialPrice(double price, int materialID, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE material SET \"price\" = ? WHERE \"materialID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -220,6 +231,4 @@ public class MaterialMapper {
             throw new DatabaseException("Error. Couldn't update material stock in the database.", e.getMessage());
         }
     }
-
-
 }
