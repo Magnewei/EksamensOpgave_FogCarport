@@ -2,7 +2,6 @@ package app.carport.Persistence;
 
 import app.carport.Entities.Material;
 import app.carport.Exceptions.DatabaseException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
