@@ -1,12 +1,12 @@
 @startuml
 'https://plantuml.com/class-diagram
 
+
 'entities
 Entities.User *-- Entities.Address
 Entities.Order *-- Entities.Carport
-Entities.User *--o Entities.Order
-Entities.Carport *--o Entities.Material
-
+Entities.User *-o Entities.Order
+Entities.Carport *-o Entities.Material
 
 'persistence
 Persistence.UserMapper *-- Persistence.ConnectionPool
@@ -15,21 +15,17 @@ Persistence.OrderMapper *-- Persistence.ConnectionPool
 Persistence.MaterialMapper *-- Persistence.ConnectionPool
 Persistence.AddressMapper *-- Persistence.ConnectionPool
 
-Entities o--o Controllers
-Persistence o--o Entities
-
-
-'Services
-Controllers <-- Services
-
-Controllers --> Main : <<use>>
-Persistence.ConnectionPool ..> Controllers
-
-
+Main <--> Controllers
+Entities o---o Controllers
+Persistence o----o Entities
+Controllers <-----> Services
+Persistence.ConnectionPool <..> Controllers
 
 class Main {
 +main(String args[]): void
 }
+
+
 
 package Entities {
 class Carport {
@@ -43,15 +39,6 @@ class Carport {
 -Map materialList<Material material, Integer amount>
 +calculateTotalPrice() : double
 +setMaterialList( ConnectionPool c ) : void
-}
-
-class Material {
--double length
--int materialID
--String name
--double price
--int quantityInStock
--String unit
 }
 
 class User {
@@ -80,6 +67,15 @@ class Order {
 -String status
 -User user
 -Carport carport
+}
+
+class Material {
+-double length
+-int materialID
+-String name
+-double price
+-int quantityInStock
+-String unit
 }
 }
 
