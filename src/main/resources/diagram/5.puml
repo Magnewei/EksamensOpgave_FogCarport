@@ -4,7 +4,8 @@
 'entities
 Entities.User *-- Entities.Address
 Entities.Order *-- Entities.Carport
-Entities.User o--o Entities.Order
+Entities.User *--o Entities.Order
+Entities.Carport *--o Entities.Material
 
 
 'persistence
@@ -13,20 +14,18 @@ Persistence.CarportMapper *-- Persistence.ConnectionPool
 Persistence.OrderMapper *-- Persistence.ConnectionPool
 Persistence.MaterialMapper *-- Persistence.ConnectionPool
 Persistence.AddressMapper *-- Persistence.ConnectionPool
-Controllers *-- Persistence.ConnectionPool
 
 Entities o--o Controllers
 Persistence o--o Entities
 
-'Main connections
-Main <-- Controllers.HeaderController
-Main <-- Controllers.CarportShopController
-Main <-- Controllers.UserController
-Main <-- Controllers.AdminPanelController
-
 
 'Services
 Controllers <-- Services
+
+Controllers --> Main : <<use>>
+Persistence.ConnectionPool ..> Controllers
+
+
 
 class Main {
 +main(String args[]): void
@@ -180,6 +179,7 @@ class AdminPanelController {
 -updateMaterial() : void
 }
 }
+
 
 package Services {
 class SVGDrawer {
