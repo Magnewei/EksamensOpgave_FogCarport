@@ -10,6 +10,8 @@ public class CarportSVG {
         this.length = length;
         carportSvg = new SVGDrawer(0, 0, "0 0 855 690", "75%");
         carportSvg.addRectangle(0, 0, width, length, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+        carportSvg.addText(length / 2, -10, String.format("%.2f cm", length), "fill:black; font-size:12px;");
+        carportSvg.addText(-30, width / 2, String.format("%.2f cm", width), "fill:black; font-size:12px; transform:rotate(-90, -30, " + width / 2 + ");");
         addBeams();
         addRafters();
         addArrows();
