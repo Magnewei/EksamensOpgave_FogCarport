@@ -1,5 +1,7 @@
 package app.carport.Persistence;
 
+import app.carport.Entities.Order;
+import app.carport.Exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -70,6 +73,13 @@ class OrderMapperTest {
 
     @Test
     void getAllOrders() {
+        try {
+            List<Order> allOrders = OrderMapper.getAllOrders(connectionPool);
+            assertEquals(3, allOrders.size());
+
+        } catch (DatabaseException e) {
+            fail("Fail during OrderMapper test." + e.getMessage());
+        }
     }
 
     @Test
