@@ -12,25 +12,10 @@ class MaterialMapperTest {
     void setUp() {
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Test
-    void getAllLength() {
-    }
-
-    @Test
-    void getAllWidth() {
-    }
-
     @Test
     void getAllMaterials() {
     }
 
-    @Test
-    void deleteMaterialById() {
-    }
 
     @Test
     void getMaterialById() {
