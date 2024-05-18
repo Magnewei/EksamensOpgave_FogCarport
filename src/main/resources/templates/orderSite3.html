@@ -11,26 +11,39 @@
 
 <div class="main-content">
 
+    <div class="Container">
     <form method="post" action="orderCarport">
-        <div class="Container">
-            <label> Du har Bestilt en Carport med følgende mål </label>
-            <br>
+
             <fieldset>
+                <h2> Du har Bestilt en Carport med følgende mål </h2>
+                <br>
                 <div>Længde: <span type="text" th:text="${session.carport.length}"></span></div>
                 <br>
                 <div>Bredde: <span type="text" th:text="${session.carport.width}"></span></div>
                 <br>
-                <div>Skur til : <span type="text" th:text="${session.carport.hasShed}"></span></div>
+                <div>Skur til: <span type="text" th:text="${session.carport.hasShed}"></span></div>
             </fieldset>
+    </form>
+
+
+            <div th:if="${session.currentUser.password == null}">
+            <form method="post" action="loginNoUser">
+                <button type="submit"  name="button" class="btn">Opret bruger for at se ordre</button>
+            </form>
+
+            </div>
         </div>
-    </form>
 
-    <div id="svg1" class="ContainerSvg" th:utext="${session.svg}"></div>
+    <div class="Container">
+        <ul th:utext="${session.carportMaterials}"></ul>
+    </div>
 
-    <form method="post" action="loginNoUser">
-        <button type="submit"  name="button">Opret bruger for at se ordre</button>
 
-    </form>
+    <div  class="ContainerSvg" >
+        <svg th:utext="${session.svg}"></svg>
+    </div>
+
+
 
 </div>
 

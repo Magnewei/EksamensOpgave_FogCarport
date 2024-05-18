@@ -100,6 +100,12 @@ public class CarportShopController {
             carport.setMaterialList(connectionPool);
             double price = carport.calculateTotalPrice();
 
+            // Get the string representation of the carport materials
+            String carportMaterials = MailServer.printCarportMaterials(carport, connectionPool);
+
+            // Add the carport materials to the session attributes
+            ctx.sessionAttribute("carportMaterials", carportMaterials);
+
 
             // Then inserts the order on either temporary or a logged in user, combined with the carport and it's price.
             OrderMapper.insertNewOrder(user, carport.getCarportID(), price, connectionPool);

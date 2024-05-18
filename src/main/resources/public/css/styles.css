@@ -126,6 +126,17 @@ label {
 
 
 }
+.main-content2 {
+    display: flex;
+    background-color: #f4f3f2;
+    height:100vh;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 15px 20px 25px;
+
+
+}
 
 textarea {
     padding: 10px;
@@ -256,8 +267,8 @@ form textarea {
     align-items: center;
     justify-content: center;
     border-radius: 15px; /* Adjust as needed */
-    margin-bottom: 2em; /* Adjust as needed */
-    padding: 30px;
+    margin: 5px; /* Adjust as needed */
+    padding: 15px;
     border: 2px solid var(--accent-color); /* Add a border */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     max-height: 800px;
@@ -272,8 +283,8 @@ form textarea {
     align-items: center;
     justify-content: flex-start;
     border-radius: 15px; /* Adjust as needed */
-    margin-bottom: 2em; /* Adjust as needed */
-    padding: 30px;
+    margin: 5px; /* Adjust as needed */
+    padding: 15px;
     border: 2px solid var(--accent-color); /* Add a border */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     max-height: 800px;
@@ -290,7 +301,7 @@ form textarea {
 }
 
 .Container form fieldset {
-    min-width: 200px; /* Override the default min-width */
+    min-width: 250px; /* Override the default min-width */
     width: 100%; /* Set the width to 100% */
     flex: 1; /* This will make the fieldsets grow as needed */
     margin: 0.5em; /* Adjust as needed */
@@ -379,6 +390,9 @@ margin-right: 450px;
     border-radius: 15px;
     border: 2px solid var(--accent-color); /* Add a border */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    width: 100%;  /* adjust as per your requirement */
+    height: 100%;
+
 }
 
 .dropdowns {
@@ -535,7 +549,7 @@ thead th {
 
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
     .list {
         max-width: 500px; /* Adjust the maximum width */
         min-width: 300px; /* Adjust the minimum width */
@@ -543,7 +557,7 @@ thead th {
         min-height: 150px; /* Adjust the minimum height */
     }
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
     .main-content {
         flex-direction: column;
     }
@@ -551,12 +565,18 @@ thead th {
 
 }
 
-#svg1 {
-    display: block;
-    justify-content: center;
-    width: 600px;
-    height: 400px;
-    object-fit: contain;
+@media screen and (max-width: 900px) {
+    .main-content2 {
+        flex-direction: column;
+        height: auto;
+    }
 }
+
+
+.ContainerSvg svg {
+    width: 100%;  /* adjust as per your requirement */
+    height: 100%;
+}
+
 
 
