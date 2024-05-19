@@ -22,6 +22,10 @@ public class ConnectionPool {
     private ConnectionPool() {
     }
 
+    public static ConnectionPool getInstance() {
+        return getInstance("", "", "", "");
+    }
+
     /***
      * Getting a singleton instance of a Hikari Connection Pool with specific credentials
      * and connection string. If an environment variable "DEPLOYED" exists then local
@@ -47,6 +51,7 @@ public class ConnectionPool {
         }
         return instance;
     }
+
 
     /***
      * Getting a live connection from a Hikari Connection Pool

@@ -147,7 +147,7 @@ public class MaterialMapper {
      * @return true if the material was added successfully, false otherwise.
      * @throws DatabaseException If there is a problem executing the insert operation.
      */
-    public static void addMaterial(ConnectionPool connectionPool, String name, double price, double length, String unit, int quantityInStock) throws DatabaseException {
+    public static boolean addMaterial(ConnectionPool connectionPool, String name, double price, double length, String unit, int quantityInStock) throws DatabaseException {
         String sql = "INSERT INTO material (name, price, length, unit, \"quantityInStock\") VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, name);
@@ -156,7 +156,7 @@ public class MaterialMapper {
             ps.setString(4, unit);
             ps.setInt(5, quantityInStock);
             int executeUpdate = ps.executeUpdate();
-
+            return executeUpdate > 0;
         } catch (SQLException e) {
             throw new DatabaseException("Error. Couldn't add the material to the database from the given information.", e.getMessage());
         }
@@ -173,7 +173,7 @@ public class MaterialMapper {
      * @param unit            The unit of measurement for the material.
      * @param quantityInStock The new stock quantity of the material.
      */
-    public static void updateMaterial(ConnectionPool connectionPool, int materialID, String name, double price, double length, String unit, int quantityInStock) throws DatabaseException {
+    public static boolean updateMaterial(ConnectionPool connectionPool, int materialID, String name, double price, double length, String unit, int quantityInStock) throws DatabaseException {
         String sql = "UPDATE material SET name = ?, price = ?, length = ?, unit = ?, \"quantityInStock\" = ? WHERE \"materialID\" = ?";
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, name);
@@ -182,7 +182,8 @@ public class MaterialMapper {
             ps.setString(4, unit);
             ps.setInt(5, quantityInStock);
             ps.setInt(6, materialID);
-            ps.executeUpdate();
+            int executeUpdate = ps.executeUpdate();
+            return executeUpdate > 0;
         } catch (SQLException e) {
             throw new DatabaseException("Error. Couldn't update the material information from the given information.", e.getMessage());
         }

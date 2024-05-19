@@ -154,39 +154,7 @@ public class UserMapper {
         }
     }
 
-    /**
-     * Deletes a user by their ID, including all related records such as orders.
-     *
-     * @param userID         The ID of the user to delete.
-     * @param connectionPool Connection pool for database connections.
-     * @return true if the deletion is successful, false otherwise.
-     * @throws DatabaseException If there is an issue executing the database operation.
-     */
-    public static boolean deleteUser(int userID, ConnectionPool connectionPool) throws DatabaseException {
-        String deleteOrderLinesSQL = "DELETE FROM orderline WHERE \"orderID\" IN (SELECT \"orderID\" FROM orders WHERE \"userID\" = ?)";
-        String deleteOrdersSQL = "DELETE FROM orders WHERE \"userID\" = ?";
-        String deleteUserSQL = "DELETE FROM users WHERE \"userID\" = ?";
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement deleteOrderLinesStatement = connection.prepareStatement(deleteOrderLinesSQL);
-                PreparedStatement deleteOrdersStatement = connection.prepareStatement(deleteOrdersSQL);
-                PreparedStatement deleteUserStatement = connection.prepareStatement(deleteUserSQL)
-        ) {
-            connection.setAutoCommit(false);
-            deleteOrderLinesStatement.setInt(1, userID);
-            deleteOrderLinesStatement.executeUpdate();
-            deleteOrdersStatement.setInt(1, userID);
-            deleteOrdersStatement.executeUpdate();
 
-            deleteUserStatement.setInt(1, userID);
-            int userRowsAffected = deleteUserStatement.executeUpdate();
-            connection.commit(); // Commit transaction
-
-            return userRowsAffected > 0;
-        } catch (SQLException e) {
-            throw new DatabaseException("An error occurred while deleting user.", e.getMessage());
-        }
-    }
 
     /**
      * Checks if a user exists in the database based on their email.
@@ -257,43 +225,6 @@ public class UserMapper {
         }
         // Return users if List contains objects.
         return users = !users.isEmpty() ? users : null;
-    }
-
-    /**
-     * Retrieves a user by their user ID from the database.
-     *
-     * @param userId         The user ID to search for.
-     * @param connectionPool Connection pool for database connections.
-     * @return User object if found, otherwise null.
-     * @throws DatabaseException If there is an issue accessing the database.
-     */
-    public static User getUserByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM users WHERE \"userID\" = ?";
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                String email = rs.getString("email");
-                String password = rs.getString("password");
-                boolean isAdmin = rs.getBoolean("isAdmin");
-                String firstName = rs.getString("firstName");
-                String lastName = rs.getString("lastName");
-                int phoneNumber = rs.getInt("phonenumber");
-
-                int addressId = rs.getInt("addressID");
-                int postalCode = rs.getInt("postalcode");
-                int houseNumber = rs.getInt("housenumber");
-                String streetName = rs.getString("streetname");
-                String cityName = rs.getString("cityname");
-
-                Address address = new Address(addressId, postalCode, houseNumber, cityName, streetName);
-
-                return new User(userId, email, password, isAdmin, firstName, lastName, address, phoneNumber);
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException("Error. Couldn't get user from the given userID.", e.getMessage());
-        }
-        return null;
     }
 
     /**
