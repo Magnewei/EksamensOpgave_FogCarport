@@ -105,7 +105,7 @@ public class CarportShopController {
             double price = carport.calculateTotalPrice();
 
             List<String> materialListAsString = convertMaterialList(carport.getMaterialList());
-            ctx.attribute("carportMaterials", materialListAsString);
+            ctx.attribute("materialString", materialListAsString);
 
 
 
@@ -204,12 +204,11 @@ public class CarportShopController {
             Material material = entry.getKey();
             int quantity = entry.getValue();
 
-            String materialString = "Name: " + material.getName() +
-                    ", Price: " + material.getPrice() +
-                    ", Length: " + material.getLength() +
-                    ", Unit: " + material.getUnit() +
-                    ", Quantity in Stock: " + material.getQuantityInStock() +
-                    ", Quantity Ordered: " + quantity;
+            String materialString = "Materiale: " + material.getName() +
+                    ", Pris: " + material.getPrice() +
+                    ", Længde: " + material.getLength() +
+                    " " + material.getUnit() +
+                    ", Mængde: " + quantity;
 
             materialListAsString.add(materialString);
         }
