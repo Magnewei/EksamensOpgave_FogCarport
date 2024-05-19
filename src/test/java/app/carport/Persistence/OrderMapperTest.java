@@ -105,7 +105,6 @@ class OrderMapperTest {
 
     @Test
     void getOrdersByUserId() {
-
         try {
             List<Order> userOneOrders = OrderMapper.getOrdersByUserId(1, connectionPool);
             assertNotNull(userOneOrders);
