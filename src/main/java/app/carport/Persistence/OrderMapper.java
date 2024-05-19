@@ -177,7 +177,12 @@ public class OrderMapper {
                 int price = rs.getInt("price");
 
                 orders.add(new Order(orderID, status, price));
+
+                
+            } if (orders.isEmpty()) {
+                throw new DatabaseException("No orders found for userID: " + userID);
             }
+
 
         } catch (SQLException e) {
             throw new DatabaseException("Error. Couldn't get order from userID.", e.getMessage());

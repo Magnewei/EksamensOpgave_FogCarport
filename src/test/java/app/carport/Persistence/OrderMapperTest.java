@@ -5,7 +5,6 @@ import app.carport.Exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -74,6 +73,8 @@ class OrderMapperTest {
     void deleteOrderById() {
         try {
             boolean deleteOrder = OrderMapper.deleteOrderById(1, connectionPool);
+            assertTrue(deleteOrder);
+
         } catch (DatabaseException e) {
             fail("Fail while deleting order -  test." + e.getMessage());
         }
@@ -104,13 +105,19 @@ class OrderMapperTest {
 
     @Test
     void getOrdersByUserId() {
+
         try {
             List<Order> userOneOrders = OrderMapper.getOrdersByUserId(1, connectionPool);
+            assertNotNull(userOneOrders);
             assertEquals(1, userOneOrders.size());
 
 
             List<Order> userTwoOrders = OrderMapper.getOrdersByUserId(2, connectionPool);
+            assertNotNull(userTwoOrders);
             assertEquals(2, userTwoOrders.size());
+
+
+            assertThrows(DatabaseException.class, () -> { OrderMapper.getOrdersByUserId(5, connectionPool); });
 
         } catch (DatabaseException e) {
             fail("Fail while denying order -  test." + e.getMessage());
