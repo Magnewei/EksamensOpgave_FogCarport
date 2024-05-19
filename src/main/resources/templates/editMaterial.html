@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sample Website - Home</title>
+    <title> Edite Material </title>
     <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
@@ -45,63 +45,6 @@
 
 <div th:replace="~{fragments :: footer}"></div>
 
-<!--
-<div th:replace="~{fragments :: header}"></div>
-<div class="main-content">
-<div class="Container">
-    <label> Stocklist </label>
-    <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
-    <br>
-    <div class="ContainerAdmin list">
-        <table>
-            <thead>
-            <tr>
-                <th>MaterialeID</th>
-                <th>Navn</th>
-                <th>Pris</th>
-                <th>Længde</th>
-                <th>Enhed</th>
-                <th>Mængde i beholdning</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr th:each="material : ${material}">
-                <td th:text="${material.materialID}"></td>
-                <td th:text="${material.name}"></td>
-                <td th:text="${material.price}"></td>
-                <td th:text="${material.length}"></td>
-                <td th:text="${material.unit}"></td>
-                <td th:text="${material.quantityInStock}"></td>
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <form method="post" action="/removematerial">
-                    <input type="hidden" name="remove_material" th:value="${material.materialID}">
-                    <button type="submit" class="adbtn"> Delete</button>
-                </form>
-            </tr>
-            <tr>
-                <form method="post" action="/addMaterialStock">
-                    <input type="hidden" name="material_id" th:value="${material.materialID}">
-                    <input type="number" name="quantityToAdd" placeholder="Materiale mængde">
-                    <button type="submit" class="adbtn">Add materialer</button>
-                </form>
-            </tr>
-            <tr>
-                <form method="post" action="/changeMaterialPrice">
-                    <input type="hidden" name="material_id" th:value="${material.materialID}">
-                    <input type="number" name="material_price" placeholder="Materiale pris">
-                    <button type="submit" class="adbtn">Skift pris</button>
-                </form>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-</div>
--->
 
 </body>
 </html>
