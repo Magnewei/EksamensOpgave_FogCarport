@@ -110,13 +110,13 @@ class OrderMapperTest {
             assertNotNull(userOneOrders);
             assertEquals(1, userOneOrders.size());
 
-
             List<Order> userTwoOrders = OrderMapper.getOrdersByUserId(2, connectionPool);
             assertNotNull(userTwoOrders);
             assertEquals(2, userTwoOrders.size());
 
-
-            assertThrows(DatabaseException.class, () -> { OrderMapper.getOrdersByUserId(5, connectionPool); });
+            // User ID has not been inserted into the test.database, therefore we expect an exception.
+            int UnusedUserID = 5;
+            assertThrows(DatabaseException.class, () -> { OrderMapper.getOrdersByUserId(UnusedUserID, connectionPool); });
 
         } catch (DatabaseException e) {
             fail("Fail while denying order -  test." + e.getMessage());
