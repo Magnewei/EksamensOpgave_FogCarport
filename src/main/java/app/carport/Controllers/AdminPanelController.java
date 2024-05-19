@@ -53,7 +53,8 @@ public class AdminPanelController {
      * @param connectionPool The ConnectionPool to be used for database operations.
      * @param ctx            The Context object containing information about the web request.
      */
-    private static void updateMaterial(ConnectionPool connectionPool, Context ctx)  {
+
+    private static void updateMaterial(ConnectionPool connectionPool, Context ctx) throws DatabaseException {
         try {
             int materialID = Integer.parseInt(ctx.formParam("materialID"));
             String name = ctx.formParam("materialName");

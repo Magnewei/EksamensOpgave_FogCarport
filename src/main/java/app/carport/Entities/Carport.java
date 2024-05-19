@@ -115,7 +115,11 @@ public class Carport {
         for (Material material : materials) {
             if (material.getLength() == length) {
                 return material;
-            } else if (material.getLength() * 2 >= length) {
+            }
+        }
+        //Leder først efter materialer der kan passe hvis der er 2 af dem efter første mulighed er udtømt.
+        for (Material material : materials) {
+            if (material.getLength() * 2 >= length && material.getLength() * 2 - length <= 60) {
                 return material;
             }
         }
@@ -124,13 +128,22 @@ public class Carport {
 
     //Tagpladernes længder passer perfekt med de bredder vi tilbyder.
     public static Material getShortestTagpladeThatFits(List<Material> materials, double length) {
-        for (Material material : materials) {
-            if (material.getLength() == length) {
-                return material;
-            } else if (material.getLength() * 2 >= length) {
-                return material;
+        if(length <= 600){
+            for (Material material : materials) {
+                if (material.getLength() == length) {
+                    return material;
+                }
+            }
+        }else{
+            for (Material material : materials) {
+                if (material.getLength() * 2 >= length && material.getLength() * 2 - length <= 60){
+                    return material;
+                }
             }
         }
+        //Leder først efter materialer der kan passe hvis der er 2 af dem efter første mulighed er udtømt.
+
+
         return null;
     }
 
@@ -154,7 +167,7 @@ public class Carport {
             }
         }
 
-        //Laber en liste med tagplader.
+        //Laver en liste med tagplader.
         List<Material> tagplader = new ArrayList<>();
         for (Material material : allMaterials) {
             if (material.getName().toLowerCase().contains("trapezplade")) {
@@ -163,13 +176,7 @@ public class Carport {
         }
 
 
-        //Først udregnes remme til carportens sider. Ved længder under 600 bruges én brædde til hele carportens længde.
-        //Ved længder over 600 cm bruges 2 i forlængelse af den mindst mulige der kan nå
-        if (length <= 600) {
-            materialList.put(getShortestWoodThatFits(spærMaterials, length), 2);
-        } else {
-            materialList.put(getShortestWoodThatFits(spærMaterials, length), 4);
-        }
+
 
         //Så skal der regnes stolper. Vi går ud fra en maksimal aftsand på 300 cm mellem stolperne, med maks 100 cm fra enden
         if (length <= 500) {
@@ -188,26 +195,34 @@ public class Carport {
                 materialList.put(getShortestWoodThatFits(sternMaterials, width), 1);
             }
         } else {
-            if(length == width){
-                materialList.put(getShortestWoodThatFits(sternMaterials, length), 5);
-            }
-            else{
-                materialList.put(getShortestWoodThatFits(sternMaterials, length), 4);
-                materialList.put(getShortestWoodThatFits(sternMaterials, width), 1);
-            }
+            materialList.put(getShortestWoodThatFits(sternMaterials, length), 4);
+            materialList.put(getShortestWoodThatFits(sternMaterials, width), 1);
         }
 
 
-        //Så mangler der kun spær. Vi går ud fra en afstand på 55 cm mellem spærene, og en spærbredde på 4.5 cm.
+        //Så mangler der kun spær og remme. Problemet her er at de bruger samme type træ. Derfor laves disses udregninger på samme tid
+        // Vi går ud fra en afstand på 55 cm mellem spærene, og en spærbredde på 4.5 cm.
         //Ved at caste længden til int, kan vi finde ud af hvor mange spær der skal bruges.
-        int spærAmount = ((int) ((length - (59.5 / 2)) / (55 + 4.5)) + 1);
-        materialList.put(getShortestWoodThatFits(spærMaterials, width), spærAmount);
+        int spærAmount;
+        if(length == width){
+            spærAmount = ((int) ((length - (59.5 / 2)) / (55 + 4.5)) + 3);
+            materialList.put(getShortestWoodThatFits(spærMaterials, width), spærAmount);
+        }else if(length <= 600){
+            spærAmount = ((int) ((length - (59.5 / 2)) / (55 + 4.5)) + 1);
+            materialList.put(getShortestWoodThatFits(spærMaterials, width), spærAmount);
+            materialList.put(getShortestWoodThatFits(spærMaterials, length), 2);
+        }else{
+            spærAmount = ((int) ((length - (59.5 / 2)) / (55 + 4.5)) + 1);
+            materialList.put(getShortestWoodThatFits(spærMaterials, width), spærAmount);
+            materialList.put(getShortestWoodThatFits(spærMaterials, length), 4);
+        }
+
 
         //Der skal også bruges tagplader hvis kunden vælger det. Tagpladerne lægges på tværs, og findes i de samme længder, som der er bredder tilgængelige.
         //Tagpladerne er 109 cm brede, så vi sikrer at kunden får nok tagplader med, og så må kunden save til så det passer,
         //Tagpladerne skal også overlappe lidt, så vi regner ud fra en længde der er lidt kortere end den reelle, så de kan overlappe.
         if (withRoof) {
-            materialList.put(getShortestTagpladeThatFits(tagplader, length), (int) (width / 100) + 1);
+            materialList.put(getShortestTagpladeThatFits(tagplader, width), (int) (length / 100) + 1);
         }
 
 
