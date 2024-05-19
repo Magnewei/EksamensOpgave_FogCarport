@@ -271,7 +271,7 @@ form textarea {
     padding: 15px;
     border: 2px solid var(--accent-color); /* Add a border */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    max-height: 800px;
+    max-height: 950px;
     min-height: 400px;
     overflow: auto;
 
@@ -382,16 +382,19 @@ margin-right: 450px;
 
 
 .ContainerSvg {
-    background-color: var( --primary-color);
-    display: flex;
-    justify-content: center;
+    background-color: var(--secondary-color);
+    display: flex; /* Use flexbox layout */
+    flex-direction: column;
     align-items: center;
-    padding: 30px;
-    border-radius: 15px;
+    justify-content: center;
+    border-radius: 15px; /* Adjust as needed */
+    margin: 5px; /* Adjust as needed */
+    padding: 15px;
     border: 2px solid var(--accent-color); /* Add a border */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    width: 100%;  /* adjust as per your requirement */
-    height: 100%;
+    max-height: 800px;
+    min-height: 400px;
+    overflow: auto;
 
 }
 
@@ -573,9 +576,15 @@ thead th {
 }
 
 
-.ContainerSvg svg {
-    width: 100%;  /* adjust as per your requirement */
+#mySvg {
+    width: 100%;
     height: 100%;
+}
+
+#spanSvg {
+       width: 100%;
+        height: 100%;
+
 }
 
 

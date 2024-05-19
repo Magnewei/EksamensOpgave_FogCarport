@@ -16,7 +16,7 @@
             </li>
 
             <li>
-                <button type="submit" formaction="/goToUserSite" name="button" th:if="${session.currentUser != null}">Ordrer</button>
+                <button type="submit" formaction="/goToUserSite" name="button" th:if="${session.currentUser != null and session.currentUser.password != null}">Ordrer</button>
             </li>
 
             <li>

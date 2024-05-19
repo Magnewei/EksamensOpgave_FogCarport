@@ -1,6 +1,7 @@
 package app.carport.Controllers;
 
 import app.carport.Entities.Carport;
+import app.carport.Entities.Material;
 import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.*;
@@ -9,7 +10,10 @@ import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class CarportShopController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -100,9 +104,9 @@ public class CarportShopController {
             carport.setMaterialList(connectionPool);
             double price = carport.calculateTotalPrice();
 
-            // test test test
-            String carportMaterials = MailServer.printCarportMaterials(carport, connectionPool);
-            ctx.sessionAttribute("carportMaterials", carportMaterials);
+            List<String> materialListAsString = convertMaterialList(carport.getMaterialList());
+            ctx.attribute("carportMaterials", materialListAsString);
+
 
 
             // Then inserts the order on either temporary or a logged in user, combined with the carport and it's price.
@@ -193,4 +197,25 @@ public class CarportShopController {
             ctx.render("orderSite1.html");
         }
     }
+    public static List<String> convertMaterialList(Map<Material, Integer> materialList) {
+        List<String> materialListAsString = new ArrayList<>();
+
+        for (Map.Entry<Material, Integer> entry : materialList.entrySet()) {
+            Material material = entry.getKey();
+            int quantity = entry.getValue();
+
+            String materialString = "Name: " + material.getName() +
+                    ", Price: " + material.getPrice() +
+                    ", Length: " + material.getLength() +
+                    ", Unit: " + material.getUnit() +
+                    ", Quantity in Stock: " + material.getQuantityInStock() +
+                    ", Quantity Ordered: " + quantity;
+
+            materialListAsString.add(materialString);
+        }
+
+        return materialListAsString;
+    }
+
+
 }

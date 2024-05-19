@@ -2,9 +2,14 @@ package app.carport.Services;
 
 public class SVGDrawer {
     private static final String SVG_TEMPLATE = "<svg version=\"1.1\"\n" +
+            "     id=\"mySvg\"\n" +
             "     x=\"%d\" y=\"%d\"\n" +
-            "     viewBox=\"%s\"  width=\"%s\" \n" +
+            "     viewBox=\"%s\"\n" +
             "     preserveAspectRatio=\"xMinYMin\">";
+
+
+
+
 
     private static final String SVG_ARROW_DEFS = "<defs>\n" +
             "        <marker id=\"beginArrow\" markerWidth=\"12\" markerHeight=\"12\" refX=\"0\" refY=\"6\" orient=\"auto\">\n" +
