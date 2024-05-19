@@ -19,6 +19,7 @@ class OrderMapperTest {
     static void setupClass() throws SQLException {
         try (Connection connection = connectionPool.getConnection()) {
             try (Statement stmt = connection.createStatement()) {
+
                 // The test schema is already created, so we only need to delete/create test tables
                 stmt.execute("DROP TABLE IF EXISTS test.orders;");
                 stmt.execute("DROP TABLE IF EXISTS test.users;");
@@ -53,8 +54,8 @@ class OrderMapperTest {
 
                 stmt.execute("INSERT INTO test.orders (\"orderID\", \"status\", \"userID\", \"carportID\", \"price\") " +
                         "VALUES (1, 'denied', 1, 5, 20000), (2, 'accepted', 2, 2, 15000), (3, 'awaiting approval', 2, 5, 14000)") ;
-                // Set sequence to continue from the largest member_id
 
+                // Set sequence to continue from the largest primary keys.
                 stmt.execute("SELECT setval('test.orders_orderid_seq', COALESCE((SELECT MAX(\"orderID\") + 1 FROM test.orders), 1), false)");
                 stmt.execute("SELECT setval('test.users_userid_seq', COALESCE((SELECT MAX(\"userID\") + 1 FROM test.users), 1), false)");
 
