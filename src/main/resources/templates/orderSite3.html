@@ -17,6 +17,7 @@
             <fieldset>
                 <h2> Du har Bestilt en Carport med følgende mål </h2>
                 <br>
+                <div> test: <span type="text" th:text="${carportMaterials}"></span></div>
                 <div>Længde: <span type="text" th:text="${session.carport.length}"></span></div>
                 <br>
                 <div>Bredde: <span type="text" th:text="${session.carport.width}"></span></div>
@@ -34,12 +35,22 @@
             </div>
         </div>
 
-    <div class="Container">
-        <ul th:utext="${session.carportMaterials}"></ul>
+<div class="ContainerAdmin">
+    <div th:each="material : ${carportMaterials}">
+        <fieldset>
+        <h2 th:text="${session.material.name}"></h2>
+        <p>Price: <span th:text="${session.material.price}"></span></p>
+        <p>Length: <span th:text="${session.material.length}"></span></p>
+        <p>Unit: <span th:text="${session.material.unit}"></span></p>
+        <p>Quantity in Stock: <span th:text="${session.material.quantityInStock}"></span></p>
+        </fieldset>
     </div>
+</div>
 
 
-    <div  class="ContainerSvg" >
+
+
+    <div  class="Container" >
         <svg th:utext="${session.svg}"></svg>
     </div>
 

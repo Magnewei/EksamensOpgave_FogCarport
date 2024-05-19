@@ -100,10 +100,8 @@ public class CarportShopController {
             carport.setMaterialList(connectionPool);
             double price = carport.calculateTotalPrice();
 
-            // Get the string representation of the carport materials
+            // test test test
             String carportMaterials = MailServer.printCarportMaterials(carport, connectionPool);
-
-            // Add the carport materials to the session attributes
             ctx.sessionAttribute("carportMaterials", carportMaterials);
 
 
