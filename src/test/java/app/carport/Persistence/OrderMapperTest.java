@@ -5,6 +5,7 @@ import app.carport.Exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -53,7 +54,7 @@ class OrderMapperTest {
                         "VALUES  (1, 'magnus','nord', 'FogP1234#', true), (2, 'christian', 'syd', 'FogP1234!', false)");
 
                 stmt.execute("INSERT INTO test.orders (\"orderID\", \"status\", \"userID\", \"carportID\", \"price\") " +
-                        "VALUES (1, 'denied', 1, 5, 20000), (2, 'accepted', 2, 2, 15000), (3, 'awaiting approval', 2, 5, 14000)") ;
+                        "VALUES (1, 'denied', 1, 5, 20000), (2, 'accepted', 2, 2, 15000), (3, 'awaiting approval', 2, 5, 14000)");
 
                 // Set sequence to continue from the largest primary keys.
                 stmt.execute("SELECT setval('test.orders_orderid_seq', COALESCE((SELECT MAX(\"orderID\") + 1 FROM test.orders), 1), false)");
@@ -117,7 +118,9 @@ class OrderMapperTest {
 
             // User ID has not been inserted into the test.database, therefore we expect an exception.
             int UnusedUserID = 5;
-            assertThrows(DatabaseException.class, () -> { OrderMapper.getOrdersByUserId(UnusedUserID, connectionPool); });
+            assertThrows(DatabaseException.class, () -> {
+                OrderMapper.getOrdersByUserId(UnusedUserID, connectionPool);
+            });
 
         } catch (DatabaseException e) {
             fail("Fail while denying order -  test." + e.getMessage());
