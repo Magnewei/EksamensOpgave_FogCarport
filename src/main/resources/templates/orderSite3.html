@@ -29,7 +29,8 @@
 
             </div>
         </div>
-    <div class="Container">
+
+    <div class="Container" th:if="${order.status == 'accepted' || order.status == 'done'}">
         <fieldset>
         <ul th:each="materialString : ${materialString}">
                 <li th:text="${materialString}"></li>
@@ -37,7 +38,7 @@
         </fieldset>
     </div>
 
-    <div  class="ContainerSvg" >
+    <div class="ContainerSvg" th:if="${order.status == 'accepted' || order.status == 'done'}">
         <fieldset>
         <h2> Din plantegning </h2>
         </fieldset>
