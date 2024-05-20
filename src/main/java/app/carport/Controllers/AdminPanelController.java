@@ -233,6 +233,9 @@ public class AdminPanelController {
             Order order = OrderMapper.getOrderByOrderId(orderID, connectionPool);
             Carport carport = order.getCarport();
 
+            carport.setMaterialList(connectionPool);
+            List<String> materialList = CarportShopController.convertMaterialList(carport.getMaterialList());
+            ctx.attribute("materialString", materialList);
             CarportSVG carportSVG = new CarportSVG(carport.getWidth(), carport.getLength());
             List<String> materialListAsString = convertMaterialList(carport.getMaterialList());
 

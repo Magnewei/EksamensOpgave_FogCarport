@@ -71,7 +71,7 @@ public class CarportShopController {
         try {
             User user;
 
-            // If the given input was invalid, re-render the site and post an error.
+            // If the given input was invalid, re-render the site and throw an error.
             if (!checkNames(ctx, ctx.formParam("firstName"), ctx.formParam("lastName"), ctx.formParam("streetName"), ctx.formParam("phoneNumber"))) {
                 ctx.render("orderSite2.html");
                 return;
@@ -85,17 +85,14 @@ public class CarportShopController {
                 int phonenumber = Integer.parseInt(ctx.formParam("phoneNumber"));
                 String email = ctx.formParam("email");
 
-                // Takes the most recent userID in the database and ++ for insertion into object below.
-
+                // Sets the userID for the temporary user and inserts the user into the database.
                 int userID = UserMapper.getLastUserId(connectionPool) + 1;
                 user = new User(userID, name, lastname, streetname, postalCode, phonenumber, email);
-                // Then inserts the temporary user into the database, so we can hook an order onto it.
                 UserMapper.createTempUser(user, connectionPool);
                 ctx.sessionAttribute("currentUser",user);
 
-            } else {
+            } else {  // If there's a logged in user, simply assign the user variable the currentUser.
                 user = ctx.sessionAttribute("currentUser");
-
             }
 
             // Calculates the carport objects total amount of materials. Sets the carportID from width and length.
@@ -104,19 +101,19 @@ public class CarportShopController {
             carport.setMaterialList(connectionPool);
             double price = carport.calculateTotalPrice();
 
+            // Renders the materials as a list on the site.
             List<String> materialListAsString = convertMaterialList(carport.getMaterialList());
             ctx.attribute("materialString", materialListAsString);
 
-
-
             // Then inserts the order on either temporary or a logged in user, combined with the carport and it's price.
             OrderMapper.insertNewOrder(user, carport.getCarportID(), price, connectionPool);
+            user.setOrder(OrderMapper.getOrderByOrderId(OrderMapper.getLastOrderID(connectionPool), connectionPool));
+            ctx.attribute("order", user.getOrder());
+
+            // Sends the user a mail on a successful insertion of the order and removes the used materials from the stock.
+            MailServer.mailOnOrder(user);
             MaterialMapper.removeMaterialStockOnOrder(carport.getMaterialList(), connectionPool);
             ctx.render("orderSite3.html");
-
-            // Sends the user a mail on a successful insertion of the order.
-            user.setOrder(OrderMapper.getOrderByOrderId(OrderMapper.getLastOrderID(connectionPool), connectionPool));
-            MailServer.mailOnOrder(user);
 
         } catch (DatabaseException e) {
             ctx.attribute("message", "Error while retrieving or inserting data.");
@@ -126,7 +123,6 @@ public class CarportShopController {
             ctx.attribute("message", "Dine indtastede oplysninger kunne ikke læses, prøv igen.");
             ctx.render("orderSite2.html");
         }
-
     }
 
 
