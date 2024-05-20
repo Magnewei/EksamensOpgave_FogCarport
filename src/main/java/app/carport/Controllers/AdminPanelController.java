@@ -15,6 +15,8 @@ import io.javalin.http.Context;
 import java.util.List;
 import java.util.Locale;
 
+import static app.carport.Controllers.CarportShopController.convertMaterialList;
+
 public class AdminPanelController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("removeorder", ctx -> removeOrder(connectionPool, ctx));
@@ -232,8 +234,11 @@ public class AdminPanelController {
             Carport carport = order.getCarport();
 
             CarportSVG carportSVG = new CarportSVG(carport.getWidth(), carport.getLength());
+            List<String> materialListAsString = convertMaterialList(carport.getMaterialList());
 
+            ctx.attribute("materialString", materialListAsString);
             ctx.attribute("order", order);
+
             ctx.sessionAttribute("svg", carportSVG.toString());
             ctx.sessionAttribute("carport", carport);
             ctx.render("orderSite3.html");

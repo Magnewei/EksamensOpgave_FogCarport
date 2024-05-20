@@ -35,12 +35,12 @@
         </div>
 
     <div class="Container">
+        <fieldset>
+            <h2> Materialer </h2>
         <ul th:each="materialString : ${materialString}">
-            <fieldset>
                 <li th:text="${materialString}"></li>
-            </fieldset>
-
         </ul>
+        </fieldset>
     </div>
 
 
