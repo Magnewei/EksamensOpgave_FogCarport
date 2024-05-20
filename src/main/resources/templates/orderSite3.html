@@ -30,10 +30,12 @@
             </div>
         </div>
 
+
     <div class="Container" th:if="${order.status == 'accepted' || order.status == 'done'}">
         <ul th:each="materialString : ${materialString}">
                 <li th:text="${materialString}"></li>
         </ul>
+        </fieldset>
     </div>
 
     <div class="ContainerSvg" th:if="${order.status == 'accepted' || order.status == 'done'}">

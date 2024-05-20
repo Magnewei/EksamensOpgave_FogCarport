@@ -21,6 +21,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+
 }
 
 label {
@@ -68,13 +69,13 @@ label {
     top: 50%;
     left: 10px; /* Adjust left position as needed */
     transform: translateY(-50%);
-    width: 40px; /* Adjust width as needed */
-    height: 40px; /* Adjust height as needed */
+    width: 35px; /* Adjust width as needed */
+    height: 35px; /* Adjust height as needed */
     background-image: url('Media/FogLogo.png'); /* Specify the path to your image */
     background-size: cover; /* Adjusts the size of the background image */
     display: block; /* Make the anchor element a block-level element */
     border: none; /* Remove the border */
-    padding: 0; /* Remove the padding */
+    padding: 1px; /* Remove the padding */
 }
 
 
@@ -554,10 +555,10 @@ thead th {
 
 @media screen and (max-width: 700px) {
     .list {
-        max-width: 500px; /* Adjust the maximum width */
-        min-width: 300px; /* Adjust the minimum width */
-        max-height: 400px; /* Adjust the maximum height */
-        min-height: 150px; /* Adjust the minimum height */
+        max-width: 500px;
+        min-width: 300px;
+        max-height: 400px;
+        min-height: 150px;
     }
 }
 @media screen and (max-width: 900px) {
