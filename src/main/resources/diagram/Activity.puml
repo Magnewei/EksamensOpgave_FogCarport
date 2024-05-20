@@ -4,30 +4,47 @@ start
 :Start page;
 if (Browse existing Carport designs?) then (yes)
   :Browse carports;
-  :Buy carport;
-  :Login to confirm payment;
+
 elseif (Create Own Carport?) then (yes)
-  :Find carport style;
-  :Find materials and measurement;
+  :Find measurement;
+  :Decide on Roof tiles;
+  :Enter your contact info;
   :Send Carport Design to Fog for review;
-  :Wait for Response;
-  if (Response) then (yes)
-    :Buy Carport;
+  :Show order details;
+  :Get email on Order status;
+  if (Crreate user to see order on orderpage) then (yes)
+  :Create password;
+  :Login;
   else (no)
-    :Continue Browsing;
+  :continue browsin;
   endif
+
 elseif (Log in as Admin?) then (yes)
   :Enter Admin password and Username;
   if (Admin Logged In?) then (yes)
-    :View All Orders;
-    :View Fog Inventory;
+    :View Admin page;
+    :See All Orders;
+    :See Stock list;
+    :Add Material;
   else (no)
-    :Continue as Guest;
-  endif
-else (no)
-  :Continue as Guest;
-endif
+    :Prøv igen;
+    stop
 
-stop
+  endif
+
+   elseif (:Login as user;) then (yes)
+    :Indtast brugernavn og adgangskode;
+    if(See your order) then (yes)
+    :show order details;
+    :Change your contact information;
+    else (no)
+    :Buy new Carport;
+    :Find measurement;
+      :Decide on Roof tiles;
+      :Enter your contact info;
+      :Send Carport Design to Fog for review;
+      :Show order details;
+      :Get email on Order status;
+
 
 @enduml

@@ -17,7 +17,7 @@ public class Main {
         Javalin app = Javalin.create(config -> {
             config.staticFiles.add("/public");
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
-        }).start(7071);
+        }).start(7070);
 
         app.get("/", ctx -> ctx.render("index.html"));
         AdminPanelController.addRoutes(app, connectionPool);
