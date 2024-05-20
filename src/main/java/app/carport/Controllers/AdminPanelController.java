@@ -230,7 +230,8 @@ public class AdminPanelController {
             int orderID = Integer.parseInt(ctx.formParam("order_id"));
             Order order = OrderMapper.getOrderByOrderId(orderID, connectionPool);
             Carport carport = order.getCarport();
-
+            List<String> materialList = CarportShopController.convertMaterialList(carport.getMaterialList());
+            ctx.attribute("materialString", materialList);
             CarportSVG carportSVG = new CarportSVG(carport.getWidth(), carport.getLength());
 
             ctx.attribute("order", order);

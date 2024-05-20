@@ -10,10 +10,8 @@
 <div th:replace="~{fragments :: header}"></div>
 
 <div class="main-content">
-
     <div class="Container">
     <form method="post" action="orderCarport">
-
             <fieldset>
                 <h2> Du har Bestilt en Carport med følgende mål </h2>
                 <br>
@@ -24,8 +22,6 @@
                 <div>Skur til: <span type="text" th:text="${session.carport.hasShed}"></span></div>
             </fieldset>
     </form>
-
-
             <div th:if="${session.currentUser.password == null}">
             <form method="post" action="loginNoUser">
                 <button type="submit"  name="button" class="btn">Opret bruger for at se ordre</button>
@@ -33,19 +29,13 @@
 
             </div>
         </div>
-
     <div class="Container">
+        <fieldset>
         <ul th:each="materialString : ${materialString}">
-            <fieldset>
                 <li th:text="${materialString}"></li>
-            </fieldset>
-
         </ul>
+        </fieldset>
     </div>
-
-
-
-
 
     <div  class="ContainerSvg" >
         <fieldset>
@@ -53,11 +43,7 @@
         </fieldset>
         <span id="spanSvg" th:utext="${session.svg}">
         </span>
-
     </div>
-
-
-
 </div>
 
 
