@@ -1,0 +1,50 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+object Carport
+
+object Rem
+object Spær
+object Skrue
+object Stern
+object Tagplade
+object Stolpe
+
+object Tag
+
+object Materiale
+object Længde
+object Bredde
+
+
+
+
+
+Carport *-- Stolpe: has-a
+Carport *-- Rem: has-a
+Carport *-- Spær: has-a
+Carport *-- Stern: has-a
+Carport *-- Skrue: has-a
+
+Carport *-- Tag: has-a
+
+Tag <|-- Tagplade: has-a
+
+Carport <|-- Længde: is-a
+Carport <|-- Bredde: is-a
+
+Stolpe <|-- Materiale: is-a
+Stern <|-- Materiale: is-a
+Skrue <|-- Materiale: is-a
+Spær <|-- Materiale: is-a
+Rem <|-- Spær: is-a
+Tagplade <|-- Materiale: is-a
+
+
+
+
+
+
+
+
+@enduml
