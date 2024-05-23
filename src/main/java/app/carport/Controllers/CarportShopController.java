@@ -9,7 +9,6 @@ import app.carport.Services.CarportSVG;
 import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
