@@ -159,7 +159,7 @@ public class Carport {
             }
         }
 
-        //Laver en liste med sterntræ som skal bruges til remme og spær.
+        //Laver en liste med sterntræ.
         List<Material> sternMaterials = new ArrayList<>();
         for (Material material : allMaterials) {
             if (material.getName().toLowerCase().contains("brædt")) {
@@ -175,9 +175,6 @@ public class Carport {
             }
         }
 
-
-
-
         //Så skal der regnes stolper. Vi går ud fra en maksimal aftsand på 300 cm mellem stolperne, med maks 100 cm fra enden
         if (length <= 500) {
             materialList.put(MaterialMapper.getMaterialById(12, connectionPool), 4);
@@ -185,18 +182,18 @@ public class Carport {
             materialList.put(MaterialMapper.getMaterialById(12, connectionPool), 6);
         }
 
-        //Der skal også bruges sternbrædder. Der skal bruges en overstern og en understern, påsiderne og bagenden, men kun overstern foran
+        //Der skal også bruges sternbrædder. Der skal bruges en overstern og en understern, på siderne og bagenden, men kun overstern foran
         if (length <= 600) {
             if(length == width){
-                materialList.put(getShortestWoodThatFits(sternMaterials, length), 3);
+                materialList.put(getShortestWoodThatFits(sternMaterials, length), 7);
             }
             else{
-                materialList.put(getShortestWoodThatFits(sternMaterials, length), 2);
-                materialList.put(getShortestWoodThatFits(sternMaterials, width), 1);
+                materialList.put(getShortestWoodThatFits(sternMaterials, length), 4);
+                materialList.put(getShortestWoodThatFits(sternMaterials, width), 3);
             }
         } else {
-            materialList.put(getShortestWoodThatFits(sternMaterials, length), 4);
-            materialList.put(getShortestWoodThatFits(sternMaterials, width), 1);
+            materialList.put(getShortestWoodThatFits(sternMaterials, length), 8);
+            materialList.put(getShortestWoodThatFits(sternMaterials, width), 3);
         }
 
 
@@ -205,14 +202,14 @@ public class Carport {
         //Ved at caste længden til int, kan vi finde ud af hvor mange spær der skal bruges.
         int spærAmount;
         if(length == width){
-            spærAmount = ((int) ((length - (59.5 / 2)) / (55 + 4.5)) + 3);
+            spærAmount = ((int) ((length - (59.5 / 2)) / 59.5) + 3);
             materialList.put(getShortestWoodThatFits(spærMaterials, width), spærAmount);
         }else if(length <= 600){
-            spærAmount = ((int) ((length - (59.5 / 2)) / (55 + 4.5)) + 1);
+            spærAmount = ((int) ((length - (59.5 / 2)) / 59.5) + 1);
             materialList.put(getShortestWoodThatFits(spærMaterials, width), spærAmount);
             materialList.put(getShortestWoodThatFits(spærMaterials, length), 2);
         }else{
-            spærAmount = ((int) ((length - (59.5 / 2)) / (55 + 4.5)) + 1);
+            spærAmount = ((int) ((length - (59.5 / 2)) / 59.5) + 1);
             materialList.put(getShortestWoodThatFits(spærMaterials, width), spærAmount);
             materialList.put(getShortestWoodThatFits(spærMaterials, length), 4);
         }
