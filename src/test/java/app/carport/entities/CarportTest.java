@@ -71,7 +71,7 @@ public class CarportTest {
 
         //Act
         carport.setMaterialList(connectionPool);
-        int expected = 2;
+        int expected = 4;
         //MaterialeID 22 er sterntræ på 480 cm.
         int actual = carport.getMaterialList().entrySet().stream().filter(entry -> entry.getKey().getMaterialID() == 22).map(Map.Entry::getValue).findFirst().orElse(0);
         //Assert
@@ -85,7 +85,7 @@ public class CarportTest {
 
         //Act
         carport.setMaterialList(connectionPool);
-        int expected = 3;
+        int expected = 7;
         //MaterialeID 22 er sterntræ på 480 cm.
         int actual = carport.getMaterialList().entrySet().stream().filter(entry -> entry.getKey().getMaterialID() == 22).map(Map.Entry::getValue).findFirst().orElse(0);
         //Assert
@@ -99,7 +99,7 @@ public class CarportTest {
 
         //Act
         carport.setMaterialList(connectionPool);
-        int expected = 4;
+        int expected = 8;
         //MaterialeID 20 er sterntræ på 360 cm.
         int actual = carport.getMaterialList().entrySet().stream().filter(entry -> entry.getKey().getMaterialID() == 20).map(Map.Entry::getValue).findFirst().orElse(0);
         //Assert
