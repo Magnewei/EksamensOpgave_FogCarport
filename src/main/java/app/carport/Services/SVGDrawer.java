@@ -43,11 +43,6 @@ public class SVGDrawer {
                 x1, y1, x2, y2, style));
     }
 
-    public void addText(double x, double y, String text, String style) {
-        String textTemplate = "<text x=\"%.2f\" y=\"%.2f\" style=\"%s\">%s</text>";
-        svg.append(String.format(textTemplate, x, y, style, text));
-    }
-
     public void addSvg(SVGDrawer innerSvg) {
             svg.append(innerSvg.toString());
         }
