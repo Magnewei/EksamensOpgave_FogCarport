@@ -14,21 +14,21 @@
 
     <form method="post">
         <div class="Container">
-            <label> Dine Informationer </label>
+            <label> Dine informationer </label>
             <fieldset>
                 <div class="infoform">
-                    <input type="text" name="firstName" required th:value="${session.currentUser != null ? session.currentUser.firstName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'First Name'}">
-                    <input type="text" name="lastName" required th:value="${session.currentUser != null ? session.currentUser.lastName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Last Name'}">
+                    <input type="text" name="firstName" required th:value="${session.currentUser != null ? session.currentUser.firstName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'First name'}">
+                    <input type="text" name="lastName" required th:value="${session.currentUser != null ? session.currentUser.lastName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Last name'}">
                 </div>
                 <div class="infoform">
-                    <input type="text" name="streetName" required th:value="${session.currentUser != null ? session.currentUser.address.streetName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Street Name'}">
+                    <input type="text" name="streetName" required th:value="${session.currentUser != null ? session.currentUser.address.streetName : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Street name'}">
                     <input type="text" name="cityName" required th:value="${session.currentUser != null ? session.currentUser.address.cityName :''}" th:if="${session.currentUser != null}">
-                    <input type="text" name="postalCode" required th:value="${session.currentUser != null ? session.currentUser.address.postalCode : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'postalCode'}">
-                    <input type="text" name="houseNumber" required th:value="${session.currentUser != null ? session.currentUser.address.houseNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'House Number'}">
+                    <input type="text" name="postalCode" required th:value="${session.currentUser != null ? session.currentUser.address.postalCode : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Postal code'}">
+                    <input type="text" name="houseNumber" required th:value="${session.currentUser != null ? session.currentUser.address.houseNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'House number'}">
                 </div>
                 <div class="infoform">
                     <input type="text" name="email" required th:value="${session.currentUser != null ? session.currentUser.email : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Email'}">
-                    <input type="text" name="phoneNumber" required th:value="${session.currentUser != null ? session.currentUser.phoneNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Phone Number'}">
+                    <input type="text" name="phoneNumber" required th:value="${session.currentUser != null ? session.currentUser.phoneNumber : ''}" th:attr="placeholder=${session.currentUser != null ? '' : 'Phone number'}">
                 </div>
             </fieldset>
 
@@ -56,8 +56,8 @@
                 </div>
 
             </fieldset>
-            <button type="submit" class="btn" th:if="${session.currentUser == null}" formaction="/OrderNoUser" name="button"> bestil </button>
-            <button type="submit" class="btn" th:if="${session.currentUser != null}" formaction="/Order" name="button"> bestil </button>
+            <button type="submit" class="btn" th:if="${session.currentUser == null}" formaction="/OrderNoUser" name="button"> Bestil </button>
+            <button type="submit" class="btn" th:if="${session.currentUser != null}" formaction="/Order" name="button"> Bestil </button>
 
         </div>
 

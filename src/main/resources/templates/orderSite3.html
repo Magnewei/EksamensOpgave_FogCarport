@@ -13,13 +13,13 @@
     <div class="Container">
     <form method="post" action="orderCarport">
             <fieldset>
-                <h2> Du har Bestilt en Carport med følgende mål </h2>
+                <h2> Du har bestilt en carport med følgende mål: </h2>
                 <br>
                 <div>Længde: <span type="text" th:text="${session.carport.length}"></span></div>
                 <br>
                 <div>Bredde: <span type="text" th:text="${session.carport.width}"></span></div>
                 <br>
-                <div>Skur til: <span type="text" th:text="${session.carport.hasShed}"></span></div>
+                <div>Tagplader: <span type="text" th:text="${session.carport.hasShed ? 'Ja' : 'Nej'}"></span></div>
             </fieldset>
     </form>
             <div th:if="${session.currentUser.password == null}">
@@ -38,7 +38,7 @@
         </fieldset>
     </div>
 
-    <div class="ContainerSvg" th:if="${order.status == 'accepted' || order.status == 'done'}">
+    <div class="ContainerSvg" th:if="${order.status == 'accepted' || order.status == 'done' || order.status == 'Pending review'}">
         <fieldset>
         <h2> Din plantegning </h2>
         </fieldset>
