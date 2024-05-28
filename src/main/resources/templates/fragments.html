@@ -33,16 +33,23 @@
 
                   <li>
                       <button th:if="${session.currentUser == null or !session.currentUser.isAdmin}"
-                              type="submit" formaction="/loadCustomerChat" name="button">Load chat
+                              type="submit" id="openChatBtn" name="button">Load chat
                       </button>
                   </li>
 
 
         </ul>
+
         <div class="Bestilling-box3" th:unless="${#strings.isEmpty(message)}" >
         <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
         </div>
     </form>
+
+    <li>
+        <button th:if="${session.currentUser == null or !session.currentUser.isAdmin}"
+                type="submit" id="openChatBtn" name="button">Load chat
+        </button>
+    </li>
 </header>
 
 <div class="wsChat">
@@ -56,4 +63,5 @@
     </div>
 </footer>
 </body>
+<script type="text/javascript" src="../js/script.js"></script>
 </html>

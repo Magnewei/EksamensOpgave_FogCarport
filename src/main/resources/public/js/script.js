@@ -1,11 +1,12 @@
 const ws = new WebSocket('ws://localhost:7000/websocket');
+const sendMessageBtn = document.getElementById('sendMessageBtn');
+const messageInput = document.getElementById('messageInput');
+const openChatBtn = document.getElementById('openChatBtn');
 
-/*
-window.open("{url}", "_blank", "popup=yes");
- */
 
 ws.onopen = () => {
     console.log('WebSocket connection established');
+    window.open("../templates/customerChat.html", "", "popup=yes");
 };
 
 ws.onmessage = event => {
@@ -23,8 +24,11 @@ ws.onerror = error => {
     console.error('WebSocket error:', error);
 };
 
-const sendMessageBtn = document.getElementById('sendMessageBtn');
-const messageInput = document.getElementById('messageInput');
+
+openChatBtn.addEventListener('click', () => {
+    console.log('WebSocket connection established');
+    window.open("../templates/customerChat.html", "_blank", "popup=yes");
+});
 
 sendMessageBtn.addEventListener('click', () => {
     const message = messageInput.value;

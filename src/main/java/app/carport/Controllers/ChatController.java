@@ -1,10 +1,11 @@
 package app.carport.Controllers;
 
-import app.carport.Entities.User;
 import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
+import io.javalin.websocket.WsCloseContext;
 import io.javalin.websocket.WsConnectContext;
-import io.javalin.http.Context;
+import io.javalin.websocket.WsErrorContext;
+import io.javalin.websocket.WsMessageContext;
 
 /*
 TODO:
@@ -40,16 +41,16 @@ public class ChatController {
 
     }
 
-    private static void onMessage(WsConnectContext ctx) {
+    private static void onMessage(WsMessageContext ctx) {
         // Handle messages received from the client
         ctx.send("message");
     }
 
-    private static void onClose(WsConnectContext ctx) {
+    private static void onClose(WsCloseContext ctx) {
         // Handle WebSocket connection close
     }
 
-    private static void onError(WsConnectContext ctx) {
+    private static void onError(WsErrorContext ctx) {
         // Handle errors
         ctx.closeSession();
     }
