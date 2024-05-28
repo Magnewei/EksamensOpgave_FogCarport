@@ -39,6 +39,8 @@ public class ChatController {
     private static void onConnect(WsConnectContext ctx) {
         // Handle new WebSocket connections
 
+
+
     }
 
     private static void onMessage(WsMessageContext ctx) {
