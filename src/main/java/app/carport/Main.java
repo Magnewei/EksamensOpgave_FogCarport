@@ -2,6 +2,7 @@ package app.carport;
 
 import app.carport.Controllers.*;
 import io.javalin.Javalin;
+
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Thymeleaf.ThymeleafConfig;
@@ -24,5 +25,6 @@ public class Main {
         UserController.addRoutes(app, connectionPool);
         HeaderController.addRoutes(app, connectionPool);
         CarportShopController.addRoutes(app, connectionPool);
+        ChatController.addRoutes(app, connectionPool);
     }
 }

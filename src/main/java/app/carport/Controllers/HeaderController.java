@@ -14,6 +14,15 @@ public class HeaderController {
         app.post("goToUserSite", ctx -> goToUserSite(ctx, connectionPool));
         app.post("goToIndex", ctx -> goToIndex(ctx));
         app.post("logout", ctx -> logout(ctx));
+        app.post("loadCustomerChat", ctx -> loadCustomerChat(ctx));
+        app.post("loadAdminChat", ctx -> loadAdminChat(ctx));
+    }
+
+    private static void loadAdminChat(Context ctx) {
+    }
+
+    private static void loadCustomerChat(Context ctx) {
+
     }
 
     /**
