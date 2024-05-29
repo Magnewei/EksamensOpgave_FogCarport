@@ -79,7 +79,6 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-
     public int getUserID() {
         return userID;
     }
@@ -142,5 +141,9 @@ public class User {
 
     public int getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 }

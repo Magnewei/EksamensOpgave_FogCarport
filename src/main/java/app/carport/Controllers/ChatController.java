@@ -1,59 +1,86 @@
 package app.carport.Controllers;
 
+import app.carport.Entities.User;
 import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
-import io.javalin.websocket.WsCloseContext;
-import io.javalin.websocket.WsConnectContext;
-import io.javalin.websocket.WsErrorContext;
-import io.javalin.websocket.WsMessageContext;
+import io.javalin.websocket.*;
 
-/*
-TODO:
- 1. Fix Javascript og HTML filer (adminchat & userchat)
- 2. Find ud af hvordan, man adder en popup.
- 3. Add en notifikation når der kommer en ny besked.
- 4. Sørg for at der kun er en bruger og admin per chat.
- 5. Skal jeg bruge noget andet en WsConnectContext? wsMessageContext?
- 6. Sørg for at Ws først bliver aktiv, når chatten åbnes.
- 7. Sørg for at ws lukker på sluttet session. (Når pop-up vinduet lukkes?)
- 8. Skal der laves en controller specifikt til AdminChat?
- 9. Lav en userstory til chat.
- 10. Lav et diagram med D2, der viser hvordan classes/javascript taler på tværs af client/server.
-*/
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static j2html.TagCreator.article;
+import static j2html.TagCreator.attrs;
+import static j2html.TagCreator.b;
+import static j2html.TagCreator.p;
+import static j2html.TagCreator.span;
 
 public class ChatController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-
         app.ws("/websocket", ws -> {
-
-            // Customer actions
             ws.onConnect(ctx -> onConnect(ctx));
             ws.onMessage(ctx -> onMessage(ctx));
             ws.onClose(ctx -> onClose(ctx));
             ws.onError(ctx -> onError(ctx));
         });
-
-
     }
 
-    private static void onConnect(WsConnectContext ctx) {
-        // Handle new WebSocket connections
+    private static final Map<WsContext, String> userUsernameMap = new ConcurrentHashMap<>();
+
+    private static void onConnect(WsContext ctx) {
+
+        // If session contains a user object, then return user's name.
+        // Else return the name that has been given by the user, before opening the chat.
+        String username = ctx.sessionAttribute("currentUser") == null
+                //? ctx.sessionAttribute("chatUsername")
+                ? "temporary username"
+                : ((User) ctx.sessionAttribute("currentUser")).getFullName();
 
 
-
+        userUsernameMap.put(ctx, username);
     }
+
 
     private static void onMessage(WsMessageContext ctx) {
         // Handle messages received from the client
-        ctx.send("message");
+        String message = ctx.message();
+        System.out.println(message);
+        broadcastMessage(userUsernameMap.get(ctx), message);
+
+        //ctx.message(Map.of("userMessage", createHtmlMessageFromSender(sender, message)));
     }
 
     private static void onClose(WsCloseContext ctx) {
         // Handle WebSocket connection close
+        System.out.println("WS connection closed");
     }
 
     private static void onError(WsErrorContext ctx) {
         // Handle errors
-        ctx.closeSession();
+        throw new RuntimeException(ctx.error());
+    }
+
+    // Sends a message from one user to all users, along with a list of current usernames
+    private static void broadcastMessage(String sender, String message) {
+        userUsernameMap.keySet().stream().filter(ctx -> ctx.session.isOpen()).forEach(session -> {
+            session.send(
+                    Map.of(
+                            "userMessage", createHtmlMessageFromSender(sender, message),
+                            "userlist", userUsernameMap.values()
+                    )
+            );
+        });
+    }
+
+    // Builds a HTML element with a sender-name, a message, and a timestamp
+    private static String createHtmlMessageFromSender(String sender, String message) {
+        return article(
+                b(sender + " says:"),
+                span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date())),
+                p(message)
+        ).render();
     }
 }
+
+

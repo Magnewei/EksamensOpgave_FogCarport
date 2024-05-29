@@ -22,7 +22,7 @@ public class HeaderController {
     }
 
     private static void loadCustomerChat(Context ctx) {
-
+        ctx.render("customerChat.html");
     }
 
     /**

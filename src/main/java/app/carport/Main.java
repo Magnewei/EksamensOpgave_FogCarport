@@ -6,6 +6,7 @@ import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Thymeleaf.ThymeleafConfig;
+import io.javalin.websocket.WsConfig;
 
 public class Main {
     private static final String USER = System.getenv("JDBC_USER");

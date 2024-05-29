@@ -8,43 +8,49 @@
 <header class="navbar">
     <form method="post">
 
-            <button type="submit" formaction="/goToIndex" class="logo-link"></button>
-              <ul>
+        <button type="submit" formaction="/goToIndex" class="logo-link"></button>
+        <ul>
             <li>
-                <button  type="submit" th:if="${session.currentUser != null && session.currentUser.password != null}" formaction="/logout" name="button" th:text="${session.currentUser.firstName} + ' | Logout'"></button>
-                <button type="submit" th:if="${session.currentUser == null || session.currentUser.password == null}" formaction="/goToLogin" name="button">Login</button>
+                <button type="submit" th:if="${session.currentUser != null && session.currentUser.password != null}"
+                        formaction="/logout" name="button"
+                        th:text="${session.currentUser.firstName} + ' | Logout'"></button>
+                <button type="submit" th:if="${session.currentUser == null || session.currentUser.password == null}"
+                        formaction="/goToLogin" name="button">Login
+                </button>
+            </li>
+            <li>
+                <button type="submit" formaction="/goToUserSite" name="button"
+                        th:if="${session.currentUser != null and session.currentUser.password != null}">Ordrer
+                </button>
+            </li>
+            <li>
+                <button th:if="${session.currentUser != null} ? ${session.currentUser.isAdmin == true}"
+                        type="submit" formaction="/loadadmin" name="button">Admin
+                </button>
             </li>
 
+
+            <!-- Bruger chat -->
             <li>
-                <button type="submit" formaction="/goToUserSite" name="button" th:if="${session.currentUser != null and session.currentUser.password != null}">Ordrer</button>
+                <button  th:if="${session.currentUser == null or !session.currentUser.isAdmin}"
+                         formaction="loadCustomerChat" type="submit" > Load chat
+                </button>
             </li>
 
-            <li>
-                  <button th:if="${session.currentUser != null} ? ${session.currentUser.isAdmin == true}"
-                    type="submit" formaction="/loadadmin" name="button">Admin
+            <!-- Admin chat -->
+            <button th:data-url="@{/customerChat.html}" th:if="${session.currentUser != null} ? ${session.currentUser.isAdmin == true}"
+                    type="submit" formaction="/loadAdminChat" name="button" onclick="openWin(this.getAttribute('data-url'))" >Load admin chat
             </button>
-                  </li>
-
-                  <li>
-                      <button th:if="${session.currentUser != null} ? ${session.currentUser.isAdmin == true}"
-                              type="submit" formaction="/loadAdminChat" name="button">Load admin chat
-                      </button>
-                  </li>
-
 
 
         </ul>
-
-        <div class="Bestilling-box3" th:unless="${#strings.isEmpty(message)}" >
-        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
-        </div>
     </form>
 
-    <li>
-        <button th:if="${session.currentUser == null or !session.currentUser.isAdmin}"
-                type="submit" id="openChatBtn" name="button">Load chat
-        </button>
-    </li>
+
+
+    <div class="Bestilling-box3" th:unless="${#strings.isEmpty(message)}">
+        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+    </div>
 </header>
 
 <div class="wsChat">
