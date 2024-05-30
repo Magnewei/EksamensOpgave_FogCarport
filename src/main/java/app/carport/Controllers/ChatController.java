@@ -3,11 +3,11 @@ package app.carport.Controllers;
 import app.carport.Entities.User;
 import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
-import io.javalin.websocket.WsCloseContext;
-import io.javalin.websocket.WsContext;
-import io.javalin.websocket.WsErrorContext;
-import io.javalin.websocket.WsMessageContext;
+import io.javalin.websocket.*;
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,9 +23,15 @@ public class ChatController {
         });
     }
 
+
     private static final Map<WsContext, String> userUsernameMap = new ConcurrentHashMap<>();
 
     private static void onConnect(WsContext ctx) {
+
+        // Override Jettys incredibly short default idle timeout to avoid doing intermittent pinging.
+        // setIdleTimeout takes a Duration object.
+        ctx.session.setIdleTimeout(Duration.ofSeconds(300));
+
         // If session contains a user object, then return user's name.
         // Else return the name that has been given by the user, before opening the chat.
         String username = ctx.sessionAttribute("currentUser") == null
