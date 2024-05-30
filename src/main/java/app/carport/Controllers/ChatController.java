@@ -3,18 +3,15 @@ package app.carport.Controllers;
 import app.carport.Entities.User;
 import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
-import io.javalin.websocket.*;
-
+import io.javalin.websocket.WsCloseContext;
+import io.javalin.websocket.WsContext;
+import io.javalin.websocket.WsErrorContext;
+import io.javalin.websocket.WsMessageContext;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static j2html.TagCreator.article;
-import static j2html.TagCreator.attrs;
-import static j2html.TagCreator.b;
-import static j2html.TagCreator.p;
-import static j2html.TagCreator.span;
+import static j2html.TagCreator.*;
 
 public class ChatController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -29,35 +26,27 @@ public class ChatController {
     private static final Map<WsContext, String> userUsernameMap = new ConcurrentHashMap<>();
 
     private static void onConnect(WsContext ctx) {
-
         // If session contains a user object, then return user's name.
         // Else return the name that has been given by the user, before opening the chat.
         String username = ctx.sessionAttribute("currentUser") == null
-                //? ctx.sessionAttribute("chatUsername")
-                ? "temporary username"
+                ? ctx.sessionAttribute("chatUsername")
                 : ((User) ctx.sessionAttribute("currentUser")).getFullName();
-
 
         userUsernameMap.put(ctx, username);
     }
 
 
     private static void onMessage(WsMessageContext ctx) {
-        // Handle messages received from the client
         String message = ctx.message();
-        System.out.println(message);
         broadcastMessage(userUsernameMap.get(ctx), message);
-
-        //ctx.message(Map.of("userMessage", createHtmlMessageFromSender(sender, message)));
     }
 
     private static void onClose(WsCloseContext ctx) {
-        // Handle WebSocket connection close
         System.out.println("WS connection closed");
+        userUsernameMap.remove(ctx); // remove the session from the map.
     }
 
     private static void onError(WsErrorContext ctx) {
-        // Handle errors
         throw new RuntimeException(ctx.error());
     }
 

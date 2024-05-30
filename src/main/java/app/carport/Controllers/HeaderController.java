@@ -22,6 +22,9 @@ public class HeaderController {
     }
 
     private static void loadCustomerChat(Context ctx) {
+        // Loads a username from the header input field.
+        // The input field is only loaded if it hasn't already been set or currentUser == null.
+        ctx.sessionAttribute("chatUsername", ctx.formParam("tempUsername"));
         ctx.render("customerChat.html");
     }
 
