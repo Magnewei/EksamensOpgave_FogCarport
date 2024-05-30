@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -119,6 +118,44 @@
             </form>
         </div>
     </div>
+
+    <div class="Container">
+        <label> Chat sessions </label>
+        <br>
+        <div class="ContainerAdmin list">
+            <table>
+                <!--
+                <tr th:each="order : ${orderlist}">
+                    <td th:text="${order.orderID}"></td>
+                    <td th:text="${order.user.email}"></td>
+                    <td th:text="${order.carport.totalPrice}"></td>
+                    <td th:text="${order.status}"></td>
+                    <td>
+                        <form method="post" action="/removeorder">
+                            <input type="hidden" name="remove_order" th:value="${order.orderID}">
+                            <button type="submit" class="adbtn">Delete order</button>
+                        </form>
+                        <form method="post" action="/acceptorder">
+                            <input type="hidden" name="accept_order" th:value="${order.orderID}">
+                            <button type="submit" class="adbtn">Accept order</button>
+                        </form>
+                        <form method="post" action="/denyorder">
+                            <input type="hidden" name="deny_order" th:value="${order.orderID}">
+                            <button type="submit" class="adbtn">Deny order</button>
+                        </form>
+                        <form method="post" action="/inspectOrder">
+                            <input type="hidden" name="order_id" th:value="${order.orderID}">
+                            <button type="submit" class="adbtn">Inspect order</button>
+                        </form>
+                        -->
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
 
 
 </div>

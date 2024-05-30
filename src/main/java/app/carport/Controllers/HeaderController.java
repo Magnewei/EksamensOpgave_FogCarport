@@ -1,6 +1,5 @@
 package app.carport.Controllers;
 
-import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -15,16 +14,14 @@ public class HeaderController {
         app.post("goToIndex", ctx -> goToIndex(ctx));
         app.post("logout", ctx -> logout(ctx));
         app.post("loadCustomerChat", ctx -> loadCustomerChat(ctx));
-        app.post("loadAdminChat", ctx -> loadAdminChat(ctx));
     }
 
-    private static void loadAdminChat(Context ctx) {
-    }
 
     private static void loadCustomerChat(Context ctx) {
         // Loads a username from the header input field.
         // The input field is only loaded if it hasn't already been set or currentUser == null.
-        ctx.sessionAttribute("chatUsername", ctx.formParam("tempUsername"));
+        String username = ctx.formParam("tempUsername");
+        ctx.cachedSessionAttribute("chatUsername", username);
         ctx.render("customerChat.html");
     }
 

@@ -1,11 +1,8 @@
 package app.carport.Controllers;
 
 import app.carport.Entities.User;
-import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.websocket.*;
-import org.jetbrains.annotations.NotNull;
-
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
@@ -14,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static j2html.TagCreator.*;
 
 public class ChatController {
-    public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
+    public static void addRoutes(Javalin app) {
         app.ws("/websocket", ws -> {
             ws.onConnect(ctx -> onConnect(ctx));
             ws.onMessage(ctx -> onMessage(ctx));
@@ -22,7 +19,6 @@ public class ChatController {
             ws.onError(ctx -> onError(ctx));
         });
     }
-
 
     private static final Map<WsContext, String> userUsernameMap = new ConcurrentHashMap<>();
 
@@ -48,8 +44,8 @@ public class ChatController {
     }
 
     private static void onClose(WsCloseContext ctx) {
-        System.out.println("WS connection closed");
         userUsernameMap.remove(ctx); // remove the session from the map.
+        ctx.closeSession();          // close the session.
     }
 
     private static void onError(WsErrorContext ctx) {

@@ -37,11 +37,6 @@
                 </button>
             </li>
 
-            <!-- Admin chat -->
-            <button th:data-url="@{/customerChat.html}" th:if="${session.currentUser != null} ? ${session.currentUser.isAdmin == true}"
-                    type="submit" formaction="/loadAdminChat" name="button" onclick="openWin(this.getAttribute('data-url'))" >Load admin chat
-            </button>
-
             <li>
             <input th:if="${session.currentUser == null and session.chatUsername == null}" type="text" name="tempUsername" placeholder="Type your username">
             </li>

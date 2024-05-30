@@ -29,6 +29,11 @@ public class AdminPanelController {
         app.post("denyorder", ctx -> denyOrder(connectionPool, ctx));
         app.post("editMaterial", ctx -> renderEditMaterial(connectionPool, ctx));
         app.post("inspectOrder", ctx -> inspectOrder(connectionPool, ctx));
+
+        app.post("loadAdminChat", ctx -> loadAdminChat(ctx));
+    }
+
+    private static void loadAdminChat(Context ctx) {
     }
 
     /**
@@ -181,6 +186,7 @@ public class AdminPanelController {
             ctx.attribute("orderlist", orderList);
             ctx.attribute("materiallist", materialList);
             ctx.render("admin.html");
+
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("admin.html");
