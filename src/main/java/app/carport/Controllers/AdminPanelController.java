@@ -8,12 +8,14 @@ import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.MaterialMapper;
 import app.carport.Persistence.OrderMapper;
 import app.carport.Services.CarportSVG;
+import app.carport.Services.ChatUtils;
 import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static app.carport.Controllers.CarportShopController.convertMaterialList;
 
@@ -29,11 +31,7 @@ public class AdminPanelController {
         app.post("denyorder", ctx -> denyOrder(connectionPool, ctx));
         app.post("editMaterial", ctx -> renderEditMaterial(connectionPool, ctx));
         app.post("inspectOrder", ctx -> inspectOrder(connectionPool, ctx));
-
-        app.post("loadAdminChat", ctx -> loadAdminChat(ctx));
-    }
-
-    private static void loadAdminChat(Context ctx) {
+        app.post("loadAdminChat", ctx -> ctx.render("customerChat.html"));
     }
 
     /**
@@ -182,7 +180,9 @@ public class AdminPanelController {
         try {
             List<Order> orderList = OrderMapper.getAllOrders(connectionPool);
             List<Material> materialList = MaterialMapper.getAllMaterials(connectionPool);
+            Map openWebChats = ChatUtils.getActiveChats();
 
+            ctx.attribute("openWebchats", openWebChats);
             ctx.attribute("orderlist", orderList);
             ctx.attribute("materiallist", materialList);
             ctx.render("admin.html");

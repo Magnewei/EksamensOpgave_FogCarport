@@ -1,6 +1,7 @@
 package app.carport.Controllers;
 
 import app.carport.Entities.User;
+import app.carport.Services.ChatUtils;
 import io.javalin.Javalin;
 import io.javalin.websocket.*;
 import java.text.SimpleDateFormat;
@@ -20,7 +21,7 @@ public class ChatController {
         });
     }
 
-    private static final Map<WsContext, String> userUsernameMap = new ConcurrentHashMap<>();
+    private static final Map<WsContext, String> userUsernameMap = ChatUtils.getActiveChats();
 
     private static void onConnect(WsContext ctx) {
 
@@ -45,10 +46,13 @@ public class ChatController {
 
     private static void onClose(WsCloseContext ctx) {
         userUsernameMap.remove(ctx); // remove the session from the map.
-        ctx.closeSession();          // close the session.
+        //TODO: add user left chat
     }
 
     private static void onError(WsErrorContext ctx) {
+        userUsernameMap.remove(ctx);
+        ctx.attribute("message", "Something went wrong with your chat session.");
+        ctx.getUpgradeCtx$javalin().render("index.html");
         throw new RuntimeException(ctx.error());
     }
 
