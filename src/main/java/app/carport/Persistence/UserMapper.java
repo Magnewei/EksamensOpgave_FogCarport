@@ -60,7 +60,6 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DatabaseException("Database does not contain a user with the given information.", e.getMessage());
         }
-
         // If a user was not found in the above statement, then throw exception,
         // return to LoginController.login() and then warn user that email or password was incorrect.
         if (user == null) {
@@ -295,5 +294,25 @@ public class UserMapper {
             throw new DatabaseException("Error retrieving the latest userID", e.getMessage());
         }
         return orderNumber;
+    }
+
+    public static List<String> getAdminNames(ConnectionPool connectionPool) throws DatabaseException {
+        List<String> adminNames = new ArrayList<>();
+        String sql = "SELECT firstName, lastName FROM users WHERE isAdmin = true";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                adminNames.add(firstName + " " + lastName);
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to retrieve admin names from the database.", e.getMessage());
+        }
+        return adminNames;
     }
 }

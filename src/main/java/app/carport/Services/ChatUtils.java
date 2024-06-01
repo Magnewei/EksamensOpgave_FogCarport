@@ -5,6 +5,7 @@ import io.javalin.websocket.WsContext;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,7 +49,6 @@ public class ChatUtils {
 
     public static void addNewChatSession(WsContext ctx) {
         User user  = ctx.sessionAttribute("currentUser");
-
         userUsernameMap.put(ctx, user);
     }
 
@@ -75,13 +75,24 @@ public class ChatUtils {
                 return user;
             }
         }
-        return null; // or throw an exception if user not found
+        return null;
     }
+
 
     public static WsContext getContextByUser(User user) {
         for (Map.Entry<WsContext, User> entry : userUsernameMap.entrySet()) {
             if (entry.getValue().equals(user)) {
                 return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public static User getAdmin() {
+        for (Map.Entry<WsContext, User> entry : userUsernameMap.entrySet()) {
+            User user = entry.getValue();
+            if (user.isAdmin()) {
+                return user;
             }
         }
         return null;

@@ -13,7 +13,6 @@ import app.carport.Services.ChatUtils;
 import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import io.javalin.websocket.WsContext;
 import org.eclipse.jetty.websocket.api.exceptions.WebSocketException;
 
 import java.util.List;
@@ -47,12 +46,16 @@ public class AdminPanelController {
             String customerName = ctx.formParam("customerFullName");
 
             ctx.sessionAttribute("customerUsername", customerName);
-            ctx.sessionAttribute("adminName", admin.getFullName());
+            ctx.sessionAttribute("adminUser", admin.getFullName());
 
             ctx.render("chat.html");
 
         } catch (DatabaseException e) {
             ctx.attribute("message", "Error retrieving assets from the database.");
+            ctx.render("admin.html");
+
+        } catch (NumberFormatException e) {
+            ctx.attribute("message", "Error retrieving user context.");
             ctx.render("admin.html");
 
         } catch (WebSocketException e) {

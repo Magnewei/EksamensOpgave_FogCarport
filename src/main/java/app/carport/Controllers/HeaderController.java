@@ -4,6 +4,7 @@ import app.carport.Entities.User;
 import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import org.eclipse.jetty.websocket.api.exceptions.WebSocketException;
 
 public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -17,26 +18,30 @@ public class HeaderController {
 
 
     private static void loadCustomerChat(Context ctx) {
-        String username = ctx.formParam("tempUsername");
+        try {
+            String username = ctx.formParam("tempUsername");
 
-        if (ctx.sessionAttribute("currentUser") != null) {
-            User user = ctx.sessionAttribute("currentUser");
-            ctx.sessionAttribute("customerUsername", ((User) ctx.sessionAttribute("currentUser")).getFullName());
+            if (ctx.sessionAttribute("currentUser") != null) {
+                User user = ctx.sessionAttribute("currentUser");
+                ctx.sessionAttribute("customerUsername", user.getFullName());
+                ctx.render("chat.html");
+                return;
+            }
+
+            if (username == null || username.isEmpty()) {
+                ctx.attribute("message", "You need to type a name into the input field, before you can load the chat.");
+                ctx.render("index.html");
+                return;
+            }
+
+            User user = new User(username, "");
+            ctx.sessionAttribute("currentUser", user);
             ctx.render("chat.html");
-            return;
-        }
 
-        if (username == null || username.isEmpty()) {
-            ctx.attribute("message", "You need to type a name into the input field, before you can load the chat.");
-            ctx.render("index.html");
-            return;
+        } catch (WebSocketException e) {
+            ctx.attribute("message", "Error connecting to the websocket server.");
+            ctx.render("admin.html");
         }
-
-        User user = new User(username, " ");
-        ctx.sessionAttribute("currentUser", user);
-        ctx.sessionAttribute("customerUsername", user.getFullName());
-        ctx.sessionAttribute("adminName", "admin");
-        ctx.render("chat.html");
     }
 
     /**
@@ -68,7 +73,7 @@ public class HeaderController {
         try {
             UserController.renderUserSite(ctx, connectionPool);
         } catch (Exception e) {
-            ctx.attribute("message", "De skal være logget ind for at se dine ordrer");
+            ctx.attribute("message", "Du skal være logget ind for at se dine ordrer");
             ctx.render("login.html");
         }
     }

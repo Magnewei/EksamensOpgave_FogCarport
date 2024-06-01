@@ -16,11 +16,21 @@ public class ChatController {
     public static void addRoutes(Javalin app) {
         app.ws("/websocket", ws -> {
             ws.onConnect(ctx -> onConnect(ctx));
-            ws.onMessage(ctx -> onMessageUser(ctx));
-            ws.onMessage(ctx -> onMessageAdmin(ctx));
+            ws.onMessage(ctx -> onMessage(ctx));
             ws.onClose(ctx -> onClose(ctx));
             ws.onError(ctx -> onError(ctx));
         });
+    }
+
+    private static void onMessage(WsMessageContext ctx) {
+        User currentUser = ctx.sessionAttribute("currentUser");
+
+        if (currentUser.isAdmin()) {
+            onMessageAdmin(ctx, currentUser);
+
+        } else if (!currentUser.isAdmin()) {
+            onMessageUser(ctx, currentUser);
+        }
     }
 
     private static void onConnect(WsContext ctx) {
@@ -34,96 +44,45 @@ public class ChatController {
         }
     }
 
+    private static synchronized void onMessageUser(WsMessageContext ctx, User currentUser) {
+        User admin = ChatUtils.getAdmin();
+        WsContext adminContext = ChatUtils.getContextByUser(admin);
+        System.out.println(admin.getUserID());
 
-    private static synchronized void onMessageUser(WsMessageContext ctx) {
-        User currentUser = ctx.sessionAttribute("currentUser");
-        if (currentUser.isAdmin() == true) {
-            return;
-        }
+        if (adminContext != null) {
+            Map<String, String> customerChat = admin.getUserChat();
 
-        String customerName = ctx.sessionAttribute("customerUsername");
-        String adminName = ctx.sessionAttribute("adminName");
+            String message = ctx.message();
+            String htmlMessage = ChatUtils.createHtmlMessageFromSender(currentUser.getFullName(), message);
+            customerChat.put("userMessage", htmlMessage);
+            adminContext.send(customerChat);
+            ctx.send(customerChat);
 
-        User customer = ChatUtils.getUserFromContext(customerName);
-        User admin = ChatUtils.getUserFromContext(adminName);
-/*
-        WsContext customerCtx = ChatUtils.getContextByUser(customer);
-        WsContext adminCtx = ChatUtils.getContextByUser(admin);
-
- */
-        System.out.println(customer + " customer object");
-        System.out.println(admin + " admin object");
-
-        String message = ctx.message();
-        String htmlMessage = ChatUtils.createHtmlMessageFromSender(currentUser.getFullName(), message);
-
-        if (customer != null || admin != null) {
-            Map<WsContext, User> activeChatSessions = ChatUtils.getActiveChats();
-            for (Map.Entry<WsContext, User> entry : activeChatSessions.entrySet()) {
-                User user = entry.getValue();
-                WsContext context = entry.getKey();
-                Map<String, String> userChat = user.getUserChat();
-
-
-                // TODO: Fjern
-
-                if (user.equals(admin) || user.equals(customer)) {
-
-                    userChat.put("userMessage", htmlMessage);
-
-                    context.send(userChat);
-                }
-            }
         } else {
             String errorMessage = ChatUtils.HTMLErrorMessage("We're waiting for the second user.");
             ctx.send(Map.of("userMessage", errorMessage));
         }
     }
 
-    private static synchronized void onMessageAdmin(WsMessageContext ctx) {
-        User currentUser = ctx.sessionAttribute("currentUser");
-        if (currentUser.isAdmin() == false) {
-            return;
-        }
-
-
+    private static synchronized void onMessageAdmin(WsMessageContext ctx, User currentUser) {
         String customerName = ctx.sessionAttribute("customerUsername");
-        String adminName = ctx.sessionAttribute("adminName");
-
         User customer = ChatUtils.getUserFromContext(customerName);
-        User admin = ChatUtils.getUserFromContext(adminName);
-/*
         WsContext customerCtx = ChatUtils.getContextByUser(customer);
-        WsContext adminCtx = ChatUtils.getContextByUser(admin);
 
- */
-        System.out.println(customer + " customer object");
-        System.out.println(admin + " admin object");
+        if (customerCtx != null && customerCtx.session.isOpen()) {
+            Map<String, String> customerChat = customer.getUserChat();
 
-        String message = ctx.message();
-        String htmlMessage = ChatUtils.createHtmlMessageFromSender(currentUser.getFullName(), message);
+            String message = ctx.message();
+            String htmlMessage = ChatUtils.createHtmlMessageFromSender(currentUser.getFullName(), message);
+            customerChat.put("userMessage", htmlMessage);
+            customerCtx.send(customerChat);
+            ctx.send(customerChat);
 
-        if (customer != null || admin != null) {
-            Map<WsContext, User> activeChatSessions = ChatUtils.getActiveChats();
-            for (Map.Entry<WsContext, User> entry : activeChatSessions.entrySet()) {
-                User user = entry.getValue();
-                WsContext context = entry.getKey();
-                Map<String, String> userChat = user.getUserChat();
-
-
-                if (user.equals(admin) || user.equals(customer)) {
-
-                    userChat.put("userMessage", htmlMessage);
-
-                    context.send(userChat);
-                }
-            }
         } else {
             String errorMessage = ChatUtils.HTMLErrorMessage("We're waiting for the second user.");
             ctx.send(Map.of("userMessage", errorMessage));
         }
     }
-
 
     private static void onClose(WsCloseContext ctx) {
         Map<WsContext, User> activeChatSessions = ChatUtils.getActiveChats();
