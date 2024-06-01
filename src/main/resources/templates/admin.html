@@ -128,7 +128,7 @@
                     <td th:text="${chat.value.getFullName()}"></td>
                     <td>
                         <form method="post" action="/loadAdminChat">
-                            <button type="submit" name="customerContext" th:value="${chat.key.hashCode}" class="adbtn">Open chat</button>
+                            <button type="submit" name="customerFullName" th:value="${chat.value.getFullName()}" class="adbtn">Open chat</button>
                         </form>
                     </td>
                 </tr>

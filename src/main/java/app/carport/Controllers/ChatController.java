@@ -3,10 +3,16 @@ package app.carport.Controllers;
 import app.carport.Entities.User;
 import app.carport.Services.ChatUtils;
 import io.javalin.Javalin;
-import io.javalin.websocket.*;
+import io.javalin.websocket.WsCloseContext;
+import io.javalin.websocket.WsContext;
+import io.javalin.websocket.WsErrorContext;
+import io.javalin.websocket.WsMessageContext;
 import org.eclipse.jetty.websocket.api.exceptions.WebSocketException;
+
 import java.time.Duration;
 import java.util.Map;
+
+import static app.carport.Services.ChatUtils.getUserFromContext;
 
 public class ChatController {
     public static void addRoutes(Javalin app) {
@@ -29,17 +35,40 @@ public class ChatController {
         }
     }
 
+
     private static void onMessage(WsMessageContext ctx) {
-        Map<WsContext, User> activeChatSessions = ChatUtils.getActiveChats();
-        User user = activeChatSessions.get(ctx);
-        Map<String, String> userChat = user.getUserChat();
+        String customerName =   ctx.sessionAttribute("customerUsername");
+        String adminName =   ctx.sessionAttribute("adminName");
+        User customer = ChatUtils.getUserFromContext(customerName);
+        User admin = ChatUtils.getUserFromContext(adminName);
 
         String message = ctx.message();
-        String htmlMessage = ChatUtils.createHtmlMessageFromSender(user.getFullName(), message);
 
-        userChat.put("userMessage", htmlMessage);
-        ctx.send(userChat);
+        if (admin != null && customer != null) {
+            Map<WsContext, User> activeChatSessions = ChatUtils.getActiveChats();
+            for (Map.Entry<WsContext, User> entry : activeChatSessions.entrySet()) {
+                WsContext context = entry.getKey();
+                User user = entry.getValue();
+
+                Map<String, String> userChat = user.getUserChat();
+                String htmlMessage = ChatUtils.createHtmlMessageFromSender(user.getFullName(), message);
+
+                if (user.equals(admin) |) {
+                    userChat.put("userMessage", htmlMessage);
+                    context.send(userChat);
+
+                }  if (user.equals(customer))
+                    userChat.put("userMessage", htmlMessage);
+                    context.send(userChat);
+            }
+
+        } else {
+            String errorMessage = ChatUtils.HTMLErrorMessage("We're waiting for the second user.");
+            ctx.send(Map.of("userMessage", errorMessage));
+        }
+
     }
+
 
     private static void onClose(WsCloseContext ctx) {
         Map<WsContext, User> activeChatSessions = ChatUtils.getActiveChats();

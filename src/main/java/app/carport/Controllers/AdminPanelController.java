@@ -3,6 +3,7 @@ package app.carport.Controllers;
 import app.carport.Entities.Carport;
 import app.carport.Entities.Material;
 import app.carport.Entities.Order;
+import app.carport.Entities.User;
 import app.carport.Exceptions.DatabaseException;
 import app.carport.Persistence.ConnectionPool;
 import app.carport.Persistence.MaterialMapper;
@@ -42,9 +43,11 @@ public class AdminPanelController {
             ctx.attribute("lengthList", MaterialMapper.getAllLength(connectionPool));
             ctx.attribute("widthList", MaterialMapper.getAllWidth(connectionPool));
 
-            // Retrieve the customer chat session.
-            int customerContextHashCode = Integer.parseInt(ctx.formParam("customerContext"));
-            WsContext wsContext = ChatUtils.getChatContext(customerContextHashCode);
+            User admin = ctx.sessionAttribute("currentUser");
+            String customerName = ctx.formParam("customerFullName");
+
+            ctx.sessionAttribute("customerUsername", customerName);
+            ctx.sessionAttribute("adminName", admin.getFullName());
 
             ctx.render("chat.html");
 

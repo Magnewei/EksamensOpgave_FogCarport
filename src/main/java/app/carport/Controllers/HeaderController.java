@@ -1,5 +1,6 @@
 package app.carport.Controllers;
 
+import app.carport.Entities.User;
 import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -18,13 +19,21 @@ public class HeaderController {
     private static void loadCustomerChat(Context ctx) {
         String username = ctx.formParam("tempUsername");
 
-        if (username == null || username.isEmpty()) {
-            ctx.attribute("message", "You need to type a name into the input field, before you can load the chat.");
-            ctx.render("index");
+        if (ctx.sessionAttribute("currentUser") != null) {
+            ctx.sessionAttribute("customerUsername", ((User) ctx.sessionAttribute("currentUser")).getFullName());
+            ctx.render("chat.html");
             return;
         }
 
-        ctx.cachedSessionAttribute("chatUsername", username);
+        if (username == null || username.isEmpty()) {
+            ctx.attribute("message", "You need to type a name into the input field, before you can load the chat.");
+            ctx.render("index.html");
+            return;
+        }
+
+        User user = new User(username, " ");
+        ctx.sessionAttribute("currentUser", user);
+        ctx.sessionAttribute("customerUsername", username);
         ctx.render("chat.html");
     }
 

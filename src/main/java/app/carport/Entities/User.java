@@ -1,9 +1,7 @@
 package app.carport.Entities;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class User {
     private int userID;
@@ -15,6 +13,7 @@ public class User {
     private String email;
     private String password;
     private int phoneNumber;
+
     private Map<String, String> userChat = new ConcurrentHashMap<>();
 
     public User(int userID, String email, String password, boolean isAdmin, String firstName, String lastName, Address address, Order order) {
@@ -84,6 +83,10 @@ public class User {
 
     public Map<String, String> getUserChat() {
         return userChat;
+    }
+
+    public void setUserChat(Map<String, String> userChat) {
+        this.userChat = userChat;
     }
 
     public int getphoneNumber() {

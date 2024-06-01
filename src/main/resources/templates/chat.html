@@ -42,7 +42,7 @@
 
     <button th:if="${session.currentUser == null or session.currentUser.isAdmin == false}" class="chat-send-button" id="sendMessageBtn">Send</button>
 
-    <button th:if="${session.currentUser != null and session.currentUser.isAdmin == true}" class="chat-send-button" id="sendAdminMessage">Send</button>
+    <button th:if="${session.currentUser != null and session.currentUser.isAdmin == true}" class="chat-send-button" id="sendMessageBtn">Send</button>
 </div>
 
 <script type="text/javascript" src="../public/js/script.js" th:src="@{/js/script.js}"></script>
