@@ -12,8 +12,6 @@ import org.eclipse.jetty.websocket.api.exceptions.WebSocketException;
 import java.time.Duration;
 import java.util.Map;
 
-import static app.carport.Services.ChatUtils.getUserFromContext;
-
 public class ChatController {
     public static void addRoutes(Javalin app) {
         app.ws("/websocket", ws -> {
@@ -37,34 +35,46 @@ public class ChatController {
 
 
     private static void onMessage(WsMessageContext ctx) {
-        String customerName =   ctx.sessionAttribute("customerUsername");
-        String adminName =   ctx.sessionAttribute("adminName");
+        String customerName = ctx.sessionAttribute("customerUsername");
+        String adminName = ctx.sessionAttribute("adminName");
+
         User customer = ChatUtils.getUserFromContext(customerName);
         User admin = ChatUtils.getUserFromContext(adminName);
 
+        WsContext customerCtx = ChatUtils.getContextByUser(customer);
+        WsContext adminCtx = ChatUtils.getContextByUser(admin);
+
+        System.out.println(adminCtx + " adminctx");
+
+        System.out.println(customerCtx + " customerCtx");
+
         String message = ctx.message();
 
-        if (admin != null && customer != null) {
+        if (customerCtx != null && adminCtx != null) {
             Map<WsContext, User> activeChatSessions = ChatUtils.getActiveChats();
             for (Map.Entry<WsContext, User> entry : activeChatSessions.entrySet()) {
-                WsContext context = entry.getKey();
                 User user = entry.getValue();
 
                 Map<String, String> userChat = user.getUserChat();
                 String htmlMessage = ChatUtils.createHtmlMessageFromSender(user.getFullName(), message);
 
-                if (user.equals(admin) |) {
+                if (user.equals(admin) || user.equals(customer)) {
                     userChat.put("userMessage", htmlMessage);
-                    context.send(userChat);
 
-                }  if (user.equals(customer))
-                    userChat.put("userMessage", htmlMessage);
-                    context.send(userChat);
+                    customerCtx.send(userChat);
+                    adminCtx.send(userChat);
+
+                    customerCtx.sendPing();
+                    adminCtx.sendPing();
+                  return;
+                }
             }
-
         } else {
             String errorMessage = ChatUtils.HTMLErrorMessage("We're waiting for the second user.");
             ctx.send(Map.of("userMessage", errorMessage));
+
+            customerCtx.sendPing();
+            adminCtx.sendPing();
         }
 
     }
