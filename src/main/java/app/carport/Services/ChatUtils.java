@@ -1,5 +1,6 @@
 package app.carport.Services;
 
+import app.carport.Entities.User;
 import io.javalin.websocket.WsContext;
 
 import java.text.SimpleDateFormat;
@@ -11,7 +12,7 @@ import static j2html.TagCreator.*;
 
 public class ChatUtils {
 
-    private static final Map<WsContext, String> userUsernameMap = new ConcurrentHashMap<>();
+    private static final Map<WsContext, User> userUsernameMap = new ConcurrentHashMap<>();
 
     // Builds a HTML element with a sender-name, a message, and a timestamp
     private static String createHtmlMessageFromUser(String sender, String message) {
@@ -35,8 +36,8 @@ public class ChatUtils {
         return userUsernameMap;
     }
 
-    public static void addNewChat(WsContext ctx, String username) {
-        userUsernameMap.put(ctx, username);
+    public static void addNewChat(WsContext ctx, User user) {
+        userUsernameMap.put(ctx, user);
     }
 
     public static void removeChat(WsContext ctx, String username) {
@@ -44,8 +45,6 @@ public class ChatUtils {
     }
 
     public static WsContext getChatContext(int hashcode) {
-
-
         for (WsContext context : userUsernameMap.keySet()) {
             if (context.hashCode() == hashcode) {
                 return context;

@@ -3,8 +3,7 @@ package app.carport.Controllers;
 import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
-import static app.carport.Controllers.UserController.logout;
+import static app.carport.Controllers.logout;
 
 public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -12,15 +11,20 @@ public class HeaderController {
         app.post("goToLogin", ctx -> goToLogin(ctx));
         app.post("goToUserSite", ctx -> goToUserSite(ctx, connectionPool));
         app.post("goToIndex", ctx -> goToIndex(ctx));
-        app.post("logout", ctx -> logout(ctx));
+        app.post("logout", ctx -> UserController.logout(ctx));
         app.post("loadCustomerChat", ctx -> loadCustomerChat(ctx));
     }
 
 
     private static void loadCustomerChat(Context ctx) {
-        // Loads a username from the header input field.
-        // The input field is only loaded if it hasn't already been set or currentUser == null.
         String username = ctx.formParam("tempUsername");
+
+        if (username == null || username.isEmpty()) {
+            ctx.attribute("message", "You need to type a name into the input field, before you can load the chat.");
+            ctx.render("index");
+            return;
+        }
+
         ctx.cachedSessionAttribute("chatUsername", username);
         ctx.render("customerChat.html");
     }

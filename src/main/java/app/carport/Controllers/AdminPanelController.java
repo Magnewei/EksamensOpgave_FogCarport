@@ -18,7 +18,6 @@ import io.javalin.websocket.WsContext;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static app.carport.Controllers.CarportShopController.convertMaterialList;
 
@@ -42,7 +41,7 @@ public class AdminPanelController {
         WsContext wsContext = ChatUtils.getChatContext(customerContextHashCode);
 
 
-        ctx.sessionAttribute("chatSession", wsContext);
+        //ctx.sessionAttribute("chatSession", wsContext);
         ctx.render("adminChat.html");
     }
 
