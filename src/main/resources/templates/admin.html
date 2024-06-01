@@ -128,9 +128,8 @@
                     <td th:text="${chat.value}"></td>
                     <td>
                         <form method="post" action="/loadAdminChat">
-                            <button type="submit" th:value="${chat.key}" class="adbtn">Open chat</button>
+                            <button type="submit" name="customerContext" th:value="${chat.key.hashCode}" class="adbtn">Open chat</button>
                         </form>
-                        -->
                     </td>
                 </tr>
             </table>

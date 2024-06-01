@@ -42,4 +42,17 @@ public class ChatUtils {
     public static void removeChat(WsContext ctx, String username) {
         userUsernameMap.remove(ctx, username);
     }
+
+    public static WsContext getChatContext(int hashcode) {
+
+
+        for (WsContext context : userUsernameMap.keySet()) {
+            if (context.hashCode() == hashcode) {
+                return context;
+            }
+        }
+
+        System.out.println("No chat context found for hashcode " + hashcode);
+        return null;
+    }
 }

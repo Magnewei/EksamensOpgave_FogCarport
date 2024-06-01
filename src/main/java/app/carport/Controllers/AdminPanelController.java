@@ -12,10 +12,13 @@ import app.carport.Services.ChatUtils;
 import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import io.javalin.websocket.WsConnectHandler;
+import io.javalin.websocket.WsContext;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static app.carport.Controllers.CarportShopController.convertMaterialList;
 
@@ -31,7 +34,16 @@ public class AdminPanelController {
         app.post("denyorder", ctx -> denyOrder(connectionPool, ctx));
         app.post("editMaterial", ctx -> renderEditMaterial(connectionPool, ctx));
         app.post("inspectOrder", ctx -> inspectOrder(connectionPool, ctx));
-        app.post("loadAdminChat", ctx -> ctx.render("customerChat.html"));
+        app.post("loadAdminChat", ctx -> adminChat(ctx));
+    }
+
+    public static void adminChat(Context ctx) {
+        int customerContextHashCode =  Integer.parseInt(ctx.formParam("customerContext"));
+        WsContext wsContext = ChatUtils.getChatContext(customerContextHashCode);
+
+
+        ctx.sessionAttribute("chatSession", wsContext);
+        ctx.render("adminChat.html");
     }
 
     /**
