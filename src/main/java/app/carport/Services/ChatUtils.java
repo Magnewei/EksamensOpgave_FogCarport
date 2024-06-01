@@ -16,7 +16,7 @@ public class ChatUtils {
 
     public static String userLeftChatMessage(User user) {
         return article(
-                b(user.getFullName() + "has left the chat."),
+                b(user.getFullName() + " has left the chat."),
                 span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date()))).
                 render();
     }
@@ -47,15 +47,7 @@ public class ChatUtils {
     }
 
     public static void addNewChatSession(WsContext ctx) {
-        User user;
-
-        if (ctx.sessionAttribute("currentUser") != null) {
-            user = ctx.sessionAttribute("currentUser");
-        } else {
-            // The user's name is taken from the input field in the HTML-header.
-            String chatUsername = ctx.sessionAttribute("customerUsername");
-            user = new User(chatUsername, " ");
-        }
+        User user  = ctx.sessionAttribute("currentUser");
 
         userUsernameMap.put(ctx, user);
     }

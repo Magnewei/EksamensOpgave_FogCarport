@@ -85,10 +85,6 @@ public class User {
         return userChat;
     }
 
-    public void setUserChat(Map<String, String> userChat) {
-        this.userChat = userChat;
-    }
-
     public int getphoneNumber() {
         return phoneNumber;
     }

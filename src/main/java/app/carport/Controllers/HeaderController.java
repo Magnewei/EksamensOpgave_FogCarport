@@ -20,6 +20,7 @@ public class HeaderController {
         String username = ctx.formParam("tempUsername");
 
         if (ctx.sessionAttribute("currentUser") != null) {
+            User user = ctx.sessionAttribute("currentUser");
             ctx.sessionAttribute("customerUsername", ((User) ctx.sessionAttribute("currentUser")).getFullName());
             ctx.render("chat.html");
             return;
@@ -33,7 +34,8 @@ public class HeaderController {
 
         User user = new User(username, " ");
         ctx.sessionAttribute("currentUser", user);
-        ctx.sessionAttribute("customerUsername", username);
+        ctx.sessionAttribute("customerUsername", user.getFullName());
+        ctx.sessionAttribute("adminName", "admin");
         ctx.render("chat.html");
     }
 

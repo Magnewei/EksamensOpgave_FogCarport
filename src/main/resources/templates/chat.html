@@ -13,6 +13,7 @@
 </div>
 
 <div class="chat-input-container">
+    <!--
     <div th:if="${session.currentUser != null and session.currentUser.isAdmin == true}">
         <select id="Bredde" name="widthValue">
             <option th:each="width: ${widthList}"
@@ -38,12 +39,13 @@
             <input type="checkbox" id="checkCarport">
         </span>
     </div>
+    -->
     <input type="text" class="chat-input" id="chatInput" placeholder="Type a message...">
 
-    <button th:if="${session.currentUser == null or session.currentUser.isAdmin == false}" class="chat-send-button" id="sendMessageBtn">Send</button>
+    <button class="chat-send-button" id="sendMessageBtn">Send</button>
 
-    <button th:if="${session.currentUser != null and session.currentUser.isAdmin == true}" class="chat-send-button" id="sendMessageBtn">Send</button>
 </div>
+
 
 <script type="text/javascript" src="../public/js/script.js" th:src="@{/js/script.js}"></script>
 </body>
