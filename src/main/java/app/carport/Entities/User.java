@@ -82,7 +82,7 @@ public class User {
       this.lastName = lastName;
     }
 
-    public Map getUserChat() {
+    public Map<String, String> getUserChat() {
         return userChat;
     }
 

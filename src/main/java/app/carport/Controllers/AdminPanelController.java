@@ -12,8 +12,8 @@ import app.carport.Services.ChatUtils;
 import app.carport.Services.MailServer;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import io.javalin.websocket.WsConnectHandler;
 import io.javalin.websocket.WsContext;
+import org.eclipse.jetty.websocket.api.exceptions.WebSocketException;
 
 import java.util.List;
 import java.util.Locale;
@@ -33,16 +33,29 @@ public class AdminPanelController {
         app.post("denyorder", ctx -> denyOrder(connectionPool, ctx));
         app.post("editMaterial", ctx -> renderEditMaterial(connectionPool, ctx));
         app.post("inspectOrder", ctx -> inspectOrder(connectionPool, ctx));
-        app.post("loadAdminChat", ctx -> adminChat(ctx));
+        app.post("loadAdminChat", ctx -> loadAdminChat(connectionPool, ctx));
     }
 
-    public static void adminChat(Context ctx) {
-        int customerContextHashCode =  Integer.parseInt(ctx.formParam("customerContext"));
-        WsContext wsContext = ChatUtils.getChatContext(customerContextHashCode);
+    public static void loadAdminChat(ConnectionPool connectionPool, Context ctx) {
+        try {
+            // Loading carport assets.
+            ctx.attribute("lengthList", MaterialMapper.getAllLength(connectionPool));
+            ctx.attribute("widthList", MaterialMapper.getAllWidth(connectionPool));
 
+            // Retrieve the customer chat session.
+            int customerContextHashCode = Integer.parseInt(ctx.formParam("customerContext"));
+            WsContext wsContext = ChatUtils.getChatContext(customerContextHashCode);
 
-        //ctx.sessionAttribute("chatSession", wsContext);
-        ctx.render("adminChat.html");
+            ctx.render("chat.html");
+
+        } catch (DatabaseException e) {
+            ctx.attribute("message", "Error retrieving assets from the database.");
+            ctx.render("admin.html");
+
+        } catch (WebSocketException e) {
+            ctx.attribute("message", "Error connecting to the websocket server.");
+            ctx.render("admin.html");
+        }
     }
 
     /**

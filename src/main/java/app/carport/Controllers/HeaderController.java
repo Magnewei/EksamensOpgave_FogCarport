@@ -3,7 +3,6 @@ package app.carport.Controllers;
 import app.carport.Persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import static app.carport.Controllers.logout;
 
 public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -26,7 +25,7 @@ public class HeaderController {
         }
 
         ctx.cachedSessionAttribute("chatUsername", username);
-        ctx.render("customerChat.html");
+        ctx.render("chat.html");
     }
 
     /**

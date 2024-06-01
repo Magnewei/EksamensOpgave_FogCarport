@@ -4,11 +4,9 @@ import app.carport.Entities.User;
 import app.carport.Services.ChatUtils;
 import io.javalin.Javalin;
 import io.javalin.websocket.*;
-import java.text.SimpleDateFormat;
+import org.eclipse.jetty.websocket.api.exceptions.WebSocketException;
 import java.time.Duration;
-import java.util.Date;
 import java.util.Map;
-import static j2html.TagCreator.*;
 
 public class ChatController {
     public static void addRoutes(Javalin app) {
@@ -20,84 +18,50 @@ public class ChatController {
         });
     }
 
-    // TODO: Refactor mappen væk.
-    private static final Map<WsContext, User> userUsernameMap = ChatUtils.getActiveChats();
-
     private static void onConnect(WsContext ctx) {
         try {
             // Override Jettys default idle timer of 5ish seconds to avoid using pings.
             ctx.session.setIdleTimeout(Duration.ofSeconds(300));
+            ChatUtils.addNewChatSession(ctx);
 
-            User user;
-            if (ctx.sessionAttribute("currentUser") != null) {
-                user = ctx.sessionAttribute("currentUser");
-            } else {
-                // Name taken from input within the header.
-                String chatUsername = ctx.sessionAttribute("chatUsername");
-                user = new User(chatUsername, " ");
-            }
-
-            userUsernameMap.put(ctx, user);
-
-            // Trying to catch random errors while testing.
-        } catch (Exception e) {
+        } catch (WebSocketException e) {
             e.printStackTrace();
         }
     }
 
-
     private static void onMessage(WsMessageContext ctx) {
+        Map<WsContext, User> activeChatSessions = ChatUtils.getActiveChats();
+        User user = activeChatSessions.get(ctx);
+        Map<String, String> userChat = user.getUserChat();
+
         String message = ctx.message();
-        broadcastMessage(userUsernameMap.get(ctx), message, ctx);
-    }
+        String htmlMessage = ChatUtils.createHtmlMessageFromSender(user.getFullName(), message);
 
-    private static void onClose(WsCloseContext ctx) {
-        userUsernameMap.remove(ctx); // remove the session from the map.
-        //TODO: add user left chat
-    }
-
-    private static void onError(WsErrorContext ctx) {
-        userUsernameMap.remove(ctx);
-
-        // Error messaging on the server and client side.
-        ctx.attribute("message", "Something went wrong with your chat session.");
-        System.out.println(ctx.error().getMessage());
-
-        // Attempt to rerender index.
-        ctx.getUpgradeCtx$javalin().render("index.html");
-    }
-
-    // Sends a message from one user to all users, along with a list of current usernames
-    private static void broadcastMessage(User user, String message, WsContext ctx) {
-        Map userChat = user.getUserChat();
-        userChat.put(
-                "userMessage", createHtmlMessageFromSender(user.getFullName(), message));
+        userChat.put("userMessage", htmlMessage);
         ctx.send(userChat);
     }
 
-    private static void broadcastMessage(String sender, String message, WsContext ctx) {
-        ctx.send(Map.of(
-                "userMessage", createHtmlMessageFromSender(sender, message),
-                "userlist", userUsernameMap.values()
-        ));
+    private static void onClose(WsCloseContext ctx) {
+        Map<WsContext, User> activeChatSessions = ChatUtils.getActiveChats();
+        User user = activeChatSessions.get(ctx);
+
+        String leavingMessage = ChatUtils.userLeftChatMessage(user);
+        ctx.send(Map.of("userMessage", leavingMessage));
+
+        // Remove the session from the map and clear the users chat history.
+        user.getUserChat().clear();
+        activeChatSessions.remove(ctx);
     }
 
+    private static void onError(WsErrorContext ctx) {
+        Map<WsContext, User> activeChatSessions = ChatUtils.getActiveChats();
+        User user = activeChatSessions.get(ctx);
+        user.getUserChat().clear();
+        activeChatSessions.remove(ctx);
 
-
-    // Builds a HTML element with a sender-name, a message, and a timestamp
-    private static String createHtmlMessageFromSender(String sender, String message) {
-        return article(
-                b(sender + " says:"),
-                span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date())),
-                p(message)
-        ).render();
-    }
-
-    private static String userLeftChatMessage(String sender, String message) {
-        return article(
-                b(sender + " left the chat."),
-                span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date()))).
-                render();
+        // Attempt to render index.
+        ctx.attribute("message", "Something went wrong with your chat session.");
+        ctx.getUpgradeCtx$javalin().render("index.html");
     }
 }
 

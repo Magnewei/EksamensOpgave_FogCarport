@@ -30,9 +30,8 @@
             </li>
 
 
-            <!-- Bruger chat -->
             <li>
-                <button  th:if="${session.currentUser == null or !session.currentUser.isAdmin}"
+                <button  th:if="${session.currentUser == null or session.currentUser.isAdmin == false}"
                          formaction="loadCustomerChat" type="submit" > Load chat
                 </button>
             </li>
