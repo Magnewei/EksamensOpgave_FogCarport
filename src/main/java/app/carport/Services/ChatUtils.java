@@ -21,26 +21,26 @@ public class ChatUtils {
     }
 
     public static String createHtmlMessageFromUser(String sender, String message) {
-        return article(
+        return article(div(attrs("#customerMessage"),
                 b(sender + " says:"),
                 span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date())),
-                p(message).withId("customerMessage")
+                p(message))
         ).render();
     }
 
     public static String createHtmlMessageFromAdmin(String message) {
-        return article(
+        return article(div(attrs("#adminMessage"),
                 b("Admin says:"),
                 span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date())),
-                p(message).withId("adminMessage")
+                p(message))
         ).render();
     }
 
     public static String HTMLErrorMessage(String message) {
-        return article(
+        return article(div(attrs("#error"),
                 b("Error!"),
                 span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date())),
-                p(message).withId("error")
+                p(message))
         ).render();
     }
 

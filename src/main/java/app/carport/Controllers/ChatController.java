@@ -36,7 +36,6 @@ public class ChatController {
     private static void onMessage(WsMessageContext ctx) {
         User currentUser = ctx.sessionAttribute("currentUser");
 
-
         // Load the appropriate method depending on user.role.
         if (currentUser.isAdmin()) {
 
@@ -45,6 +44,9 @@ public class ChatController {
 
         } else if (!currentUser.isAdmin()) {
             onMessageUser(ctx, currentUser);
+
+        } else {
+            ctx.session.close(400, "Session is invalid.");
         }
     }
 
@@ -62,7 +64,7 @@ public class ChatController {
                 ctx.send(Map.of("userMessage", htmlMessage));
 
             } else {
-                String errorMessage = ChatUtils.HTMLErrorMessage("We're waiting for the second user.");
+                String errorMessage = ChatUtils.HTMLErrorMessage("Waiting for a second user to join the chat.");
                 ctx.send(Map.of("userMessage", errorMessage));
             }
         } catch (WebSocketException e) {
@@ -89,7 +91,7 @@ public class ChatController {
                 ctx.send(Map.of("userMessage", htmlMessage));
 
             } else {
-                String errorMessage = ChatUtils.HTMLErrorMessage("We're waiting for the second user.");
+                String errorMessage = ChatUtils.HTMLErrorMessage("Waiting for a second user to join the chat.");
                 ctx.send(Map.of("userMessage", errorMessage));
             }
         } catch (WebSocketException e) {
