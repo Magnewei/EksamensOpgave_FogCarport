@@ -22,17 +22,6 @@ public class ChatController {
         });
     }
 
-    private static void onMessage(WsMessageContext ctx) {
-        User currentUser = ctx.sessionAttribute("currentUser");
-
-        if (currentUser.isAdmin()) {
-            onMessageAdmin(ctx, currentUser);
-
-        } else if (!currentUser.isAdmin()) {
-            onMessageUser(ctx, currentUser);
-        }
-    }
-
     private static void onConnect(WsContext ctx) {
         try {
             // Override Jettys default idle timer of 5ish seconds to avoid using pings.
@@ -44,16 +33,26 @@ public class ChatController {
         }
     }
 
+    private static void onMessage(WsMessageContext ctx) {
+        User currentUser = ctx.sessionAttribute("currentUser");
+
+        if (currentUser.isAdmin()) {
+            onMessageAdmin(ctx, currentUser);
+
+        } else if (!currentUser.isAdmin()) {
+            onMessageUser(ctx, currentUser);
+        }
+    }
+
     private static synchronized void onMessageUser(WsMessageContext ctx, User currentUser) {
         User admin = ChatUtils.getAdmin();
         WsContext adminContext = ChatUtils.getContextByUser(admin);
-        System.out.println(admin.getUserID());
 
         if (adminContext != null) {
             Map<String, String> customerChat = admin.getUserChat();
 
             String message = ctx.message();
-            String htmlMessage = ChatUtils.createHtmlMessageFromSender(currentUser.getFullName(), message);
+            String htmlMessage = ChatUtils.createHtmlMessageFromUser(currentUser.getFullName(), message);
             customerChat.put("userMessage", htmlMessage);
             adminContext.send(customerChat);
             ctx.send(customerChat);
@@ -73,7 +72,7 @@ public class ChatController {
             Map<String, String> customerChat = customer.getUserChat();
 
             String message = ctx.message();
-            String htmlMessage = ChatUtils.createHtmlMessageFromSender(currentUser.getFullName(), message);
+            String htmlMessage = ChatUtils.createHtmlMessageFromAdmin(message);
             customerChat.put("userMessage", htmlMessage);
             customerCtx.send(customerChat);
             ctx.send(customerChat);

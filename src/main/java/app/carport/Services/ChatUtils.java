@@ -5,7 +5,6 @@ import io.javalin.websocket.WsContext;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,12 +21,11 @@ public class ChatUtils {
                 render();
     }
 
-    // Builds a HTML element with a sender-name, a message, and a timestamp
-    public static String createHtmlMessageFromSender(String sender, String message) {
+    public static String createHtmlMessageFromUser(String sender, String message) {
         return article(
                 b(sender + " says:"),
                 span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date())),
-                p(message)
+                p(message).withId("customerMessage")
         ).render();
     }
 
@@ -35,7 +33,7 @@ public class ChatUtils {
         return article(
                 b("Admin says:"),
                 span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date())),
-                p(message)
+                p(message).withId("adminMessage")
         ).render();
     }
 
@@ -43,7 +41,7 @@ public class ChatUtils {
         return article(
                 b("Error!"),
                 span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date())),
-                p(message)
+                p(message).withId("error")
         ).render();
     }
 
@@ -56,18 +54,6 @@ public class ChatUtils {
         return userUsernameMap;
     }
 
-    public static WsContext getChatContext(int hashcode) {
-        for (WsContext context : userUsernameMap.keySet()) {
-            System.out.println("Checking context: " + context.hashCode() + " against " + hashcode);
-            if (context.hashCode() == hashcode) {
-                return context;
-            }
-        }
-
-        System.out.println("No chat context found for hashcode " + hashcode);
-        return null;
-    }
-
     public static User getUserFromContext(String customerChatName) {
         for (Map.Entry<WsContext, User> entry : userUsernameMap.entrySet()) {
             User user = entry.getValue();
@@ -77,7 +63,6 @@ public class ChatUtils {
         }
         return null;
     }
-
 
     public static WsContext getContextByUser(User user) {
         for (Map.Entry<WsContext, User> entry : userUsernameMap.entrySet()) {
