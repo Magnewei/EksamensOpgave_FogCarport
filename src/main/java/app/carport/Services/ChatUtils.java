@@ -2,7 +2,6 @@ package app.carport.Services;
 
 import app.carport.Entities.User;
 import io.javalin.websocket.WsContext;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -73,7 +72,7 @@ public class ChatUtils {
         return null;
     }
 
-    public static User getAdmin() {
+    public static User getAdminUser() {
         for (Map.Entry<WsContext, User> entry : userUsernameMap.entrySet()) {
             User user = entry.getValue();
             if (user.isAdmin()) {

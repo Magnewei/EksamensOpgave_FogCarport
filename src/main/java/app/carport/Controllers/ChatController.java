@@ -36,8 +36,12 @@ public class ChatController {
     private static void onMessage(WsMessageContext ctx) {
         User currentUser = ctx.sessionAttribute("currentUser");
 
+
+        // Load the appropriate method depending on user.role.
         if (currentUser.isAdmin()) {
-            onMessageAdmin(ctx, currentUser);
+
+            // admin user is not retrieved from currentUser in the method.
+            onMessageAdmin(ctx);
 
         } else if (!currentUser.isAdmin()) {
             onMessageUser(ctx, currentUser);
@@ -45,41 +49,51 @@ public class ChatController {
     }
 
     private static synchronized void onMessageUser(WsMessageContext ctx, User currentUser) {
-        User admin = ChatUtils.getAdmin();
-        WsContext adminContext = ChatUtils.getContextByUser(admin);
+        try {
+            User admin = ChatUtils.getAdminUser();
+            WsContext adminContext = ChatUtils.getContextByUser(admin);
 
-        if (adminContext != null) {
-            Map<String, String> customerChat = admin.getUserChat();
+            if (adminContext != null) {
+                String messageText = ctx.message();
+                String htmlMessage = ChatUtils.createHtmlMessageFromUser(currentUser.getFullName(), messageText);
 
-            String message = ctx.message();
-            String htmlMessage = ChatUtils.createHtmlMessageFromUser(currentUser.getFullName(), message);
-            customerChat.put("userMessage", htmlMessage);
-            adminContext.send(customerChat);
-            ctx.send(customerChat);
+                // Send the message to both user and admin socket, so both of them can see the messageText.
+                adminContext.send(Map.of("userMessage", htmlMessage));
+                ctx.send(Map.of("userMessage", htmlMessage));
 
-        } else {
-            String errorMessage = ChatUtils.HTMLErrorMessage("We're waiting for the second user.");
-            ctx.send(Map.of("userMessage", errorMessage));
+            } else {
+                String errorMessage = ChatUtils.HTMLErrorMessage("We're waiting for the second user.");
+                ctx.send(Map.of("userMessage", errorMessage));
+            }
+        } catch (WebSocketException e) {
+            ctx.send(Map.of("userMessage", "An error occured while sending the message."));
+            e.printStackTrace();
         }
     }
 
-    private static synchronized void onMessageAdmin(WsMessageContext ctx, User currentUser) {
-        String customerName = ctx.sessionAttribute("customerUsername");
-        User customer = ChatUtils.getUserFromContext(customerName);
-        WsContext customerCtx = ChatUtils.getContextByUser(customer);
+    private static synchronized void onMessageAdmin(WsMessageContext ctx) {
+        try {
+            String customerName = ctx.sessionAttribute("customerUsername");
 
-        if (customerCtx != null && customerCtx.session.isOpen()) {
-            Map<String, String> customerChat = customer.getUserChat();
+            // Load customer User object and the users WsContext.
+            User customer = ChatUtils.getUserFromContext(customerName);
+            WsContext customerCtx = ChatUtils.getContextByUser(customer);
 
-            String message = ctx.message();
-            String htmlMessage = ChatUtils.createHtmlMessageFromAdmin(message);
-            customerChat.put("userMessage", htmlMessage);
-            customerCtx.send(customerChat);
-            ctx.send(customerChat);
+            if (customerCtx != null && customerCtx.session.isOpen()) {
+                String message = ctx.message();
+                String htmlMessage = ChatUtils.createHtmlMessageFromAdmin(message);
 
-        } else {
-            String errorMessage = ChatUtils.HTMLErrorMessage("We're waiting for the second user.");
-            ctx.send(Map.of("userMessage", errorMessage));
+                // Send the message to both user and admin socket, so both of them can see the messageText.
+                customerCtx.send(Map.of("userMessage", htmlMessage));
+                ctx.send(Map.of("userMessage", htmlMessage));
+
+            } else {
+                String errorMessage = ChatUtils.HTMLErrorMessage("We're waiting for the second user.");
+                ctx.send(Map.of("userMessage", errorMessage));
+            }
+        } catch (WebSocketException e) {
+            ctx.send(Map.of("userMessage", "An error occured while sending the message."));
+            e.printStackTrace();
         }
     }
 
@@ -96,7 +110,8 @@ public class ChatController {
     }
 
     private static void onError(WsErrorContext ctx) {
-        System.out.println(ctx.error());
+        System.out.println(ctx.error().getMessage());
+        ctx.send(Map.of("userMessage", "An error occured while sending the message."));
     }
 }
 
