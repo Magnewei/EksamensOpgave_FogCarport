@@ -66,8 +66,9 @@ public class ChatController {
                 ctx.send(Map.of("userMessage", errorMessage));
             }
         } catch (WebSocketException e) {
-            ctx.send(Map.of("userMessage", "An error occured while sending the message."));
             e.printStackTrace();
+            String errorMessage = ChatUtils.HTMLErrorMessage("An error occurred while sending the message.");
+            ctx.send(Map.of("userMessage", errorMessage));;
         }
     }
 
@@ -92,8 +93,9 @@ public class ChatController {
                 ctx.send(Map.of("userMessage", errorMessage));
             }
         } catch (WebSocketException e) {
-            ctx.send(Map.of("userMessage", "An error occured while sending the message."));
             e.printStackTrace();
+            String errorMessage = ChatUtils.HTMLErrorMessage("An error occurred while sending the message.");
+            ctx.send(Map.of("userMessage", errorMessage));;
         }
     }
 
@@ -111,7 +113,8 @@ public class ChatController {
 
     private static void onError(WsErrorContext ctx) {
         System.out.println(ctx.error().getMessage());
-        ctx.send(Map.of("userMessage", "An error occured while sending the message."));
+        String errorMessage = ChatUtils.HTMLErrorMessage("An error occurred while sending the message.");
+        ctx.send(Map.of("userMessage", errorMessage));
     }
 }
 
