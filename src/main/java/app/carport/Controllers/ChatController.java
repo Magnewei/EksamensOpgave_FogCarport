@@ -8,7 +8,6 @@ import io.javalin.websocket.WsContext;
 import io.javalin.websocket.WsErrorContext;
 import io.javalin.websocket.WsMessageContext;
 import org.eclipse.jetty.websocket.api.exceptions.WebSocketException;
-
 import java.time.Duration;
 import java.util.Map;
 

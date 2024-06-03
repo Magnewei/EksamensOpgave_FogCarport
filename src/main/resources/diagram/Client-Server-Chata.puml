@@ -1,0 +1,38 @@
+@startuml
+!define USER1 Admin
+!define USER2 Customer
+
+|#LightCoral| USER2 |
+start
+:connect to /websocket endpoint;
+:Open WebSocket Connection through JS;
+
+|#LightYellow| Server |
+:Establish connection through the use of Javalin websockets;
+
+| USER1 |
+:Load connection information relevant to the user;
+:Open WebSocket Connection through JS;
+
+|#LightYellow| Server |
+:Connection Established;
+
+|#LightBlue| USER1 |
+:Send Message via JS;
+
+|#LightYellow| Server |
+:Forward Message via Javalin;
+
+|#LightCoral| USER2 |
+:Receive Message via JS;
+
+|#LightCoral| USER2 |
+:Send Reply via JS;
+
+|#LightYellow| Server |
+:Forward Reply;
+
+|#LightBlue| USER1 |
+:Receive Reply;
+stop
+@enduml

@@ -74,6 +74,7 @@ public class AdminPanelController {
         try {
             int materialID = Integer.parseInt(ctx.queryParam("update_material"));
             Material material = MaterialMapper.getMaterialById(materialID, connectionPool);
+
             ctx.attribute("material", material);
             ctx.render("editMaterial.html");
         } catch (NumberFormatException | DatabaseException e) {
@@ -233,7 +234,6 @@ public class AdminPanelController {
      *
      * @param connectionPool The connection pool used to manage database connections.
      * @param ctx            The web context containing the request data, including form parameters.
-     * @throws DatabaseException     If there is a problem accessing the database or retrieving the material.
      * @throws NumberFormatException If the material ID provided is not in a valid integer format.
      */
     public static void renderEditMaterial(ConnectionPool connectionPool, Context ctx) {
@@ -259,7 +259,6 @@ public class AdminPanelController {
      *
      * @param connectionPool The connection pool used to manage database connections.
      * @param ctx            The web context containing the request data, including form parameters.
-     * @throws DatabaseException     If there is a problem accessing the database or retrieving the order.
      * @throws NumberFormatException If the order ID is not in a valid integer format.
      */
     public static void inspectOrder(ConnectionPool connectionPool, Context ctx) {

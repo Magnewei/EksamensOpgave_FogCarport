@@ -1,0 +1,20 @@
+@startuml
+start
+
+:Start;
+:<<User>> User initiates activity;
+if (Is admin?) then (yes)
+  :Enter Admin Panel;
+  :Choose an open customer chat;
+else (no)
+  if (Is logged in?) then (yes)
+  else (no)
+    :Type a nickname;
+  endif
+endif
+:Go to Chat;
+stop
+
+
+
+@enduml
