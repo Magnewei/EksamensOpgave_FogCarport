@@ -132,11 +132,6 @@ public class CarportShopController {
         }
     }
 
-    public static void checkshit(){
-
-    }
-
-
 
     /**
      * Validates the input names and contact details provided by the user.
