@@ -85,9 +85,16 @@ public class CarportShopController {
 
                 // Sets the userID for the temporary user and inserts the user into the database.
                 int userID = UserMapper.getLastUserId(connectionPool) + 1;
-                user = new User(userID, name, lastname, streetname, postalCode, phonenumber, email);
-                UserMapper.createTempUser(user, connectionPool);
-                ctx.sessionAttribute("currentUser",user);
+                if(!UserMapper.checkIfUserExistsByName(email,connectionPool)){
+                    user = new User(userID, name, lastname, streetname, postalCode, phonenumber, email);
+                    UserMapper.createTempUser(user, connectionPool);
+                    ctx.sessionAttribute("currentUser",user);
+                }
+                else{
+                    ctx.attribute("message","Brugernavnet findes allerede");
+                    ctx.render("OrderSite2.html");
+                    return;
+                }
 
             } else {  // If there's a logged in user, simply assign the user variable the currentUser.
                 user = ctx.sessionAttribute("currentUser");
@@ -124,6 +131,11 @@ public class CarportShopController {
             ctx.render("orderSite2.html");
         }
     }
+
+    public static void checkshit(){
+
+    }
+
 
 
     /**
