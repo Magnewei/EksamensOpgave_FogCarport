@@ -20,7 +20,6 @@ public class CarportShopController {
         app.post("CustomizeCarport", ctx -> orderButtonOne(connectionPool, ctx));
         app.post("Continue", ctx -> orderButtonTwo(connectionPool, ctx));
         app.post("Order", ctx -> orderButtonThree(connectionPool, ctx));
-        app.post("OrderNoUser", ctx -> orderButtonThree(connectionPool, ctx));
     }
 
     /**
@@ -96,16 +95,18 @@ public class CarportShopController {
 
             // Calculates the carport objects total amount of materials. Sets the carportID from width and length.
             Carport carport = ctx.sessionAttribute("carport");
-            carport.setCarportID(CarportMapper.getCarportIDByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool));
             carport.setMaterialList(connectionPool);
-            double price = carport.calculateTotalPrice();
-
             // Renders the materials as a list on the site.
             List<String> materialListAsString = convertMaterialList(carport.getMaterialList());
             ctx.attribute("materialString", materialListAsString);
 
+
             // Then inserts the order on either temporary or a logged in user, combined with the carport and it's price.
+            carport.setCarportID(CarportMapper.getCarportIDByWidthAndLength(carport.getWidth(), carport.getLength(), carport.isWithRoof(), connectionPool));
+            double price = carport.calculateTotalPrice();
             OrderMapper.insertNewOrder(user, carport.getCarportID(), price, connectionPool);
+
+
             user.setOrder(OrderMapper.getOrderByOrderId(OrderMapper.getLastOrderID(connectionPool), connectionPool));
             ctx.attribute("order", user.getOrder());
 

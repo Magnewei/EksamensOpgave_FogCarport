@@ -56,8 +56,7 @@
                 </div>
 
             </fieldset>
-            <button type="submit" class="btn" th:if="${session.currentUser == null}" formaction="/OrderNoUser" name="button"> Bestil </button>
-            <button type="submit" class="btn" th:if="${session.currentUser != null}" formaction="/Order" name="button"> Bestil </button>
+            <button type="submit" class="btn" formaction="/Order" name="button"> Bestil </button>
 
         </div>
 
