@@ -194,6 +194,7 @@ public class UserController {
             User user = ctx.sessionAttribute("currentUser");
             ctx.attribute("orderList", OrderMapper.getOrdersByUserId(user.getUserID(), connectionPool));
             ctx.render("userSite.html");
+
         } catch (DatabaseException e) {
             ctx.attribute("message", "Error. Couldn't load the users orders.");
             ctx.render("index.html");

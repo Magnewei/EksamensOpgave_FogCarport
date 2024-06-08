@@ -16,7 +16,6 @@ public class HeaderController {
         app.post("loadCustomerChat", ctx -> loadCustomerChat(ctx));
     }
 
-
     private static void loadCustomerChat(Context ctx) {
         try {
             String username = ctx.formParam("tempUsername");

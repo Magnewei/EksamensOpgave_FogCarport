@@ -24,7 +24,6 @@ public class Main {
         UserController.addRoutes(app, connectionPool);
         HeaderController.addRoutes(app, connectionPool);
         CarportShopController.addRoutes(app, connectionPool);
-
         ChatController.addRoutes(app);
     }
 }

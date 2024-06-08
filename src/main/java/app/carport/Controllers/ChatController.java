@@ -65,6 +65,7 @@ public class ChatController {
             } else {
                 String errorMessage = ChatUtils.HTMLErrorMessage("Waiting for a second user to join the chat.");
                 ctx.send(Map.of("userMessage", errorMessage));
+                ctx.send(Map.of("userMessage", errorMessage));
             }
         } catch (WebSocketException e) {
             e.printStackTrace();

@@ -33,26 +33,14 @@ public class AdminPanelController {
         app.post("denyorder", ctx -> denyOrder(connectionPool, ctx));
         app.post("editMaterial", ctx -> renderEditMaterial(connectionPool, ctx));
         app.post("inspectOrder", ctx -> inspectOrder(connectionPool, ctx));
-        app.post("loadAdminChat", ctx -> loadAdminChat(connectionPool, ctx));
+        app.post("loadAdminChat", ctx -> loadAdminChat(ctx));
     }
 
-    public static void loadAdminChat(ConnectionPool connectionPool, Context ctx) {
+    public static void loadAdminChat(Context ctx) {
         try {
-            // Loading carport assets.
-            ctx.attribute("lengthList", MaterialMapper.getAllLength(connectionPool));
-            ctx.attribute("widthList", MaterialMapper.getAllWidth(connectionPool));
-
-            User admin = ctx.sessionAttribute("currentUser");
             String customerName = ctx.formParam("customerFullName");
-
             ctx.sessionAttribute("customerUsername", customerName);
-            ctx.sessionAttribute("adminUser", admin.getFullName());
-
             ctx.render("chat.html");
-
-        } catch (DatabaseException e) {
-            ctx.attribute("message", "Error retrieving assets from the database.");
-            ctx.render("admin.html");
 
         } catch (NumberFormatException e) {
             ctx.attribute("message", "Error retrieving user context.");
